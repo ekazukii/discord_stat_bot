@@ -2,8 +2,9 @@ const SotView = require("../views/sot.js");
 const SotModel = require("../models/sot.js");
 
 module.exports = class SotController {
-  constructor(client) {
+  constructor(client, xboxkey) {
     this.client = client;
+    this.xboxkey = xboxkey;
   }
 
   command(args, callback) {
@@ -12,7 +13,7 @@ module.exports = class SotController {
 
   userStats(username, callback) {
     var client = this.client;
-    var model = new SotModel()
+    var model = new SotModel(this.xboxkey)
     var view = new SotView(client.user)
     model.getUserStats({username: username}, function(stats) {
       stats.username = username

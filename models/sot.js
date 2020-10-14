@@ -2,8 +2,8 @@ const request = require('request');
 
 module.exports = class SotModel {
 
-  constructor() {
-
+  constructor(xboxkey) {
+    this.xboxkey = xboxkey; 
   }
 
   getUserStats(options, callback) {
@@ -13,7 +13,7 @@ module.exports = class SotModel {
     var options1 = {
       url: 'https://xboxapi.com/v2/xuid/'+username,
       headers: {
-        'X-AUTH': process.env.XBOX_API_KEY
+        'X-AUTH': this.xboxkey
       },
     }
 
@@ -22,7 +22,7 @@ module.exports = class SotModel {
         var options = {
           url: 'https://xboxapi.com/v2/'+body+'/game-stats/1717113201',
           headers: {
-            'X-AUTH': process.env.XBOX_API_KEY
+            'X-AUTH': this.xboxkey
           },
           json: true
         }
