@@ -1,7 +1,6 @@
 module.exports = function(options) {
-  var con = options.con
-  var app = options.app
-
+  var dtoken = options.dicord_token;
+  var xboxkey = options.xbox_key; 
   const Discord = require('discord.js');
   const client = new Discord.Client();
   
@@ -21,26 +20,17 @@ module.exports = function(options) {
   var hivemcController = new HivemcController(client);
   
   const SotController = require("./controller/sot.js");
-  var sotController = new SotController(client);
+  var sotController = new SotController(client, xboxkey);
   
   const CoinflipController = require("./controller/coinflip.js");
   var coinflipController = new CoinflipController(client);
-  
-  const GmailController = require("./controller/gmail.js");
-  var gmailController;
-  
-  const HomeworkController = require("./controller/homework.js");
-  var homeworkController;
-  
-  gmailController = new GmailController(client, con)
-  homeworkController = new HomeworkController(client, con)
   
   const mcping = require('mc-ping-updated');
   
   
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setStatus('invisible');
+    client.user.setStatus('visible');
     //client.user.setActivity("Dort paisiblement.");
   });
   
@@ -74,21 +64,13 @@ module.exports = function(options) {
             rawMessage.channel.send(embed);
           });
           break;
-        case "$listen":
-          gmailController.command(args, rawMessage, (embed)  => {
-            rawMessage.channel.send(embed);
-          })
-        case "$devoirs":
-          homeworkController.command(args, (embed)  => {
-            rawMessage.channel.send(embed);
-          })
         default:
   
       }
     }
   });
   
-  client.login(process.env.DISCORD_TOKEN)
+  client.login(dtoken)
   const request = require('request');
   
   mcping(process.env.SERVER_IP, process.env.SERVER_PORT, function(err, res) {
