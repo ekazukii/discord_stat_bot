@@ -6,7 +6,7 @@ module.exports = class WynncraftView extends View {
 
   showUserStats(stats, callback) {
     var message = this.getEmbed()
-    message.embed.title = "Statistique de "+ stats.username + " Sur Wynncraft";
+    message.embed.title = "Statistiques de "+ stats.username + " Sur Wynncraft";
     message.embed.fields.push({
       name: 'Type de la classe',
       value: stats.className

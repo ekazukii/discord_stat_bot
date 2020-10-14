@@ -6,7 +6,7 @@ module.exports = class SotView extends View {
 
   showUserStats(stats, callback) {
     var message = this.getEmbed()
-    message.embed.title = "Statistique de "+ stats.username + " Sur Sea of thieves"
+    message.embed.title = "Statistiques de "+ stats.username + " Sur Sea of thieves"
     message.embed.fields.push({
       name: 'Nombre de coffres vendus',
       value: stats.chests
