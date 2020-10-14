@@ -1,11 +1,20 @@
 {
   "name": "discord",
   "version": "1.0.0",
-  "description": "",
+  "description": "discord",
   "main": "discord.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/index.js"
   },
   "author": "ekazuki",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "express": "^4.17.1",
+    "mc-ping-updated": "^0.1.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "mocha": "^8.1.3"
+  }
 }
