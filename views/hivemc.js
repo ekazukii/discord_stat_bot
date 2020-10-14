@@ -6,7 +6,7 @@ module.exports = class HivemcView extends View {
 
   showUserStats(stats, callback) {
     var message = this.getEmbed()
-    message.embed.title = "Statistique de "+ stats.username + " Sur HiveMC"
+    message.embed.title = "Statistiques de "+ stats.username + " Sur HiveMC"
     message.embed.fields.push({
       name: 'Nombre de victoires en Hide and Seek',
       value: stats.hide

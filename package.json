@@ -1,6 +1,6 @@
 {
   "name": "@ekazukii/discord_bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "discord",
   "main": "discord.js",
   "scripts": {
