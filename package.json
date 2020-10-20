@@ -4,7 +4,8 @@
   "description": "discord",
   "main": "discord.js",
   "scripts": {
-    "test": "mocha test/index.js"
+    "test": "mocha test/index.js",
+    "lint": "eslint ."
   },
   "author": "ekazuki",
   "license": "ISC",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
+    "eslint": "^7.11.0",
     "mocha": "^8.1.3"
   }
 }
