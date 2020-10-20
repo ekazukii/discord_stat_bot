@@ -5,14 +5,14 @@ module.exports = function(options) {
   const Discord = require('discord.js');
   const client = new Discord.Client();
   
-  const Mojang = require("./models/mojang.js")
-  const Wynncraft = require("./models/wynncraft.js")
-  const Hivemc = require("./models/hivemc.js")
-  const Sot = require("./models/sot.js")
+  require("./models/mojang.js");
+  require("./models/wynncraft.js")
+  require("./models/hivemc.js")
+  require("./models/sot.js")
   
-  const HivemcV = require("./views/hivemc.js")
-  const SotV = require("./views/sot.js")
-  const WynncraftV = require("./views/wynncraft.js")
+  require("./views/hivemc.js")
+  require("./views/sot.js")
+  require("./views/wynncraft.js")
   
   const WynncraftController = require("./controller/wynncraft.js");
   var wynncraftController = new WynncraftController(client);
@@ -68,6 +68,7 @@ module.exports = function(options) {
           coinflipController.command(args, (embed) => {
             rawMessage.channel.send(embed);
           });
+          break;
         case "$lol":
           lolController.command(args, (embed) => {
             rawMessage.channel.send(embed);
@@ -80,7 +81,6 @@ module.exports = function(options) {
   });
   
   client.login(dtoken)
-  const request = require('request');
   
   mcping(process.env.SERVER_IP, process.env.SERVER_PORT, function(err, res) {
     if (err) {

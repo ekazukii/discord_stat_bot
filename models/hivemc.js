@@ -14,13 +14,13 @@ module.exports = class HivemcModel {
         response.hide = res1.body.victories
         request('http://api.hivemc.com/v1/player/'+username+'/GRAV', { json: true }, (err2, res2, body2) => {
           if (err2) { return console.log(err2); }
-          response.grav = res2.body.victories
+          response.grav = body2.victories
           request('http://api.hivemc.com/v1/player/'+username+'/BP', { json: true }, (err3, res3, body3) => {
             if (err3) { return console.log(err3); }
-            response.blockparty = res3.body.victories
+            response.blockparty = body3.victories
             request('http://api.hivemc.com/v1/player/'+username+'/DR', { json: true }, (err4, res4, body4) => {
               if (err4) { return console.log(err4); }
-              response.deathrun = res4.body.victories
+              response.deathrun = body4.victories
               callback(response);
             });
           });

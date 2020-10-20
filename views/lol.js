@@ -7,7 +7,6 @@ module.exports = class LoLView extends View {
   showUserStats(stats, callback) {
     var masteryString = "";
     for (let i = 0; i < stats.masteries.length; i++) {
-      const element = stats.masteries[i];
       masteryString += `[${stats.masteries[i].level}] ${stats.masteries[i].name} - ${stats.masteries[i].points} points\r`;
     }
 
