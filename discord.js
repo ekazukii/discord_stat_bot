@@ -1,6 +1,7 @@
 module.exports = function(options) {
   var dtoken = options.dicord_token;
-  var xboxkey = options.xbox_key; 
+  var xboxkey = options.xbox_key;
+  var riotapi = options.riotapi;
   const Discord = require('discord.js');
   const client = new Discord.Client();
   
@@ -25,12 +26,16 @@ module.exports = function(options) {
   const CoinflipController = require("./controller/coinflip.js");
   var coinflipController = new CoinflipController(client);
   
+  const LoLController = require("./controller/lol.js");
+  var lolController;
+
   const mcping = require('mc-ping-updated');
   
   
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setStatus('visible');
+    lolController = new LoLController(client, riotapi);
     //client.user.setActivity("Dort paisiblement.");
   });
   
@@ -63,6 +68,10 @@ module.exports = function(options) {
           coinflipController.command(args, (embed) => {
             rawMessage.channel.send(embed);
           });
+        case "$lol":
+          lolController.command(args, (embed) => {
+            rawMessage.channel.send(embed);
+          })
           break;
         default:
   
