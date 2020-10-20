@@ -36,7 +36,7 @@ module.exports = class WynncraftModel {
     });
   }
 
-  getConnectedUsers(option) {
+  getConnectedUsers() {
 
   }
 

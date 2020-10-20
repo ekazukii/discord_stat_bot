@@ -31,6 +31,7 @@ module.exports = class SotController {
     });
   }
 
+  /**
   userAchievment(username, callback) {
     // TODO
   }
@@ -38,4 +39,5 @@ module.exports = class SotController {
   userReputation(username, callback) {
     // TODO
   }
+   */
 }

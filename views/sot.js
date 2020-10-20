@@ -31,7 +31,7 @@ module.exports = class SotView extends View {
 
   printError(stats, callback) {
     var error_message;
-    if (stats.error_desc = "user not found") {
+    if (stats.error_desc == "user not found") {
       error_message = "L'utilisateur n'existe pas."
     } else {
       error_message = "L'utilisateur ne joue pas à Sea of Thieves."
