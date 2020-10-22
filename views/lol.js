@@ -93,6 +93,55 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
+    showUserCS(stats, callback) {
+        var message = this.getEmbed()
+
+        message.embed.title = "Creep Score dans les dernières 5 game de " + stats.username;
+
+        var CSString = "";
+        for (let i = 0; i < stats.cs.length - 1; i++) {
+            CSString += stats.cs[i] + " - ";
+        }
+
+        CSString += stats.cs[stats.cs.length - 1]
+
+        message.embed.fields.push({
+            name: "Creep Score par minutes",
+            value: CSString
+        });
+
+        callback(message);
+    }
+
+    showChampionRotation(rotation, callback) {
+        var message = this.getEmbed()
+
+        message.embed.title = "Rotation actuelle des champions";
+        var leftListString = "";
+        var rightListString = "";
+        var half = Math.round(rotation.length / 2);
+
+        for (let i = 0; i < half; i++) {
+            leftListString += rotation[i] + "\r";
+        }
+
+        for (let i = half; i < rotation.length; i++) {
+            rightListString += rotation[i] + "\r";
+        }
+
+        message.embed.fields.push({
+            name: " ------- ",
+            value: leftListString,
+            inline: true
+        }, {
+            name: " ------- ",
+            value: rightListString,
+            inline: true
+        });
+
+        callback(message)
+    }
+
     printError(stats, callback) {
         var message = this.getEmbedError()
         message.embed.title = "Erreur"

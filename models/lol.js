@@ -135,7 +135,54 @@ module.exports = class LoLModel {
         // Calculate score
     }
 
+    getUserCS(options, callback) {
+        var self = this;
+        var username = options.username;
+        var ngame = options.ngame;
 
+        self.getSummonerByName(username, (summoner) => {
+            if (typeof summoner.id !== 'undefined') {
+                var aid1 = summoner.accountId;
+                self.getClassicMatchlist(aid1, ngame, (matchlist1) => {
+
+                    function getMathlistCS(index, matchlist, cs, aid, callback) {
+                        if(index <= matchlist1.length - 1) {
+                            self.getMatchInfo(matchlist[index].gameId, (game) => {
+
+                                var pid = self.getParticipantId(game, aid);
+                                var participant = self.getParticipant(game, pid);
+
+                                cs.push(self.getCSPerMinutes(participant.stats,  game.gameDuration));
+
+                                index++;
+                                getMathlistCS(index, matchlist, cs, aid, callback);
+                            });
+                        } else {
+                            callback(cs);
+                        }
+                    }
+
+                    getMathlistCS(0, matchlist1, [], aid1, (cs1) => {
+                        callback({cs: cs1});
+                    });
+
+                });
+            }
+        });
+    }
+
+    getChampionRotation(callback) {
+        var champList = [];
+        var self = this;
+        request(`https://euw1.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=${this.apikey}`, {json: true}, (err, res, body) => {
+            if (err) { return console.log(err); }
+            for (let i = 0; i < body.freeChampionIds.length; i++) {
+                const champId = body.freeChampionIds[i];
+                champList.push(self.getChampName(champId));
+            }
+            callback(champList);
+        });
+    }
 
     getChampName(champId) {
         for (const key in this.champJSON.data) {
@@ -147,7 +194,7 @@ module.exports = class LoLModel {
     }
 
     getSummonerByName(username, callback) {
-        request(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}/?api_key=${this.apikey}`, { json: true }, (err, res, body) => {
+        request(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}/?api_key=${this.apikey}`, {json: true}, (err, res, body) => {
             if (err) { return console.log(err); }
             callback(body);
         });
