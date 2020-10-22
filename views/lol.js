@@ -95,7 +95,6 @@ module.exports = class LoLView extends View {
 
     showUserCS(stats, callback) {
         var message = this.getEmbed()
-        message.embed.title = stats.user1 + " vs " + stats.user2;
 
         message.embed.title = "Creep Score dans les dernières 5 game de " + stats.username;
 
@@ -112,6 +111,35 @@ module.exports = class LoLView extends View {
         });
 
         callback(message);
+    }
+
+    showChampionRotation(rotation, callback) {
+        var message = this.getEmbed()
+
+        message.embed.title = "Rotation actuelle des champions";
+        var leftListString = "";
+        var rightListString = "";
+        var half = Math.round(rotation.length / 2);
+
+        for (let i = 0; i < half; i++) {
+            leftListString += rotation[i] + "\r";
+        }
+
+        for (let i = half; i < rotation.length; i++) {
+            rightListString += rotation[i] + "\r";
+        }
+
+        message.embed.fields.push({
+            name: " ------- ",
+            value: leftListString,
+            inline: true
+        }, {
+            name: " ------- ",
+            value: rightListString,
+            inline: true
+        });
+
+        callback(message)
     }
 
     printError(stats, callback) {

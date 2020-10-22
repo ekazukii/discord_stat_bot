@@ -19,6 +19,9 @@ module.exports = class LoLController {
             case "cs":
                 this.userCS(args[1], callback);
                 break;
+            case "rotation":
+                this.championRotation(callback);
+                break;
             default:
                 break;
         }
@@ -70,6 +73,22 @@ module.exports = class LoLController {
                 });
             } else {
                 self.view.showUserCS(stats, function(embed) {
+                    callback(embed)
+                });
+            }
+        });
+    }
+
+    championRotation(callback) {
+        var self = this;
+        this.model.getChampionRotation(function(rotation) {
+            if (rotation.error) {
+                self.view.printError(rotation, function(embed) {
+                    // TODO : log
+                    callback(embed)
+                });
+            } else {
+                self.view.showChampionRotation(rotation, function(embed) {
                     callback(embed)
                 });
             }
