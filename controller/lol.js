@@ -16,6 +16,9 @@ module.exports = class LoLController {
             case "vs":
                 this.comparePlayers(args[1], args[2], callback);
                 break;
+            case "cs":
+                this.userCS(args[1], callback);
+                break;
             default:
                 break;
         }
@@ -29,11 +32,11 @@ module.exports = class LoLController {
             if (stats.error) {
                 self.view.printError(stats, function(embed) {
                     callback(embed)
-                })
+                });
             } else {
                 self.view.showUsersComparation(stats, function(embed) {
                     callback(embed)
-                })
+                });
             }
         });
     }
@@ -46,12 +49,29 @@ module.exports = class LoLController {
                 self.view.printError(stats, function(embed) {
                     // TODO : log
                     callback(embed)
-                })
-                } else {
+                });
+            } else {
                 self.view.showUserStats(stats, function(embed) {
                     // TODO : log
                     callback(embed)
-                })
+                });
+            }
+        });
+    }
+
+    userCS(username, callback) {
+        var self = this;
+        this.model.getUserCS({username: username, ngame: 5}, function(stats) {
+            stats.username = username;
+            if (stats.error) {
+                self.view.printError(stats, function(embed) {
+                    // TODO : log
+                    callback(embed)
+                });
+            } else {
+                self.view.showUserCS(stats, function(embed) {
+                    callback(embed)
+                });
             }
         });
     }

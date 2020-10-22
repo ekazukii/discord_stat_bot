@@ -135,7 +135,41 @@ module.exports = class LoLModel {
         // Calculate score
     }
 
+    getUserCS(options, callback) {
+        var self = this;
+        var username = options.username;
+        var ngame = options.ngame;
 
+        self.getSummonerByName(username, (summoner) => {
+            if (typeof summoner.id !== 'undefined') {
+                var aid1 = summoner.accountId;
+                self.getClassicMatchlist(aid1, ngame, (matchlist1) => {
+
+                    function getMathlistCS(index, matchlist, cs, aid, callback) {
+                        if(index <= matchlist1.length - 1) {
+                            self.getMatchInfo(matchlist[index].gameId, (game) => {
+
+                                var pid = self.getParticipantId(game, aid);
+                                var participant = self.getParticipant(game, pid);
+
+                                cs.push(self.getCSPerMinutes(participant.stats,  game.gameDuration));
+
+                                index++;
+                                getMathlistCS(index, matchlist, cs, aid, callback);
+                            });
+                        } else {
+                            callback(cs);
+                        }
+                    }
+
+                    getMathlistCS(0, matchlist1, [], aid1, (cs1) => {
+                        callback({cs: cs1});
+                    });
+
+                });
+            }
+        });
+    }
 
     getChampName(champId) {
         for (const key in this.champJSON.data) {

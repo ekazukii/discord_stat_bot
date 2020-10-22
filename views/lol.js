@@ -93,6 +93,27 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
+    showUserCS(stats, callback) {
+        var message = this.getEmbed()
+        message.embed.title = stats.user1 + " vs " + stats.user2;
+
+        message.embed.title = "Creep Score dans les dernières 5 game de " + stats.username;
+
+        var CSString = "";
+        for (let i = 0; i < stats.cs.length - 1; i++) {
+            CSString += stats.cs[i] + " - ";
+        }
+
+        CSString += stats.cs[stats.cs.length - 1]
+
+        message.embed.fields.push({
+            name: "Creep Score par minutes",
+            value: CSString
+        });
+
+        callback(message);
+    }
+
     printError(stats, callback) {
         var message = this.getEmbedError()
         message.embed.title = "Erreur"
