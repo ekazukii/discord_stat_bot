@@ -5,6 +5,7 @@
   "main": "discord.js",
   "scripts": {
     "test": "mocha test/index.js",
+    "dev": "node test/dev.js",
     "lint": "eslint ."
   },
   "author": "ekazuki",
