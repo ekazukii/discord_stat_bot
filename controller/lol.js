@@ -11,13 +11,13 @@ module.exports = class LoLController {
     command(args, callback) {
         switch (args[0]) {
             case "profile":
-                this.userStats(args[1], callback);
+                this.userStats(args[1].replace(/\$/, " "), callback);
                 break;
             case "vs":
-                this.comparePlayers(args[1], args[2], callback);
+                this.comparePlayers(args[1].replace(/\$/, " "), args[2].replace(/\$/, " "), callback);
                 break;
             case "cs":
-                this.userCS(args[1], callback);
+                this.userCS(args[1].replace(/\$/, " "), callback);
                 break;
             case "rotation":
                 this.championRotation(callback);
