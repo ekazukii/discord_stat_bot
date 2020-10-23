@@ -35,9 +35,9 @@ module.exports = class LoLModel {
                     request(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${pid}?api_key=${self.apikey}`, { json: true }, (err, res, body) => {
                         if (err) { return console.log(err); }
                         if(typeof body[0] !== "undefined") {
-                            response.rank = typeof body[0].tier + " " + typeof body[0].rank
+                            response.rank = body[0].tier + " " + body[0].rank;
                         } else {
-                            response.rank = "UNRANKED"
+                            response.rank = "UNRANKED";
                         }
 
                         self.getMatchlist(aid, 1, (body) => {
