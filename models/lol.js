@@ -56,8 +56,7 @@ module.exports = class LoLModel {
                                 response.match.assists = participant.stats.assists;
                                 response.match.cs = self.getCSPerMinutes(participant.stats, body.gameDuration);
 
-                                console.log(response)
-                                callback(response)
+                                callback(response);
                 
                             })
                         })
