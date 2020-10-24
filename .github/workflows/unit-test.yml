@@ -22,9 +22,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> $GITHUB_ENV
-    - run: echo "XBOX_API_KEY=${{ secrets.XBOX_API_KEY }}" >> $GITHUB_ENV
-    - run: echo "RIOT_API=${{ secrets.RIOT_API }}" >> $GITHUB_ENV
+    - run: echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> $GITHUB_WORKSPACE/.env
+    - run: echo "XBOX_API_KEY=${{ secrets.XBOX_API_KEY }}" >> $GITHUB_WORKSPACE/.env
+    - run: echo "RIOT_API=${{ secrets.RIOT_API }}" >> $GITHUB_WORKSPACE/.env
+    - run: ls -A
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
