@@ -28,7 +28,6 @@ jobs:
     - run: ls -A
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm test
     - run: chmod -R u+x node_modules/nyc/bin
     - run: sudo npm run coverage
     - name: Run codacy-coverage-reporter
