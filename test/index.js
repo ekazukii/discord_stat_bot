@@ -8,6 +8,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const LoLController = require("../controller/lol.js");
 const WynncraftController = require("../controller/wynncraft.js");
+const HivemcController = require("../controller/hivemc.js");
 const assert = require('assert').strict;
 const request = require("request");
 
@@ -26,6 +27,7 @@ describe("Discord tests", function() {
             client.user.setStatus('visible');
             lolController = new LoLController(client, riotapi);
             wynncraftController = new WynncraftController(client);
+            hivemcController = new HivemcController(client);
             done();
         });
     });
@@ -167,14 +169,6 @@ describe("Discord tests", function() {
 
         describe("Wynncraft UT", function() {
             it("Should get user statistics", function(done) {
-                lolController.command(["profile", "ekazukii"], (message) => {
-                    if(message.embed.title === "Statistiques de ekazukii Sur League of Legends") {
-                        done();
-                    }
-                });
-            });
-
-            it("Should get user statistics", function(done) {
                 wynncraftController.command(["zefut"], (message) => {
                     if(message.embed.title === "Statistiques de zefut Sur Wynncraft") {
                         done();
@@ -189,8 +183,26 @@ describe("Discord tests", function() {
                     }
                 });
             });
-
         });
+
+        describe("HiveMC UT", function() {
+            it("Should get user statistics", function(done) {
+                hivemcController.command(["Logorrheique"], (message) => {
+                    if(message.embed.title === "Statistiques de Logorrheique Sur HiveMC") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not found the user", function(done) {
+                hivemcController.command(["IDONTEXISTONHIVEMC778455"], (message) => {
+                    if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                });
+            });
+        });
+
     });
 });
 
