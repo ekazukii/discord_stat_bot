@@ -8,10 +8,8 @@ module.exports = function(options) {
   require("./models/mojang.js");
   require("./models/wynncraft.js")
   require("./models/hivemc.js")
-  require("./models/sot.js")
   
   require("./views/hivemc.js")
-  require("./views/sot.js")
   require("./views/wynncraft.js")
   
   const WynncraftController = require("./controller/wynncraft.js");
@@ -19,10 +17,7 @@ module.exports = function(options) {
   
   const HivemcController = require("./controller/hivemc.js");
   var hivemcController = new HivemcController(client);
-  
-  const SotController = require("./controller/sot.js");
-  var sotController = new SotController(client, xboxkey);
-  
+
   const CoinflipController = require("./controller/coinflip.js");
   var coinflipController = new CoinflipController(client);
   
@@ -55,14 +50,6 @@ module.exports = function(options) {
           hivemcController.command(args, (embed) => {
             rawMessage.channel.send(embed);
           });
-          break;
-        case "$sot":
-          sotController.command(args, (embed) => {
-            rawMessage.channel.send(embed);
-          });
-          break;
-        case "$dd":
-  
           break;
         case "$coinflip":
           coinflipController.command(args, (embed) => {
