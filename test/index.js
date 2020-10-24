@@ -14,6 +14,8 @@ const request = require("request");
 const WynncraftModel = require("../models/wynncraft.js");
 const LoLModel = require("../models/lol.js");
 const HivemcModel = require("../models/hivemc.js");
+const MojangModel = require("../models/mojang.js");
+
 
 var lolController, wynncraftController;
 
@@ -97,6 +99,26 @@ describe("Discord tests", function() {
 
             it("Should not found the user", function(done) {
                 model.getUserStats({username: "HIVEMCIDONTEXIST444552DJJDHDGZ"}, (stats) => {
+                    if(stats.error) {
+                        done();
+                    }
+                });
+            });
+        });
+
+        describe("Mojang UT", function() {
+            var model = new MojangModel();
+            it("Should get user statistics", function(done) {
+                model.getUUIDByUsername({username: "ekazuki"}, (uuid) => {
+                    console.log(uuid)
+                    if(uuid === "091c969e-ba6d-4ada-9620-f55038f36e41") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not found the user", function(done) {
+                model.getUUIDByUsername({username: "MOJANGCIDONTEXIST444552DJJDHDGZ"}, (stats) => {
                     if(stats.error) {
                         done();
                     }
