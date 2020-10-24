@@ -1,11 +1,11 @@
 {
   "name": "@ekazukii/discord_bot",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "discord",
   "main": "discord.js",
   "scripts": {
     "test": "mocha ./test/index.js --exit",
-    "coverage": "nyc --reporter=lcovonly mocha ./test/index.js --exit",
+    "coverage": "nyc --reporter=lcovonly --all mocha ./test/index.js --exit",
     "dev": "node test/dev.js"
   },
   "author": "ekazuki",
