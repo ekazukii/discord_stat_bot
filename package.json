@@ -4,8 +4,8 @@
   "description": "discord",
   "main": "discord.js",
   "scripts": {
-    "test": "mocha ./test/index.js --exit",
-    "coverage": "nyc --reporter=lcovonly --all mocha ./test/index.js --exit",
+    "test": "nyc --reporter=html --all mocha ./test/index.js --exit --timeout 10000",
+    "coverage": "nyc --reporter=lcovonly --all mocha ./test/index.js --exit --timeout 10000",
     "dev": "node test/dev.js"
   },
   "author": "ekazuki",

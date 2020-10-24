@@ -24,17 +24,38 @@ describe("Discord tests", function() {
 
 
     describe("League of Legends UT", function() {
-        it("Should get user id", function(done) {
-            lolController.model.getSummonerByName("ekazukii", (summ) => {
-                if(summ.accountId === "NvlC0gZvkw-VWWOgTbritH3kig_HayvUdGivE_Nv2iXwK0XR_ucoqWtz") done()
+        it("Should get user statistics", function(done) {
+            lolController.model.getUserStats({username: "ekazukii"}, (stats) => {
+                if(typeof stats.match !== "undefined") {
+                    done();
+                }
             });
         });
 
         it("Should get current champion rotation", function(done) {
             lolController.model.getChampionRotation((champList) => {
                 if(champList.length === 15) done();
-            })
-        })
+            });
+        });
+
+        it("Should compare ekazukii and ObstinateM", function(done) {
+            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+            lolController.model.comparePlayers({user1: "ekazukii", user2: "ObstinateM"}, (stats) => {
+                if(stats.score1.reduce(reducer) > 20 && stats.score2.reduce(reducer) > 20) {
+                    done();
+                }
+            });
+        });
+
+        it("Should get user creep score over last 5 games", function(done) {
+            lolController.model.getUserCS({username: "ekazukii", ngame: 5}, (stats) => {
+                if(stats.cs.length === 5) {
+                    done();
+                }
+            });
+        });
+
+        
     });
 });
 
