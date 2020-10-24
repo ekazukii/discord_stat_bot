@@ -9,6 +9,7 @@ const client = new Discord.Client();
 const LoLController = require("../controller/lol.js");
 const WynncraftController = require("../controller/wynncraft.js");
 const HivemcController = require("../controller/hivemc.js");
+const CoinflipController = require("../controller/coinflip.js");
 const assert = require('assert').strict;
 const request = require("request");
 
@@ -18,7 +19,7 @@ const HivemcModel = require("../models/hivemc.js");
 const MojangModel = require("../models/mojang.js");
 
 
-var lolController, wynncraftController;
+var lolController, wynncraftController, hivemcController, coinflipController;
 
 describe("Discord tests", function() {
     
@@ -28,6 +29,7 @@ describe("Discord tests", function() {
             lolController = new LoLController(client, riotapi);
             wynncraftController = new WynncraftController(client);
             hivemcController = new HivemcController(client);
+            coinflipController = new CoinflipController(client);
             done();
         });
     });
@@ -197,6 +199,24 @@ describe("Discord tests", function() {
             it("Should not found the user", function(done) {
                 hivemcController.command(["IDONTEXISTONHIVEMC778455"], (message) => {
                     if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                });
+            });
+        });
+
+        describe("Coinflip UT", function() {
+            it("Should launch a coin flip", function(done) {
+                coinflipController.command([], (message) => {
+                    if(message.embed.title === "Pile ou Face") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should pick an option", function(done) {
+                coinflipController.command(["option1", "option2"], (message) => {
+                    if(message.embed.title === "Pick Option") {
                         done();
                     }
                 });
