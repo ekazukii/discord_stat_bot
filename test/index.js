@@ -24,15 +24,15 @@ describe("Discord tests", function() {
 
 
     describe("League of Legends UT", function() {
-        it("Should get user id", function() {
+        it("Should get user id", function(done) {
             lolController.model.getSummonerByName("ekazukii", (summ) => {
-                assert.strictEqual(summ.accountId, "NvlC0gZvkw-VWWOgTbritH3kig_HayvUdGivE_Nv2iXwK0XR_ucoqWtz");
+                if(summ.accountId === "NvlC0gZvkw-VWWOgTbritH3kig_HayvUdGivE_Nv2iXwK0XR_ucoqWtz") done()
             });
         });
 
-        it("Should get current champion rotation", function() {
+        it("Should get current champion rotation", function(done) {
             lolController.model.getChampionRotation((champList) => {
-                assert.strictEqual(champList.length, 15);
+                if(champList.length === 15) done();
             })
         })
     });
