@@ -13,6 +13,7 @@ const request = require("request");
 
 const WynncraftModel = require("../models/wynncraft.js");
 const LoLModel = require("../models/lol.js");
+const HivemcModel = require("../models/hivemc.js");
 
 var lolController, wynncraftController;
 
@@ -77,6 +78,25 @@ describe("Discord tests", function() {
 
             it("Should not found the user", function(done) {
                 model.getUserStats({username: "IDONTEXIST444552DJJDHDGZ"}, (stats) => {
+                    if(stats.error) {
+                        done();
+                    }
+                });
+            });
+        });
+        
+        describe("HiveMC UT", function() {
+            var model = new HivemcModel();
+            it("Should get user statistics", function(done) {
+                model.getUserStats({username: "zefut"}, (stats) => {
+                    if(stats.hide >= 10) {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not found the user", function(done) {
+                model.getUserStats({username: "HIVEMCIDONTEXIST444552DJJDHDGZ"}, (stats) => {
                     if(stats.error) {
                         done();
                     }
