@@ -42,5 +42,13 @@ jobs:
           npm update
           cd ./src
           pm2 restart index.js
+    - name: Notify discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.WEBHOOK_ID }}
+        webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+        username: "GitHub Bot"
+        avatar_url: "https://avatars2.githubusercontent.com/u/26350515?s=400&v=4"
+        message: "Mise à jour - Version ${{ steps.package-version.outputs.version }}"
 
   
