@@ -25,11 +25,11 @@ describe("Discord tests", function() {
         client.on('ready', () => {
             client.user.setStatus('visible');
             lolController = new LoLController(client, riotapi);
-            wynncraftController = new WynncraftController(client)
+            wynncraftController = new WynncraftController(client);
             done();
         });
     });
-
+    
     describe("Models UT", function() {
         describe("League of Legends UT", function() {
             var model = new LoLModel(riotapi);
@@ -124,6 +124,72 @@ describe("Discord tests", function() {
                     }
                 });
             });
+        });
+    });
+
+    
+    
+    describe("Controllers + Views UT", function() {
+        describe("League of Legends UT", function() {
+            it("Should get user statistics", function(done) {
+                lolController.command(["profile", "ekazukii"], (message) => {
+                    if(message.embed.title === "Statistiques de ekazukii Sur League of Legends") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should get user statistics", function(done) {
+                lolController.command(["rotation"], (message) => {
+                    if(message.embed.fields.length === 2) {
+                        done();
+                    }
+                });
+            });
+
+            it("Should compare ekazukii and ObstinateM", function(done) {
+                lolController.command(["vs", "ekazukii", "ObstinateM"], (message) => {
+                    if(message.embed.title === "ekazukii vs ObstinateM") {
+                        done();
+                    }
+                });
+            });
+
+                
+            it("Should get user creep score over last 5 games", function(done) {
+                lolController.command(["cs", "ekazukii"], (message) => {
+                    if(message.embed.title === "Creep Score dans les dernières 5 game de ekazukii") {
+                        done();
+                    }
+                });
+            });
+        });
+
+        describe("Wynncraft UT", function() {
+            it("Should get user statistics", function(done) {
+                lolController.command(["profile", "ekazukii"], (message) => {
+                    if(message.embed.title === "Statistiques de ekazukii Sur League of Legends") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should get user statistics", function(done) {
+                wynncraftController.command(["zefut"], (message) => {
+                    if(message.embed.title === "Statistiques de zefut Sur Wynncraft") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not found the user", function(done) {
+                wynncraftController.command(["IDONTEXISTONWYNNCRAFT778455"], (message) => {
+                    if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                });
+            });
+
         });
     });
 });
