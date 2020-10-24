@@ -30,10 +30,10 @@ jobs:
         XBOX_API_KEY: ${{ secrets.XBOX_API_KEY }}
         USERNAME: ${{ secrets.USERNAME }}
     - run: npm coverage
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-          XBOX_API_KEY: ${{ secrets.XBOX_API_KEY }}
-          USERNAME: ${{ secrets.USERNAME }}
+      env:
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        XBOX_API_KEY: ${{ secrets.XBOX_API_KEY }}
+        USERNAME: ${{ secrets.USERNAME }}
     - name: Run codacy-coverage-reporter
       uses: codacy/codacy-coverage-reporter-action@master
       with:
