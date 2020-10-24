@@ -29,6 +29,7 @@ jobs:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         XBOX_API_KEY: ${{ secrets.XBOX_API_KEY }}
         USERNAME: ${{ secrets.USERNAME }}
+    - run: chmod -R u+x node_modules/nyc/bin
     - run: npm run coverage
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
