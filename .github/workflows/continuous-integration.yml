@@ -16,7 +16,7 @@ jobs:
         node-version: '12.x'
         registry-url: 'https://npm.pkg.github.com'
         scope: '@ekazukii'
-    - run: npm install
+    - run: npm ci
     - run: npm publish
       name: Publish package
       env:
