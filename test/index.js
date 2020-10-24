@@ -73,7 +73,7 @@ describe("Discord tests", function() {
         });
 
         describe("Wynncraft UT", function() {
-            var model = new WynncraftModel()
+            var model = new WynncraftModel();
             it("Should get user statistics", function(done) {
                 model.getUserStats({username: "zefut"}, (stats) => {
                     if(stats.mobsKilled > 1) {
@@ -114,7 +114,6 @@ describe("Discord tests", function() {
             var model = new MojangModel();
             it("Should get user statistics", function(done) {
                 model.getUUIDByUsername({username: "ekazuki"}, (uuid) => {
-                    console.log(uuid)
                     if(uuid === "091c969e-ba6d-4ada-9620-f55038f36e41") {
                         done();
                     }
