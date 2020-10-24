@@ -158,3 +158,4 @@ $RECYCLE.BIN/
 
 token.json
 credentials.json
+.codacy-coverage
