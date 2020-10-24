@@ -8,6 +8,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const LoLController = require("../controller/lol.js");
 const assert = require('assert').strict;
+const request = require("request");
 
 var lolController;
 
