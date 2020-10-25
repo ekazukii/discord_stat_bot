@@ -2,7 +2,10 @@ module.exports = function(options) {
     var dtoken = options.dicord_token;
     var xboxkey = options.xbox_key;
     var riotapi = options.riotapi;
-
+    
+    
+    const fs = require("fs");
+    const path = require("path");
     const Discord = require('discord.js');
     const client = new Discord.Client();
     const sqlite3 = require("sqlite3").verbose();
@@ -24,7 +27,11 @@ module.exports = function(options) {
 
     const mcping = require('mc-ping-updated');
 
-    let db = new sqlite3.Database("./db/servers.db", (err) => {
+    if (!fs.existsSync(path.resolve(__dirname, "/db"))){
+        fs.mkdirSync(path.resolve(__dirname, "/db"));
+    }
+
+    let db = new sqlite3.Database(path.resolve(__dirname, "/db/servers.db"), (err) => {
         if (err) {
           console.error(err.message);
         }
@@ -46,7 +53,7 @@ module.exports = function(options) {
             if(err) {
                 console.log(err)
             };
-            
+
             if(rows.length === 1) {
                 lang = rows[0].lang;
             } else {
