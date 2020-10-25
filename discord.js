@@ -31,7 +31,7 @@ module.exports = function(options) {
         fs.mkdirSync(path.join(__dirname, "/db"));
     }
 
-    let db = new sqlite3.Database(path.resolve(__dirname, "/db/servers.db"), (err) => {
+    let db = new sqlite3.Database(path.join(__dirname, "/db/servers.db"), (err) => {
         if (err) {
           console.error(err.message);
         }
