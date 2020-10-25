@@ -5,15 +5,15 @@ module.exports = class CoinflipController {
     this.client = client;
   }
 
-  command(args, callback) {
+  command(args, lang, callback) {
     if (args.length > 1) {
-      this.pickOption(args, callback)
+      this.pickOption(args, lang, callback)
     } else {
-      this.coinflip(args, callback);
+      this.coinflip(args, lang, callback);
     }
   }
 
-  coinflip(args, callback) {
+  coinflip(args, lang, callback) {
     var client = this.client;
     var view = new CoinflipView(client.user)
     var winner = getRandomInt(2);
@@ -22,18 +22,18 @@ module.exports = class CoinflipController {
       callback(embed)
     })*/
 
-    view.showCoinflip(winner, embed => {
+    view.showCoinflip(winner, lang, embed => {
       callback(embed)
     })
 
   }
 
-  pickOption(args, callback) {
+  pickOption(args, lang, callback) {
     var client = this.client;
     var view = new CoinflipView(client.user)
     var winner = getRandomInt(args.length);
 
-    view.showPickOption(args, winner, embed => {
+    view.showPickOption(args, winner, lang, embed => {
       callback(embed)
     })
   }

@@ -1,13 +1,11 @@
 const View = require("./view.js");
-const langJSON = require("./lang/en_EN.json")
-const language = langJSON.wynncraft;
-const error = langJSON.error;
 module.exports = class WynncraftView extends View {
     constructor(bot) {
         super(bot);
     }
 
-    showUserStats(stats, callback) {
+    showUserStats(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).wynncraft;
         var message = this.getEmbed()
         message.embed.title = language.statsTitle.replace("{arg1}", stats.username);
         message.embed.fields.push({
@@ -29,14 +27,14 @@ module.exports = class WynncraftView extends View {
         callback(message)
     }
 
-    printError(stats, callback) {
+    printError(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).error;
         var message = this.getEmbedError()
-        message.embed.title = error.errorTitle;
+        message.embed.title = language.errorTitle
         message.embed.fields.push({
-            name: error.errorFieldName,
-            value: error.errorFieldValue
+            name: language.errorFieldName,
+            value: language.errorFieldValue
         });
-
         callback(message);
     }
 }

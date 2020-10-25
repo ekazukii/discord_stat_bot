@@ -48,6 +48,14 @@
         "statsFieldMobsName": "Mobs killed"
     },
 
+    "lang": {
+        "langTitle": "Language changed",
+        "langFieldName": "***************************************",
+        "langFieldValue": "The new language is English (en_EN)",
+        "langUnknownTitle": "The language does not exist",
+        "langUnknownFieldName": "List of supported languages"
+    },
+
     "error": {
         "errorTitle": "Error",
         "errorFieldName": "Error during the request",

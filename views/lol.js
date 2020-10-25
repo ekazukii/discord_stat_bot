@@ -1,13 +1,11 @@
 const View = require("./view.js");
-const langJSON = require("./lang/en_EN.json")
-const language = langJSON.lol;
-const error = langJSON.error;
 module.exports = class LoLView extends View {
     constructor(bot) {
       super(bot)
     }
 
-    showUserStats(stats, callback) {
+    showUserStats(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).lol;
         var masteryString = "";
         for (let i = 0; i < stats.masteries.length; i++) {
             masteryString += language.masteryFieldValue.replace("{arg1}", stats.masteries[i].level).replace("{arg2}", stats.masteries[i].name).replace("{arg3}", stats.masteries[i].points);
@@ -50,7 +48,8 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
-    showUsersComparation(stats, callback) {
+    showUsersComparation(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).lol;
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
         var score1Total = stats.score1.reduce(reducer);
         var score2Total = stats.score2.reduce(reducer);
@@ -102,7 +101,8 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
-    showUserCS(stats, callback) {
+    showUserCS(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).lol;
         var message = this.getEmbed()
 
         message.embed.title = language.csTitle.replace("{arg1}", stats.username);
@@ -122,7 +122,8 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
-    showChampionRotation(rotation, callback) {
+    showChampionRotation(rotation, lang, callback) {
+        var language = require(`./lang/${lang}.json`).lol;
         var message = this.getEmbed()
 
         message.embed.title = language.rotationTitle;
@@ -151,12 +152,13 @@ module.exports = class LoLView extends View {
         callback(message)
     }
 
-    printError(stats, callback) {
+    printError(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).error;
         var message = this.getEmbedError()
-        message.embed.title = "Erreur"
+        message.embed.title = language.errorTitle
         message.embed.fields.push({
-            name: 'Erreur lors de la requete',
-            value: "L'utilisaeur n'a pas été trouvé"
+            name: language.errorFieldName,
+            value: language.errorFieldValue
         });
         callback(message);
     }

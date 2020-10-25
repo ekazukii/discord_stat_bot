@@ -1,12 +1,12 @@
 const View = require("./view.js");
-const language = require("./lang/fr_FR.json").coinflip;
 
 module.exports = class CoinflipView extends View {
     constructor(bot) {
         super(bot);
     }
 
-    showCoinflip(winner, callback) {
+    showCoinflip(winner, lang, callback) {
+        var language = require(`./lang/${lang}.json`).coinflip;
         var options = [language.heads, language.tails];
         var message = this.getEmbed();
         message.embed.title = language.coinflipTitle;
@@ -18,7 +18,8 @@ module.exports = class CoinflipView extends View {
         callback(message);
     }
 
-    showPickOption(options, winner, callback) {
+    showPickOption(options, winner, lang, callback) {
+        var language = require(`./lang/${lang}.json`).coinflip;
         var message = this.getEmbed();
         message.embed.title = language.pickTitle;
         message.embed.fields.push({
