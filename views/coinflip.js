@@ -1,40 +1,31 @@
 const View = require("./view.js");
+const language = require("./lang/fr_FR.json").coinflip;
+
 module.exports = class CoinflipView extends View {
-  constructor(bot) {
-    super(bot);
-  }
+    constructor(bot) {
+        super(bot);
+    }
 
-  showCoinflip(winner, callback) {
-    var options = ["Pile", "Face"];
-    var message = this.getEmbed();
-    message.embed.title = "Pile ou Face";
-    message.embed.fields.push({
-      name: "************",
-      value: "C'est " + options[winner] + " !"
-    });
+    showCoinflip(winner, callback) {
+        var options = [language.heads, language.tails];
+        var message = this.getEmbed();
+        message.embed.title = language.coinflipTitle;
+        message.embed.fields.push({
+            name: "************",
+            value: language.coinflipValue.replace("{arg1}", options[winner])
+        });
 
-    callback(message);
-  }
+        callback(message);
+    }
 
-  showPickOption(options, winner, callback) {
-    var message = this.getEmbed();
-    message.embed.title = "Pick Option";
-    message.embed.fields.push({
-      name: "Parmis : " + options.join(" , "),
-      value: "C'est " + options[winner] + " qui a été tiré"
-    });
+    showPickOption(options, winner, callback) {
+        var message = this.getEmbed();
+        message.embed.title = language.pickTitle;
+        message.embed.fields.push({
+            name: language.pickFieldName.replace("{arg1}", options.join(" , ")),
+            value: language.pickFieldValue.replace("{arg1}", options[winner])
+        });
 
-    callback(message);
-  }
-
-  printError(stats, callback) {
-    var message = this.getEmbedError()
-    message.embed.title = "Erreur";
-    message.embed.fields.push({
-      name: 'Erreur lors de la requete',
-      value: "L'utilisaeur n'a pas été trouvé, réessayez avec l'uuid"
-    });
-
-    callback(message);
-  }
+        callback(message);
+    }
 }

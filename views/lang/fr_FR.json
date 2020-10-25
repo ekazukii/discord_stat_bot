@@ -1,0 +1,24 @@
+{
+    "coinflip": {
+        "heads": "Face",
+        "tails": "Pile",
+        "coinflipTitle": "Pile ou Face",
+        "coinflipValue": "C'est {arg1} !",
+        "pickTitle": "Choisir une option",
+        "pickFieldName": "Parmis : {arg1}",
+        "pickFieldValue": "C'est {arg1} qui à été tiré"
+
+    },
+
+    "hivemc": {
+
+    },
+
+    "lol": {
+
+    },
+
+    "wynncraft": {
+
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "coinflip": {
+        "heads": "Heads",
+        "tails": "Face",
+        "coinflipTitle": "Heads or Tails",
+        "coinflipValue": "It's {arg1} !",
+        "pickTitle": "Pick an option",
+        "pickFieldName": "Among : {arg1}",
+        "pickFieldValue": "It's {arg1} who was picked"
+
+    },
+
+    "hivemc": {
+
+    },
+
+    "lol": {
+
+    },
+
+    "wynncraft": {
+
+    }
+}
