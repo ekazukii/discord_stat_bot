@@ -19,6 +19,23 @@
     },
 
     "lol": {
+        "statsTitle": "Statistiques de {arg1} Sur League of Legends",
+        "summonerFieldName": "Niveau d'invocateur",
+        "rankFieldName": "Rang solo/duo queue",
+        "masteryFieldName": "Maîtrises des champions",
+        "masteryFieldValue": "Maîtrise {arg1} : {arg2} - {arg3} points\r",
+        "lastGameName": "Dernière partie",
+        "lastGameWinValue": "Victoire avec {arg1} {arg2}/{arg3}/{arg4} - {arg5}cs/min",
+        "lastGameLooseValue": "Défaite avec {arg1} {arg2}/{arg3}/{arg4} - {arg5}cs/min",
+
+        "vsTitle": "{arg1} vs {arg2}",
+        "vsFieldTitleName": "Titres",
+        "vsFieldTitleValue": "Win points : \rKills point : \rDeath malus : \rAssists points : \rCS/min points : \rCCScore points : \rDamage points : \rTank points\r\rScore Total : ",
+
+        "csTitle": "Creep Score dans les dernières 5 game de {arg1}",
+        "csFieldName": "Creep Score par minutes",
+
+        "rotationTitle": "Rotation actuelle des champions"
 
     },
 

@@ -1,4 +1,7 @@
 const View = require("./view.js");
+const langJSON = require("./lang/en_EN.json")
+const language = langJSON.lol;
+const error = langJSON.error;
 module.exports = class LoLView extends View {
     constructor(bot) {
       super(bot)
@@ -7,35 +10,41 @@ module.exports = class LoLView extends View {
     showUserStats(stats, callback) {
         var masteryString = "";
         for (let i = 0; i < stats.masteries.length; i++) {
-            masteryString += `[${stats.masteries[i].level}] ${stats.masteries[i].name} - ${stats.masteries[i].points} points\r`;
+            masteryString += language.masteryFieldValue.replace("{arg1}", stats.masteries[i].level).replace("{arg2}", stats.masteries[i].name).replace("{arg3}", stats.masteries[i].points);
         }
 
         var gameString = "";
         if(stats.match.win === true || stats.match.win === "true") {
-            gameString += "Victoire avec ";
+            gameString = language.lastGameWinValue
+              .replace("{arg1}", stats.match.champ)
+              .replace("{arg2}", stats.match.kills)
+              .replace("{arg3}", stats.match.deaths)
+              .replace("{arg4}", stats.match.assists)
+              .replace("{arg5}", stats.match.cs);
         } else {
-            gameString += "Défaite avec ";
+            gameString = language.lastGameLooseValue
+              .replace("{arg1}", stats.match.champ)
+              .replace("{arg2}", stats.match.kills)
+              .replace("{arg3}", stats.match.deaths)
+              .replace("{arg4}", stats.match.assists)
+              .replace("{arg5}", stats.match.cs);
         }
 
-        gameString += stats.match.champ + " ";
-        gameString += stats.match.kills + "/" + stats.match.deaths + "/" + stats.match.assists + " - ";
-        gameString += stats.match.cs + "cs/min";
-
         var message = this.getEmbed()
-        message.embed.title = "Statistiques de "+ stats.username + " Sur League of Legends"
+        message.embed.title = language.statsTitle.replace("{arg1}", stats.username)
         message.embed.fields.push({
-            name: "Niveau d'invocateur",
+            name: language.summonerFieldName,
             value: stats.level,
             inline: true
         }, {
-            name: "Rank solo/duo queue",
+            name: language.rankFieldName,
             value: stats.rank,
             inline: true
         }, {
-            name: "Maîtrises des champions",
+            name: language.masteryFieldName,
             value: masteryString
         }, {
-            name: "Dernière partie",
+            name: language.lastGameName,
             value: gameString
         });
         callback(message);
@@ -46,9 +55,9 @@ module.exports = class LoLView extends View {
         var score1Total = stats.score1.reduce(reducer);
         var score2Total = stats.score2.reduce(reducer);
         var message = this.getEmbed()
-        message.embed.title = stats.user1 + " vs " + stats.user2;
+        message.embed.title = language.vsTitle.replace("{arg1}", stats.user1).replace("{arg2}", stats.user2);
 
-        var title = "Win points : \rKills point : \rDeath malus : \rAssists points : \rCS/min points : \rCCScore points : \rDamage points : \rTank points\r\rScore Total : ";
+        var title = language.vsFieldTitleValue;
         var statsString1 = ""; 
         var statsString2 = "";
 
@@ -77,7 +86,7 @@ module.exports = class LoLView extends View {
         }
 
         message.embed.fields.push({
-            name: "title",
+            name: language.vsFieldTitleName,
             value: title,
             inline: true
         }, {
@@ -96,7 +105,7 @@ module.exports = class LoLView extends View {
     showUserCS(stats, callback) {
         var message = this.getEmbed()
 
-        message.embed.title = "Creep Score dans les dernières 5 game de " + stats.username;
+        message.embed.title = language.csTitle.replace("{arg1}", stats.username);
 
         var CSString = "";
         for (let i = 0; i < stats.cs.length - 1; i++) {
@@ -106,7 +115,7 @@ module.exports = class LoLView extends View {
         CSString += stats.cs[stats.cs.length - 1]
 
         message.embed.fields.push({
-            name: "Creep Score par minutes",
+            name: language.csFieldName,
             value: CSString
         });
 
@@ -116,7 +125,7 @@ module.exports = class LoLView extends View {
     showChampionRotation(rotation, callback) {
         var message = this.getEmbed()
 
-        message.embed.title = "Rotation actuelle des champions";
+        message.embed.title = language.rotationTitle;
         var leftListString = "";
         var rightListString = "";
         var half = Math.round(rotation.length / 2);

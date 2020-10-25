@@ -19,6 +19,23 @@
     },
 
     "lol": {
+        "statsTitle": "Statistics of {arg1} on League of Legends",
+        "summonerFieldName": "Summoner level",
+        "rankFieldName": "Rank solo/duo queue",
+        "masteryFieldName": "Mastery of champions",
+        "masteryFieldValue": "Mastery {arg1} : {arg2} - {arg3} points\r",
+        "lastGameName": "Last game",
+        "lastGameWinValue": "Win with {arg1} {arg2}/{arg3}/{arg4} - {arg5}cs/min",
+        "lastGameLooseValue": "Lose with {arg1} {arg2}/{arg3}/{arg4} - {arg5}cs/min",
+
+        "vsTitle": "{arg1} vs {arg2}",
+        "vsFieldTitleName": "Titles",
+        "vsFieldTitleValue": "Win points : \rKills point : \rDeath malus : \rAssists points : \rCS/min points : \rCCScore points : \rDamage points : \rTank points\r\rTotal Score : ",
+
+        "csTitle": "Creep Score in the last 5 games of {arg1}",
+        "csFieldName": "Creep Score per minutes",
+
+        "rotationTitle": "Actual rotation of free champions"
 
     },
 
