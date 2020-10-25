@@ -1,39 +1,40 @@
 const View = require("./view.js");
 module.exports = class WynncraftView extends View {
-  constructor(bot) {
-    super(bot);
-  }
+    constructor(bot) {
+        super(bot);
+    }
 
-  showUserStats(stats, callback) {
-    var message = this.getEmbed()
-    message.embed.title = "Statistiques de "+ stats.username + " Sur Wynncraft";
-    message.embed.fields.push({
-      name: 'Type de la classe',
-      value: stats.className
-    }, {
-      name: "Level de la classe",
-      value: stats.classLevel
-    }, {
-      name: "Nombre de dongeons compltétés",
-      value: stats.completedDungeons
-    }, {
-      name: "Nombre de quêtes accomplies",
-      value: stats.completedQuests
-    }, {
-      name: "Nombre de mob tués",
-      value: stats.mobsKilled
-    });
-    callback(message)
-  }
+    showUserStats(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).wynncraft;
+        var message = this.getEmbed()
+        message.embed.title = language.statsTitle.replace("{arg1}", stats.username);
+        message.embed.fields.push({
+            name: language.statsFieldClassName,
+            value: stats.className
+            }, {
+            name: language.statsFieldLevelName,
+            value: stats.classLevel
+            }, {
+            name: language.statsFieldDungeonsName,
+            value: stats.completedDungeons
+            }, {
+            name: language.statsFieldQuestsName,
+            value: stats.completedQuests
+            }, {
+            name: language.statsFieldMobsName,
+            value: stats.mobsKilled
+        });
+        callback(message)
+    }
 
-  printError(stats, callback) {
-    var message = this.getEmbedError()
-    message.embed.title = "Erreur";
-    message.embed.fields.push({
-      name: 'Erreur lors de la requete',
-      value: "L'utilisaeur n'a pas été trouvé, réessayez avec l'uuid"
-    });
-
-    callback(message);
-  }
+    printError(stats, lang, callback) {
+        var language = require(`./lang/${lang}.json`).error;
+        var message = this.getEmbedError()
+        message.embed.title = language.errorTitle
+        message.embed.fields.push({
+            name: language.errorFieldName,
+            value: language.errorFieldValue
+        });
+        callback(message);
+    }
 }

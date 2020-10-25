@@ -135,7 +135,7 @@ describe("Discord tests", function() {
     describe("Controllers + Views UT", function() {
         describe("League of Legends UT", function() {
             it("Should get user statistics", function(done) {
-                lolController.command(["profile", "ekazukii"], (message) => {
+                lolController.command(["profile", "ekazukii"], "fr_FR", (message) => {
                     if(message.embed.title === "Statistiques de ekazukii Sur League of Legends") {
                         done();
                     }
@@ -143,7 +143,7 @@ describe("Discord tests", function() {
             });
 
             it("Should get user statistics", function(done) {
-                lolController.command(["rotation"], (message) => {
+                lolController.command(["rotation"], "fr_FR", (message) => {
                     if(message.embed.fields.length === 2) {
                         done();
                     }
@@ -151,7 +151,7 @@ describe("Discord tests", function() {
             });
 
             it("Should compare ekazukii and ObstinateM", function(done) {
-                lolController.command(["vs", "ekazukii", "ObstinateM"], (message) => {
+                lolController.command(["vs", "ekazukii", "ObstinateM"], "fr_FR", (message) => {
                     if(message.embed.title === "ekazukii vs ObstinateM") {
                         done();
                     }
@@ -160,7 +160,7 @@ describe("Discord tests", function() {
 
                 
             it("Should get user creep score over last 5 games", function(done) {
-                lolController.command(["cs", "ekazukii"], (message) => {
+                lolController.command(["cs", "ekazukii"], "fr_FR", (message) => {
                     if(message.embed.title === "Creep Score dans les dernières 5 game de ekazukii") {
                         done();
                     }
@@ -170,7 +170,7 @@ describe("Discord tests", function() {
 
         describe("Wynncraft UT", function() {
             it("Should get user statistics", function(done) {
-                wynncraftController.command(["zefut"], (message) => {
+                wynncraftController.command(["zefut"], "fr_FR", (message) => {
                     if(message.embed.title === "Statistiques de zefut Sur Wynncraft") {
                         done();
                     }
@@ -178,7 +178,7 @@ describe("Discord tests", function() {
             });
 
             it("Should not found the user", function(done) {
-                wynncraftController.command(["IDONTEXISTONWYNNCRAFT778455"], (message) => {
+                wynncraftController.command(["IDONTEXISTONWYNNCRAFT778455"], "fr_FR", (message) => {
                     if(message.embed.title === "Erreur") {
                         done();
                     }
@@ -188,7 +188,7 @@ describe("Discord tests", function() {
 
         describe("HiveMC UT", function() {
             it("Should get user statistics", function(done) {
-                hivemcController.command(["Logorrheique"], (message) => {
+                hivemcController.command(["Logorrheique"], "fr_FR", (message) => {
                     if(message.embed.title === "Statistiques de Logorrheique Sur HiveMC") {
                         done();
                     }
@@ -196,7 +196,7 @@ describe("Discord tests", function() {
             });
 
             it("Should not found the user", function(done) {
-                hivemcController.command(["IDONTEXISTONHIVEMC778455"], (message) => {
+                hivemcController.command(["IDONTEXISTONHIVEMC778455"], "fr_FR", (message) => {
                     if(message.embed.title === "Erreur") {
                         done();
                     }
@@ -206,7 +206,7 @@ describe("Discord tests", function() {
 
         describe("Coinflip UT", function() {
             it("Should launch a coin flip", function(done) {
-                coinflipController.command([], (message) => {
+                coinflipController.command([], "fr_FR", (message) => {
                     if(message.embed.title === "Pile ou Face") {
                         done();
                     }
@@ -214,8 +214,8 @@ describe("Discord tests", function() {
             });
 
             it("Should pick an option", function(done) {
-                coinflipController.command(["option1", "option2"], (message) => {
-                    if(message.embed.title === "Pick Option") {
+                coinflipController.command(["option1", "option2"], "fr_FR", (message) => {
+                    if(message.embed.title === "Choisir une option") {
                         done();
                     }
                 });
