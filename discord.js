@@ -27,8 +27,8 @@ module.exports = function(options) {
 
     const mcping = require('mc-ping-updated');
 
-    if (!fs.existsSync(path.resolve(__dirname, "/db"))){
-        fs.mkdirSync(path.resolve(__dirname, "/db"));
+    if (!fs.existsSync(path.join(__dirname, "/db"))){
+        fs.mkdirSync(path.join(__dirname, "/db"));
     }
 
     let db = new sqlite3.Database(path.resolve(__dirname, "/db/servers.db"), (err) => {
