@@ -11,7 +11,11 @@
     },
 
     "hivemc": {
-
+        "statsTitle": "Statistics of {arg1} on HiveMC",
+        "statsHideAndSeek": "Number of victories in Hide and Seek",
+        "statsGravity": "Number of victories in Gravity",
+        "statsBlockparty": "Number of victories in BlockParty",
+        "statsDeathrun": "Number of victories in DeathRun"
     },
 
     "lol": {
@@ -20,5 +24,11 @@
 
     "wynncraft": {
 
+    },
+
+    "error": {
+        "errorTitle": "Error",
+        "errorFieldName": "Error during the request",
+        "errorFieldValue": "User was not found"
     }
 }
