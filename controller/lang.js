@@ -17,11 +17,11 @@ module.exports = class HivemcController {
         this.model.changeLang(newLang, sid, function(err) {
             if(err) {
                 self.view.langNotExist(err, lang, function(embed) {
-                    callback(embed)
+                    callback(embed);
                 });
             } else {
                 self.view.showChangeLang(newLang, function(embed) {
-                    callback(embed)
+                    callback(embed);
                 });
             }
 

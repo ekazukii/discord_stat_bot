@@ -6,9 +6,8 @@ module.exports = class WynncraftModel {
 
     changeLang(lang, sid, callback) {
         if(this.langList.includes(lang)) {
-            console.log("run model")
             this.db.run("UPDATE servers SET lang = ? WHERE sid = ?", lang, sid);
-            callback()
+            callback();
         } else {
             callback({listLang: this.langList});
         }

@@ -5,7 +5,7 @@ module.exports = function(options) {
 
     const Discord = require('discord.js');
     const client = new Discord.Client();
-    const sqlite3 = require('sqlite3').verbose();
+    const sqlite3 = require("sqlite3").verbose();
 
     const WynncraftController = require("./controller/wynncraft.js");
     var wynncraftController = new WynncraftController(client);
@@ -24,12 +24,12 @@ module.exports = function(options) {
 
     const mcping = require('mc-ping-updated');
 
-    let db = new sqlite3.Database('./db/servers.db', (err) => {
+    let db = new sqlite3.Database("./db/servers.db", (err) => {
         if (err) {
           console.error(err.message);
         }
         db.run("CREATE TABLE IF NOT EXISTS servers (sid text PRIMARY KEY, lang text NOT NULL);");
-        console.log('Connected to the servers database.');
+        console.log("Connected to the servers database.");
         client.login(dtoken)
     });
 
@@ -43,7 +43,10 @@ module.exports = function(options) {
     client.on('message', rawMessage => {
         var lang = "en_EN";
         db.all("SELECT lang FROM servers WHERE sid = ?", rawMessage.channel.guild.id, function(err, rows) {
-            if(err) console.log(err);
+            if(err) {
+                console.log(err)
+            };
+            
             if(rows.length === 1) {
                 lang = rows[0].lang;
             } else {
