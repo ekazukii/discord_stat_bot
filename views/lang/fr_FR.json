@@ -40,7 +40,12 @@
     },
 
     "wynncraft": {
-
+        "statsTitle": "Statistiques de {arg1} Sur Wynncraft",
+        "statsFieldClassName": "Type de la classe",
+        "statsFieldLevelName": "Level de la classe",
+        "statsFieldDungeonsName": "Nombre de dongeons compltétés",
+        "statsFieldQuestsName": "Nombre de quêtes accomplies",
+        "statsFieldMobsName": "Nombre de mob tués"
     },
 
     "error": {
