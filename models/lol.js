@@ -1,7 +1,12 @@
 "use strict";
 const request = require('request');
 
-module.exports = class LoLModel {
+/** Model of League of Legends commands */
+class LoLModel {
+    /**
+     * Fetch champion.json file and cache it.
+     * @param {String} apikey - Riot api keys see {@link https://developer.riotgames.com/docs/portal#product-registration_application-process|riot appication process}
+     */
     constructor(apikey) {
         this.apikey = apikey;
 
@@ -12,6 +17,12 @@ module.exports = class LoLModel {
         });
     }
 
+    /**
+     * Fetch user statistics of player
+     * @param {Object} options
+     * @param {string} options.username - Summoner's username
+     * @param {function(Object)} callback  - Callback statistics, list of stats : {@link LoLView#showUserStats}
+     */
     getUserStats(options, callback) {
         var self = this;
         var username = options.username;
@@ -71,6 +82,13 @@ module.exports = class LoLModel {
         });
     }
 
+    /**
+     * Fetch statistics about last 5 games of the two players
+     * @param {Object} options 
+     * @param {string} options.user1 - First summoner's username
+     * @param {string} options.user2 - Second summoner's username
+     * @param {function(Object)} callback  - Callback statistics to controller, list of stats : {@link ScoreArray}
+     */
     comparePlayers(options, callback) {
         var user1 = options.user1;
         var user2 = options.user2;
@@ -134,6 +152,12 @@ module.exports = class LoLModel {
         // Calculate score
     }
 
+    /**
+     * Fetch creep score over last 5 games of the player
+     * @param {Object} options
+     * @param {string} options.username - Summoner's username
+     * @param {function(Object)} callback  - Callback statistics to controller
+     */
     getUserCS(options, callback) {
         var self = this;
         var username = options.username;
@@ -170,6 +194,11 @@ module.exports = class LoLModel {
         });
     }
 
+    /**
+     * Fetch current free champions.
+     * @param {function(Object)} callback  - Callback statistics to controller
+     * @private
+     */
     getChampionRotation(callback) {
         var champList = [];
         var self = this;
@@ -183,6 +212,12 @@ module.exports = class LoLModel {
         });
     }
 
+    /**
+     * Connvert championId to the english champion name
+     * @param {number} champId - {@link https://riot-api-libraries.readthedocs.io/en/latest/ddragon.html|see ddragon wiki} 
+     * @returns {string} english name of the champion
+     * @private
+     */
     getChampName(champId) {
         for (const key in this.champJSON.data) {
             if(this.champJSON.data[key].key == champId) {
@@ -192,6 +227,12 @@ module.exports = class LoLModel {
         return "NOTACHAMP"
     }
 
+    /**
+     * Fetch account information by his username
+     * @param {string} username 
+     * @param {function(Object)} callback - Callback summoners account information
+     * @private
+     */
     getSummonerByName(username, callback) {
         request(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}/?api_key=${this.apikey}`, {json: true}, (err, res, body) => {
             if (err) { return console.log(err); }
@@ -199,13 +240,27 @@ module.exports = class LoLModel {
         });
     }
     
-    getMatchlist(accountId, endIndex, callback) {
-        request(`https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${this.apikey}&endIndex=${endIndex}`, { json: true }, (err, res, body) => {
+    /**
+     * Fatch the last n match of the player
+     * @param {string} accountId - account id of the player
+     * @param {number} number - Number of match to fetch
+     * @param {function(Object)} callback - Callback the matchlist object.
+     * @private
+     */
+    getMatchlist(accountId, number, callback) {
+        request(`https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${this.apikey}&endIndex=${number}`, { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }
             callback(body);
         });
     }
 
+    /**
+     * Fetch the last n "classic" match of the player. Classic matchs contains 5v5 Blind, 5v5 Normal Draft, Solo/Duo queue ranked, 5v5 Flex Ranked
+     * @param {string} accountId - account id of the player
+     * @param {number} number - Number of match to fetch
+     * @param {function(Object)} callback - Callback the matchlist object.
+     * @private
+     */
     getClassicMatchlist(accountId, number, callback) {
         var matchlist = [];
         this.getMatchlist(accountId, number*5, (body) => {
@@ -222,6 +277,13 @@ module.exports = class LoLModel {
         })
     }
 
+    /**
+     * Calculate the score of the player in the match by his statistics. Following our custom {@link https://github.com/ekazukii/discord_stat_bot/issues/6|score formula}
+     * @param {Object} match - {@link https://developer.riotgames.com/apis#match-v4/GET_getMatch|Match object}
+     * @param {string} accountId - Account id of the player
+     * @returns {number} Score of the player on the match.
+     * @private
+     */
     getMatchScore(match, accountId) {
         var pid = this.getParticipantId(match, accountId);
         var participant = this.getParticipant(match, pid);
@@ -251,6 +313,12 @@ module.exports = class LoLModel {
         return score;
     }
 
+    /**
+     * Get match information suchs as player stats list of pick/ban by the match identifier
+     * @param {number} gameId - Match unique id
+     * @param {function(Object)} callback - Callback {@link https://developer.riotgames.com/apis#match-v4/GET_getMatch|Match object}
+     * @private
+     */
     getMatchInfo(gameId, callback) {
         request(`https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${this.apikey}`, { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }
@@ -258,6 +326,13 @@ module.exports = class LoLModel {
         });
     }
 
+    /**
+     * Get the id (it can be : 1,2,3,...,9,10) of a participant in the game
+     * @param {Object} game - {@link https://developer.riotgames.com/apis#match-v4/GET_getMatch|Match object}
+     * @param {string} accountId - Account id of the player
+     * @returns {number} Id of the player in the match.
+     * @private
+     */
     getParticipantId(game, accountId) {
         for (let i = 0; i < game.participantIdentities.length; i++) {
             const element = game.participantIdentities[i];
@@ -267,6 +342,13 @@ module.exports = class LoLModel {
         }
     }
 
+    /**
+     * Get the participant object from the participantId
+     * @param {Object} game - {@link https://developer.riotgames.com/apis#match-v4/GET_getMatch|Match object}
+     * @param {number} participantId - {@link LoLModel#getParticipantId}
+     * @returns {Object} Player Object in the match 
+     * @private
+     */
     getParticipant(game, participantId) {
         for (let i = 0; i < game.participants.length; i++) {
             const player = game.participants[i];
@@ -276,6 +358,12 @@ module.exports = class LoLModel {
         }
     }
 
+    /**
+     * Get team of participant
+     * @param {Object} game - {@link https://developer.riotgames.com/apis#match-v4/GET_getMatch|Match object}
+     * @param {Object} participant - {@link LoLModel#getParticipant}
+     * @private
+     */
     getTeam(game, participant) {
         for (let i = 0; i < game.teams.length; i++) {
             const element = game.teams[i];
@@ -285,7 +373,16 @@ module.exports = class LoLModel {
         }
     }
 
+    /**
+     * Get CS/min of the player in a match (CS/min is rounded after one decimal (example -> 7,6))
+     * @param {Object} stats - Stats object of a participant {@link LoLModel#getParticipant} 
+     * @param {number} gameDuration - Duration of the match in seconds
+     * @returns {number} Creep Score per minutes.
+     * @private
+     */
     getCSPerMinutes(stats, gameDuration) {
         return Math.round( (stats.totalMinionsKilled + stats.neutralMinionsKilledTeamJungle + stats.neutralMinionsKilledEnemyJungle) / (gameDuration / 60) * 10) / 10;
     }
 }
+
+module.exports = LoLModel;

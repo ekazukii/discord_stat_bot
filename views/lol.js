@@ -1,9 +1,36 @@
 const View = require("./view.js");
-module.exports = class LoLView extends View {
+/**
+ * View of League of Legends commands
+ * @extends View
+ */
+class LoLView extends View {
+    /**
+     * @param {DiscordUser} bot - User property of bot instance
+     */
     constructor(bot) {
       super(bot)
     }
 
+    /**
+     * Callback an {@link Embed} message with user statistics
+     * @param {Object} stats - Statistics of the player in one object
+     * @param {string} stats.username - Username of the player
+     * @param {Array} stats.masteries - List of champ mastery
+     * @param {Object} stats.masteries[].level - Level of mastery
+     * @param {Object} stats.masteries[].name - Name of the champion
+     * @param {Object} stats.masteries[].points - Mastery points w/ this champ
+     * @param {Object} stats.match - Stats about last match
+     * @param {boolean} stats.match.win - True if player has win
+     * @param {string} stats.match.champ - Champion of the player
+     * @param {number} stats.match.kills - Number of kills
+     * @param {number} stats.match.deaths - Number of deaths
+     * @param {number} stats.match.assists - Number of assists
+     * @param {number} stats.match.cs - Creep score per minutes
+     * @param {number} stats.level - Summoner's level
+     * @param {string} stats.rank - Summoner's rank
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback
+     */
     showUserStats(stats, lang, callback) {
         var language = require(`./lang/${lang}.json`).lol;
         var masteryString = "";
@@ -48,6 +75,31 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
+    /**
+     * {@link https://github.com/ekazukii/discord_stat_bot/issues/6}
+     * @typedef ScoreArray
+     * @type {Array}
+     * @property {number} 0 - Wins points
+     * @property {number} 1 - Kills points
+     * @property {number} 2 - Death malus
+     * @property {number} 3 - Assists points
+     * @property {number} 4 - CS/min points
+     * @property {number} 5 - Crowd Control points
+     * @property {number} 6 - Damage points
+     * @property {number} 7 - Tank points
+     */
+
+
+    /**
+     * Callback an {@link Embed} message with user comparison
+     * @param {Object} stats - Statistics of the players in one object
+     * @param {ScoreArray} stats.score1 - Statistics of first player
+     * @param {string} stats.user1 - Username of the first player
+     * @param {ScoreArray} stats.score2 - Statistics of second player
+     * @param {string} stats.user2 - Username of the second player
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback
+     */
     showUsersComparation(stats, lang, callback) {
         var language = require(`./lang/${lang}.json`).lol;
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
@@ -101,6 +153,14 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
+    /**
+     * Callback an {@link Embed} message with cs/min over last 5 games of players
+     * @param {Object} stats - Statistics of the players in one object
+     * @param {string} stats.username - Username of the player
+     * @param {number[]} stats.cs - Array of creep score per minutes
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback
+     */
     showUserCS(stats, lang, callback) {
         var language = require(`./lang/${lang}.json`).lol;
         var message = this.getEmbed()
@@ -122,6 +182,12 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 
+    /**
+     * Callback an {@link Embed} message with the actual free champs
+     * @param {string[]} rotation - Array of champion (by name not id)  
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback
+     */
     showChampionRotation(rotation, lang, callback) {
         var language = require(`./lang/${lang}.json`).lol;
         var message = this.getEmbed()
@@ -152,6 +218,13 @@ module.exports = class LoLView extends View {
         callback(message)
     }
 
+    /**
+     * Callback an {@link Embed} message with user not found error
+     * @param {Object} err - Error information 
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     * @todo Handle rate exceeded error
+     */
     printError(stats, lang, callback) {
         var language = require(`./lang/${lang}.json`).error;
         var message = this.getEmbedError()
@@ -163,3 +236,5 @@ module.exports = class LoLView extends View {
         callback(message);
     }
 }
+
+module.exports = LoLView;
