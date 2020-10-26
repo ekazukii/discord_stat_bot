@@ -161,3 +161,5 @@ credentials.json
 .codacy-coverage
 
 db
+
+out/
