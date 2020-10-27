@@ -20,7 +20,7 @@ class CoinflipController {
         if (args.length > 1) {
             this.pickOption(args, lang, callback)
         } else {
-            this.coinflip(args, lang, callback);
+            this.coinflip(lang, callback);
         }
     }
 
