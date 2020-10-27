@@ -1,17 +1,16 @@
 "use strict";
 const request = require('request');
 
-module.exports = class WynncraftModel {
-    constructor() {
-
-    }
+/** Model for Wynncraft command */
+class WynncraftModel {
+    
+    constructor() {}
 
     /**
-     * Get statistics of given user
-     * @params {Object} options - Query options
-     * @params {number} [options.class=0]  - Choosed class ordered by level descending (0 is highest level class)
-     * @params {string} [option.uuid] - UUID of user
-     * @params {string} [option.username] - username of user
+     * Fetch statistics of the main character of the player
+     * @param {Object} options
+     * @param {string} options.username - Minecraft username of the player
+     * @param {messageCallback} callback - Callback statistics, list of stats {@link WynncraftView#showUserStats}
      */
     getUserStats(options, callback) {
         var username = options.username;
@@ -36,3 +35,5 @@ module.exports = class WynncraftModel {
         });
     }
 }
+
+module.exports = WynncraftModel;
