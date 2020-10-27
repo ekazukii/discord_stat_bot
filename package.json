@@ -6,10 +6,11 @@
   "scripts": {
     "test": "nyc --reporter=html mocha ./test/index.js --exit --timeout 10000",
     "coverage": "nyc --reporter=lcovonly mocha ./test/index.js --exit --timeout 10000",
-    "dev": "node test/dev.js"
+    "dev": "node test/dev.js",
+    "jsdoc": "jsdoc -c jsdocconf.json --readme README.md -p"
   },
   "author": "ekazuki",
-  "license": "ISC",
+  "license": "CC-BY-NC-SA-4.0",
   "dependencies": {
     "discord.js": "^12.3.1",
     "express": "^4.17.1",
