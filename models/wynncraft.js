@@ -10,7 +10,7 @@ class WynncraftModel {
      * Fetch statistics of the main character of the player
      * @param {Object} options
      * @param {string} options.username - Minecraft username of the player
-     * @param {messageCallback} callback - Callback statistics, list of stats {@link WynncraftView#showUserStats}
+     * @param {function(Object)} callback  - Callback statistics to controller, list of stats {@link WynncraftView#showUserStats}
      */
     getUserStats(options, callback) {
         var username = options.username;

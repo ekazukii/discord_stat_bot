@@ -9,7 +9,7 @@ class HivemcModel {
      * Fetch numbers of wins (in hide&seek, gravity, blockparty and deathrun) of the player
      * @param {Object} options
      * @param {string} options.username - Minecraft username of the player
-     * @param {messageCallback} callback - Callback statistics, list of stats {@link HivemcView#showUserStats}
+     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link HivemcView#showUserStats}
      * @todo Rebuild this method with maybe promises and make request async
      */
     getUserStats(options, callback) {
