@@ -1,7 +1,7 @@
 {
     "coinflip": {
         "heads": "Heads",
-        "tails": "Face",
+        "tails": "Tails",
         "coinflipTitle": "Heads or Tails",
         "coinflipValue": "It's {arg1} !",
         "pickTitle": "Pick an option",

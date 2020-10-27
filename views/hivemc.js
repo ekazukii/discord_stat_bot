@@ -1,9 +1,27 @@
 const View = require("./view.js");
-module.exports = class HivemcView extends View {
+/**
+ * View of Hivemc command
+ * @extends View
+ */
+class HivemcView extends View {
+
+    /**
+     * @param {DiscordUser} bot - User property of bot instance
+     */
     constructor(bot) {
         super(bot)
     }
 
+    /**
+     * Callback an {@link Embed} message with user statistics
+     * @param {Object} stats 
+     * @param {number} stats.hide - Number of hide and seek win
+     * @param {number} stats.grav - Number of gravity win
+     * @param {number} stats.blockparty - Number of blockparty win
+     * @param {number} stats.deathrun - Number of deathrun win
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     */
     showUserStats(stats, lang, callback) {
         var language = require(`./lang/${lang}.json`).hivemc;
         var message = this.getEmbed()
@@ -24,7 +42,14 @@ module.exports = class HivemcView extends View {
         callback(message);
     }
 
-    printError(stats, lang, callback) {
+    /**
+     * Callback an {@link Embed} message with user not found error
+     * @param {Object} err - Error information 
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     * @todo Handle rate exceeded error
+     */
+    printError(err, lang, callback) {
         var language = require(`./lang/${lang}.json`).error;
         var message = this.getEmbedError()
         message.embed.title = language.errorTitle
@@ -35,3 +60,5 @@ module.exports = class HivemcView extends View {
         callback(message);
     }
 }
+
+module.exports = HivemcView;

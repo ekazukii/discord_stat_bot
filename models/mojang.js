@@ -1,8 +1,15 @@
 const request = require('request');
 
-module.exports = class Mojang {
+/** Model of Mojang request */
+class MojangModel {
     constructor() {}
 
+    /**
+     * get trimmed UUID of player by his minecraft username
+     * @param {Object} options
+     * @param {string} options.username - Minecraft username of the player 
+     * @param {function(string)} callback - Callback the UUID 
+     */
     getUUIDByUsername(options, callback) {
         var username = options.username
         request('https://api.mojang.com/users/profiles/minecraft/'+username, { json: true }, (err, res, body) => {
@@ -19,3 +26,5 @@ module.exports = class Mojang {
         });
     }
 }
+
+module.exports = MojangModel;

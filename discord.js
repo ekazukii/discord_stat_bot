@@ -107,3 +107,37 @@ module.exports = function(options) {
     }, 3000);  
 };
 
+// TYPEDEF OF JSDOCS
+
+/**
+ * @typedef {Object} DiscordUser - {@link https://discord.js.org/#/docs/main/stable/class/Client|Discord.js Client} of the discord bot.
+ * @property {string} username - The display name of the discord bot
+ * @property {function():string} displayAvatarURL - URL of the profile picture of the bot
+ */
+
+/**
+ * @typedef {Object} DiscordClient - {@link https://discord.js.org/#/docs/main/stable/class/Client|Discord.js Client} of the discord bot.
+ * @property {DiscordUser} user
+ */
+
+/**
+ * @typedef {Object} Embed
+ * @property {number} color - rgb color in decimal value {@link https://convertingcolors.com/decimal-color-16744576.html|online converter}
+ * @property {{name: string, icon_url: string}} author - "Header" of the message.
+ * @property {string} url - URL of the link in title
+ * @property {Array.<{name: string, value: string}>} fields - Fields are like content of discord embed
+ * @property {Date} timestamp - Time at the bot of the message
+ * @property {{text: string}} footer - Footer of the message
+ */
+
+ /**
+ * @typedef {Object} DiscordMessage
+ * @property {Embed} embed
+ */
+
+/**
+ * Callback passed through all the steps (Given to the Controller, then to the View which will return an Embed)
+ * @callback messageCallback
+ * @param {Embed} embed
+ */
+

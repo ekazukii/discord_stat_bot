@@ -1,0 +1,9 @@
+{
+    "all": true,
+    "exclude": [
+        "docs/**",
+        "coverage/**",
+        "node_modules/**",
+        "test/**"
+    ]
+}

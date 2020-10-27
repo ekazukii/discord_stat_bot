@@ -1,9 +1,24 @@
-module.exports = class View {
+/** 
+ * Abstract class for Views of different games
+ * @abstract
+ */
+class View {
+  /**
+   * 
+   * @param {DiscordUser} bot 
+   */
   constructor(bot) {
     this.bot = bot
   }
 
+  /**
+   * Template function for getting basic Embed
+   * @returns {DiscordMessage}
+   */
   getEmbed() {
+    /**
+     * @type {{embed: Embed}}
+     */
     var message = {
       embed: {
         color: 344703,
@@ -15,7 +30,6 @@ module.exports = class View {
         fields: [],
         timestamp: new Date(),
         footer: {
-          icon_url: this.bot.avatarURL,
           text: "Stats Bot"
         }
       }
@@ -23,6 +37,10 @@ module.exports = class View {
     return message;
   }
 
+  /**
+   * Template function for getting errors Embed
+   * @returns {DiscordMessage}
+   */
   getEmbedError() {
     var message = {
       embed: {
@@ -36,7 +54,6 @@ module.exports = class View {
         fields: [],
         timestamp: new Date(),
         footer: {
-          icon_url: this.bot.avatarURL,
           text: "Stats Bot"
         }
       }
@@ -44,3 +61,5 @@ module.exports = class View {
     return message;
   }
 }
+
+module.exports = View;
