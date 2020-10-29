@@ -249,6 +249,15 @@ describe("Discord tests", function() {
                     }
                 });
             });
+
+            it("Should not change the language of a server", function(done) {
+                langController.command(["pirate_PIRATE"], "fr_FR", 767375276849233941, (message) => {
+                    console.log(message.embed.title)
+                    if(message.embed.title === "La langue n'existe pas") {
+                        done();
+                    }
+                });
+            });
         }); 
 
         describe("Help UT", function() {
