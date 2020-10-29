@@ -1,3 +1,5 @@
+const HelpController = require("./controller/help.js");
+
 module.exports = function(options) {
     var dtoken = options.dicord_token;
     var xboxkey = options.xbox_key;
@@ -14,8 +16,9 @@ module.exports = function(options) {
     const CoinflipController = require("./controller/coinflip.js");
     const LoLController = require("./controller/lol.js");
     const LangController = require("./controller/lang.js");
+    const HelpController = require("./controller/help.js");
     
-    var langController, lolController, coinflipController, hivemcController, wynncraftController;
+    var langController, lolController, coinflipController, hivemcController, wynncraftController, helpController;
 
     if (!fs.existsSync(path.join(__dirname, "/db"))){
         fs.mkdirSync(path.join(__dirname, "/db"));
@@ -39,6 +42,7 @@ module.exports = function(options) {
         coinflipController = new CoinflipController(client);
         hivemcController = new HivemcController(client);
         wynncraftController = new WynncraftController(client);
+        helpController = new HelpController(client);
     });
 
     client.on('message', userMessage => {
@@ -89,6 +93,11 @@ module.exports = function(options) {
                         langController.command(args, lang, userMessage.channel.guild.id, (embed) => {
                             userMessage.channel.send(embed);
                         })
+                        break;
+                    case "$help":
+                        helpController.command(args, lang,  (embed) => {
+                            userMessage.channel.send(embed);
+                        });
                     default:
                         break;
                 }

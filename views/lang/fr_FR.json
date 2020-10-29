@@ -56,6 +56,11 @@
         "langUnknownFieldName": "Liste des langues supportées"
     },
 
+    "help": {
+        "helpTitle": "Commande d'aide",
+        "helpName": "Allez regarder la liste des commandes"
+    },
+
     "error": {
         "errorTitle": "Erreur",
         "errorFieldName": "Erreur lors de la requete",
