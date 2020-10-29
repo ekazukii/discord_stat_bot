@@ -17,3 +17,11 @@ A complete list of command is available on the new [website](https://ekazuki.fr/
 ## Invite the bot on your server
 
 To add the bot on your discord server just go to [this link](https://discord.com/oauth2/authorize?client_id=690194879950749794&permissions=8&redirect_uri=https%3A%2F%2Fekazuki.fr%2Fdiscord%2F&scope=bot)
+
+## Feature Request or Bug Report
+
+If you want a new feature on the bot, feel free to create a new GitHub issue. You can ask for new commands of an existing game, or adding a new game on the bot (in this case please list what could be the most important stats).
+
+## Contribute
+
+If you want to contribute to the project, by adding some translation, adding compatibility from your favorite game check the [Contribution Guide](https://github.com/ekazukii/discord_stat_bot/blob/master/.github/CONTRIBUTING.md)
