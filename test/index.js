@@ -3,6 +3,7 @@ require('dotenv').config();
 var dtoken = process.env.DISCORD_TOKEN;
 var xboxkey = process.env.XBOX_API_KEY;
 var riotapi = process.env.RIOT_API;
+var hypixelapi = process.env.HYPIXEL_API;
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -17,14 +18,15 @@ const WynncraftController = require("../controller/wynncraft.js");
 const HivemcController = require("../controller/hivemc.js");
 const CoinflipController = require("../controller/coinflip.js");
 const HelpController = require("../controller/help.js");
-const LangController = require("../controller/lang.js")
+const LangController = require("../controller/lang.js");
+const HypixelController = require("../controller/hypixel.js")
 
 const WynncraftModel = require("../models/wynncraft.js");
 const LoLModel = require("../models/lol.js");
 const HivemcModel = require("../models/hivemc.js");
 const MojangModel = require("../models/mojang.js");
 
-var lolController, wynncraftController, hivemcController, coinflipController, helpController, langController;
+var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, helpController, langController;
 
 describe("Discord tests", function() {
     
@@ -47,6 +49,7 @@ describe("Discord tests", function() {
             wynncraftController = new WynncraftController(client);
             hivemcController = new HivemcController(client);
             coinflipController = new CoinflipController(client);
+            hypixelController = new HypixelController(client, hypixelapi)
             helpController = new HelpController(client);
             langController = new LangController(client, db);
             done();
@@ -131,7 +134,7 @@ describe("Discord tests", function() {
 
         describe("Mojang UT", function() {
             var model = new MojangModel();
-            it("Should get user statistics", function(done) {
+            it("Should get user UUID", function(done) {
                 model.getUUIDByUsername({username: "ekazuki"}, (uuid) => {
                     if(uuid === "091c969e-ba6d-4ada-9620-f55038f36e41") {
                         done();
@@ -139,7 +142,7 @@ describe("Discord tests", function() {
                 });
             });
 
-            it("Should not found the user", function(done) {
+            it("Should not found the user  UUID", function(done) {
                 model.getUUIDByUsername({username: "MOJANGCIDONTEXIST444552DJJDHDGZ"}, (stats) => {
                     if(stats.error) {
                         done();
@@ -216,6 +219,24 @@ describe("Discord tests", function() {
 
             it("Should not found the user", function(done) {
                 hivemcController.command(["IDONTEXISTONHIVEMC778455"], "fr_FR", (message) => {
+                    if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                });
+            });
+        });
+
+        describe("Hypixel UT", function() {
+            it("Should get user statistics", function(done) {
+                hypixelController.command(["ekazuki"], "fr_FR", (message) => {
+                    if(message.embed.title === "Statistiques de ekazuki Sur Hypixel") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not found the user", function(done) {
+                hypixelController.command(["IDONTEXISTONHIVEMC778455"], "fr_FR", (message) => {
                     if(message.embed.title === "Erreur") {
                         done();
                     }

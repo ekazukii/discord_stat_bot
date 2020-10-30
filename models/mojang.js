@@ -14,7 +14,7 @@ class MojangModel {
         var username = options.username
         request('https://api.mojang.com/users/profiles/minecraft/'+username, { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }
-            if(typeof body.id !== "undefined") {
+            if(typeof body !== "undefined" && typeof body.id !== "undefined") {
                 var id = body.id.substr(0,8) + "-" + body.id.substr(8,4) + "-" + body.id.substr(12,4) + "-" + body.id.substr(16,4) + "-" + body.id.substr(20)
                 callback(id);
             } else {
