@@ -4,6 +4,10 @@ const Mojang = require("./mojang.js");
 /** Model for Hypixel command */
 class HypixelModel {
 
+    /**
+     * Instantiate the Mojang model (usernameToUUID) and save api_key
+     * @param {string} api_key - Hypixel API key
+     */
     constructor(api_key) {
         this.api_key = api_key;
         this.mojang = new Mojang();
@@ -11,10 +15,10 @@ class HypixelModel {
 
 
     /**
-     * Fetch numbers of wins (FILL THIS) of the player
+     * Fetch information about the user
      * @param {Object} options
      * @param {string} options.username - Minecraft username of the player
-     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link HivemcView#showUserStats}
+     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link HypixelView#showUserStats}
      */
     getUserStats(options, callback) {
         var response = {}

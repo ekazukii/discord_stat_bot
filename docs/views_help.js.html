@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/hivemc.js</title>
+    <title>JSDoc: Source: views/help.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/hivemc.js</h1>
+    <h1 class="page-title">Source: views/help.js</h1>
 
     
 
@@ -26,50 +26,35 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const request = require('request');
+            <pre class="prettyprint source linenums"><code>const View = require("./view.js");
 
-/** Model for Hivemc command */
-class HivemcModel {
-
-    constructor() {}
+/**
+ * View of Help command
+ * @extends View
+ */
+class HelpView extends View {
 
     /**
-     * Fetch numbers of wins (in hide&amp;seek, gravity, blockparty and deathrun) of the player
-     * @param {Object} options
-     * @param {string} options.username - Minecraft username of the player
-     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link HivemcView#showUserStats}
-     * @todo Rebuild this method with maybe promises and make request async
+     * @param {DiscordUser} bot - User property of bot instance
      */
-    getUserStats(options, callback) {
-        var username = options.username;
-        var response = {}
-        request('http://api.hivemc.com/v1/player/'+username+'/HIDE', { json: true }, (err1, res1, body1) => {
-            if (err1) { return console.log(err1); }
-            if (typeof body1.code === 'undefined') {
-                response.hide = res1.body.victories
-                request('http://api.hivemc.com/v1/player/'+username+'/GRAV', { json: true }, (err2, res2, body2) => {
-                    if (err2) { return console.log(err2); }
-                    response.grav = body2.victories
-                    request('http://api.hivemc.com/v1/player/'+username+'/BP', { json: true }, (err3, res3, body3) => {
-                        if (err3) { return console.log(err3); }
-                        response.blockparty = body3.victories
-                        request('http://api.hivemc.com/v1/player/'+username+'/DR', { json: true }, (err4, res4, body4) => {
-                            if (err4) { return console.log(err4); }
-                            response.deathrun = body4.victories
-                            callback(response);
-                        });
-                    });
-                });
-            } else {
-                response.error = true;
-                response.error_desc = "user not found";
-                callback(response);
-            }
-        });
+    constructor(bot) {
+        super(bot)
     }
+
+    showHelp(lang, callback) {
+        var language = require(`./lang/${lang}.json`).help;
+        var message = this.getEmbed()
+        message.embed.title = language.helpTitle;
+        message.embed.fields.push({
+            name: language.helpName,
+            value: "https://ekazuki.fr/discord#commands"
+        });
+        callback(message);
+    }
+
 }
 
-module.exports = HivemcModel;
+module.exports = HelpView;
 </code></pre>
         </article>
     </section>
