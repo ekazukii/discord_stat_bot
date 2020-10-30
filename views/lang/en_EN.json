@@ -20,9 +20,9 @@
 
     "hypixel": {
         "statsTitle": "Statistics of {arg1} on Hypixel",
-        "statsSkyWars": "Number of victories in SkyWars",
-        "statsBuildBattle": "Number of victories in BuildBattle",
-        "statsBedWars": "Number of victories in BedWars",
+        "listGamesName": "List of games",
+        "listGamesValue": "SkyWars : \rBuildBattle : \rUHC : \rSpeedUHC : \rBedWars :",
+        "numberVictories": "Numbers of victories",
         "guildTitle": "Guild",
         "noGuild": "not in a guild",
         "rankTitle": "Rank",
