@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: LangView</title>
+    <title>JSDoc: Class: HypixelController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: LangView</h1>
+    <h1 class="page-title">Class: HypixelController</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>LangView<span class="signature">(bot)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>HypixelController<span class="signature">(api_key, client)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">View of Lang command</div>
+            <div class="class-description">Controller for Hypixel command</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="LangView"><span class="type-signature"></span>new LangView<span class="signature">(bot)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="HypixelController"><span class="type-signature"></span>new HypixelController<span class="signature">(api_key, client)</span><span class="type-signature"></span></h4>
     
 
     
@@ -85,13 +85,13 @@
 
         <tr>
             
-                <td class="name"><code>bot</code></td>
+                <td class="name"><code>api_key</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#DiscordUser">DiscordUser</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -101,7 +101,30 @@
 
             
 
-            <td class="description last">User property of bot instance</td>
+            <td class="description last">Hypixel API key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#DiscordClient">DiscordClient</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -142,7 +165,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_lang.js.html">views/lang.js</a>, <a href="views_lang.js.html#line7">line 7</a>
+        <a href="controller_hypixel.js.html">controller/hypixel.js</a>, <a href="controller_hypixel.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -150,6 +173,13 @@
 
     
 
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Instanciate model and view in constructor.</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -176,17 +206,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="View.html">View</a></li>
-    </ul>
-
-
-    
 
     
 
@@ -209,7 +228,7 @@
     
 
     
-    <h4 class="name" id="getEmbed"><span class="type-signature"></span>getEmbed<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#DiscordMessage">DiscordMessage</a>}</span></h4>
+    <h4 class="name" id="command"><span class="type-signature"></span>command<span class="signature">(args, lang, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -217,229 +236,7 @@
 
 
 <div class="description">
-    Template function for getting basic Embed
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="View.html#getEmbed">View#getEmbed</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_view.js.html">views/view.js</a>, <a href="views_view.js.html#line18">line 18</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#DiscordMessage">DiscordMessage</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getEmbedError"><span class="type-signature"></span>getEmbedError<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#DiscordMessage">DiscordMessage</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Template function for getting errors Embed
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="View.html#getEmbedError">View#getEmbedError</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_view.js.html">views/view.js</a>, <a href="views_view.js.html#line44">line 44</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#DiscordMessage">DiscordMessage</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="langNotExist"><span class="type-signature"></span>langNotExist<span class="signature">(err, lang, callback)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Callback an <a href="global.html#Embed">Embed</a> message with error lang doest not exist
+    Process command with command arguments (in this case always do userStats only command)
 </div>
 
 
@@ -475,13 +272,13 @@
 
         <tr>
             
-                <td class="name"><code>err</code></td>
+                <td class="name"><code>args</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">Array</span>
 
 
             
@@ -491,56 +288,7 @@
 
             
 
-            <td class="description last">Error object
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>listLang</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">List of supported language</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -563,7 +311,7 @@
 
             
 
-            <td class="description last">Current lang of the bot</td>
+            <td class="description last">Current language of the bot</td>
         </tr>
 
     
@@ -627,7 +375,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_lang.js.html">views/lang.js</a>, <a href="views_lang.js.html#line39">line 39</a>
+        <a href="controller_hypixel.js.html">controller/hypixel.js</a>, <a href="controller_hypixel.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -663,7 +411,7 @@
     
 
     
-    <h4 class="name" id="showChangeLang"><span class="type-signature"></span>showChangeLang<span class="signature">(lang, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="userStats"><span class="type-signature"></span>userStats<span class="signature">(username, lang, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -671,7 +419,7 @@
 
 
 <div class="description">
-    Callback an <a href="global.html#Embed">Embed</a> message with the confirmation of language change.
+    Ask the model to fetch statistics and send them to the view, then callback the message created in view
 </div>
 
 
@@ -707,6 +455,29 @@
 
         <tr>
             
+                <td class="name"><code>username</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Minecraft username</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>lang</code></td>
             
 
@@ -723,7 +494,7 @@
 
             
 
-            <td class="description last">New language of the discord bot</td>
+            <td class="description last">Current language of the bot</td>
         </tr>
 
     
@@ -787,7 +558,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_lang.js.html">views/lang.js</a>, <a href="views_lang.js.html#line21">line 21</a>
+        <a href="controller_hypixel.js.html">controller/hypixel.js</a>, <a href="controller_hypixel.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
