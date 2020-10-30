@@ -1,8 +1,9 @@
+const HelpController = require("./controller/help.js");
+
 module.exports = function(options) {
     var dtoken = options.dicord_token;
     var xboxkey = options.xbox_key;
     var riotapi = options.riotapi;
-    
     
     const fs = require("fs");
     const path = require("path");
@@ -11,21 +12,13 @@ module.exports = function(options) {
     const sqlite3 = require("sqlite3").verbose();
 
     const WynncraftController = require("./controller/wynncraft.js");
-    var wynncraftController = new WynncraftController(client);
-
     const HivemcController = require("./controller/hivemc.js");
-    var hivemcController = new HivemcController(client);
-
     const CoinflipController = require("./controller/coinflip.js");
-    var coinflipController = new CoinflipController(client);
-
     const LoLController = require("./controller/lol.js");
-    var lolController;
-
     const LangController = require("./controller/lang.js");
-    var langController;
-
-    const mcping = require('mc-ping-updated');
+    const HelpController = require("./controller/help.js");
+    
+    var langController, lolController, coinflipController, hivemcController, wynncraftController, helpController;
 
     if (!fs.existsSync(path.join(__dirname, "/db"))){
         fs.mkdirSync(path.join(__dirname, "/db"));
@@ -43,71 +36,77 @@ module.exports = function(options) {
     client.on('ready', () => {
         console.log(`Logged in as ${client.user.tag}!`);
         client.user.setStatus('visible');
+        
         lolController = new LoLController(client, riotapi);
         langController = new LangController(client, db);
+        coinflipController = new CoinflipController(client);
+        hivemcController = new HivemcController(client);
+        wynncraftController = new WynncraftController(client);
+        helpController = new HelpController(client);
     });
 
-    client.on('message', rawMessage => {
-        var lang = "en_EN";
-        db.all("SELECT lang FROM servers WHERE sid = ?", rawMessage.channel.guild.id, function(err, rows) {
-            if(err) {
-                console.log(err)
-            };
+    client.on('message', userMessage => {
+        var lang;
+        if (userMessage.content.charAt(0) === '$') {
 
-            if(rows.length === 1) {
-                lang = rows[0].lang;
-            } else {
-                db.run("INSERT INTO servers (sid, lang) VALUES(?,?)", rawMessage.channel.guild.id, "en_EN");
-            }
+            // Get language of the server where the message comes from
+            db.all("SELECT lang FROM servers WHERE sid = ?", userMessage.channel.guild.id, function(err, rows) {
+                if(err) {
+                    console.log(err)
+                };
 
-            if (rawMessage.content.charAt(0) === '$') {
-                var args = rawMessage.content.split(" ");
+                if(rows.length === 1) {
+                    // Set lang to the fetched language
+                    lang = rows[0].lang;
+                } else {
+                    // Set the default language to english and insert in db
+                    db.run("INSERT INTO servers (sid, lang) VALUES(?,?)", userMessage.channel.guild.id, "en_EN");
+                    lang = "en_EN";
+                }
+
+                var args = userMessage.content.split(" ");
                 var command = args[0];
                 args.shift();
 
                 switch (command) {
                     case "$wynncraft":
                         wynncraftController.command(args, lang, (embed) => {
-                            rawMessage.channel.send(embed);
+                            userMessage.channel.send(embed);
                         });
                         break;
                     case "$hivemc":
                         hivemcController.command(args, lang, (embed) => {
-                            rawMessage.channel.send(embed);
+                            userMessage.channel.send(embed);
                         });
                         break;
                     case "$coinflip":
                         coinflipController.command(args, lang, (embed) => {
-                            rawMessage.channel.send(embed);
+                            userMessage.channel.send(embed);
                         });
                         break;
                     case "$lol":
                         lolController.command(args, lang, (embed) => {
-                            rawMessage.channel.send(embed);
+                            userMessage.channel.send(embed);
                         })
                         break;
                     case "$lang":
-                        langController.command(args, lang, rawMessage.channel.guild.id, (embed) => {
-                            rawMessage.channel.send(embed);
+                        langController.command(args, lang, userMessage.channel.guild.id, (embed) => {
+                            userMessage.channel.send(embed);
                         })
+                        break;
+                    case "$help":
+                        helpController.command(args, lang,  (embed) => {
+                            userMessage.channel.send(embed);
+                        });
                     default:
-
+                        break;
                 }
-            }
-        });
-    });
-
-    mcping(process.env.SERVER_IP, process.env.SERVER_PORT, function(err, res) {
-        if (err) {
-            console.error(err);
-        } else {
-            //console.log(res);
-            console.log(res.players.sample)
+            });
         }
-    }, 3000);  
+    });
 };
 
-// TYPEDEF OF JSDOCS
+// TYPEDEF FOR JSDOCS
 
 /**
  * @typedef {Object} DiscordUser - {@link https://discord.js.org/#/docs/main/stable/class/Client|Discord.js Client} of the discord bot.

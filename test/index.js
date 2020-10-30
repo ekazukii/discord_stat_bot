@@ -6,30 +6,49 @@ var riotapi = process.env.RIOT_API;
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const assert = require('assert').strict;
+const request = require("request");
+const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
+const path = require("path");
+
 const LoLController = require("../controller/lol.js");
 const WynncraftController = require("../controller/wynncraft.js");
 const HivemcController = require("../controller/hivemc.js");
 const CoinflipController = require("../controller/coinflip.js");
-const assert = require('assert').strict;
-const request = require("request");
+const HelpController = require("../controller/help.js");
+const LangController = require("../controller/lang.js")
 
 const WynncraftModel = require("../models/wynncraft.js");
 const LoLModel = require("../models/lol.js");
 const HivemcModel = require("../models/hivemc.js");
 const MojangModel = require("../models/mojang.js");
 
-
-var lolController, wynncraftController, hivemcController, coinflipController;
+var lolController, wynncraftController, hivemcController, coinflipController, helpController, langController;
 
 describe("Discord tests", function() {
     
     before(function(done){
         client.on('ready', () => {
+            if (!fs.existsSync(path.join(__dirname, "../db"))){
+                fs.mkdirSync(path.join(__dirname, "../db"));
+            }
+            
+            let db = new sqlite3.Database(path.join(__dirname, "../db/servers.db"), (err) => {
+                if (err) {
+                  console.error(err.message);
+                }
+                db.run("CREATE TABLE IF NOT EXISTS servers (sid text PRIMARY KEY, lang text NOT NULL);");
+                console.log("Connected to the servers database.");
+            });
+
             client.user.setStatus('visible');
             lolController = new LoLController(client, riotapi);
             wynncraftController = new WynncraftController(client);
             hivemcController = new HivemcController(client);
             coinflipController = new CoinflipController(client);
+            helpController = new HelpController(client);
+            langController = new LangController(client, db);
             done();
         });
     });
@@ -220,6 +239,35 @@ describe("Discord tests", function() {
                     }
                 });
             });
+        });
+
+        describe("Lang UT", function() {
+            it("Should change the language of a server", function(done) {
+                langController.command(["fr_FR"], "fr_FR", 767375276849233941, (message) => {
+                    if(message.embed.title === "Changement de langue") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not change the language of a server", function(done) {
+                langController.command(["pirate_PIRATE"], "fr_FR", 767375276849233941, (message) => {
+                    console.log(message.embed.title)
+                    if(message.embed.title === "La langue n'existe pas") {
+                        done();
+                    }
+                });
+            });
+        }); 
+
+        describe("Help UT", function() {
+            it("Should get the help command", function(done) {
+                helpController.command([], "fr_FR", (message) => {
+                    if(message.embed.title === "Commande d'aide") {
+                        done();
+                    }
+                });
+            })
         });
 
     });

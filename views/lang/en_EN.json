@@ -56,6 +56,11 @@
         "langUnknownFieldName": "List of supported languages"
     },
 
+    "help": {
+        "helpTitle": "Help command",
+        "helpName": "Check the website"
+    },
+
     "error": {
         "errorTitle": "Error",
         "errorFieldName": "Error during the request",

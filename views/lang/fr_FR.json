@@ -52,8 +52,13 @@
         "langTitle": "Changement de langue",
         "langFieldName": "***************************************",
         "langFieldValue": "La nouvelle langue est français (fr_FR)",
-        "langUnknownTitle": "La langue est n'existe pas",
+        "langUnknownTitle": "La langue n'existe pas",
         "langUnknownFieldName": "Liste des langues supportées"
+    },
+
+    "help": {
+        "helpTitle": "Commande d'aide",
+        "helpName": "Allez regarder la liste des commandes"
     },
 
     "error": {
