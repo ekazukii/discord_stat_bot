@@ -18,6 +18,20 @@
         "statsDeathrun": "Number of victories in DeathRun"
     },
 
+    "hypixel": {
+        "statsTitle": "Statistics of {arg1} on Hypixel",
+        "statsSkyWars": "Number of victories in SkyWars",
+        "statsBuildBattle": "Number of victories in BuildBattle",
+        "statsBedWars": "Number of victories in BedWars",
+        "guildTitle": "Guild",
+        "noGuild": "not in a guild",
+        "rankTitle": "Rank",
+        "noRank": "no rank",
+        "statusTitle": "Status",
+        "statusOnline": "Currently online",
+        "statusOffline": "Currently offline"
+    },
+
     "lol": {
         "statsTitle": "Statistics of {arg1} on League of Legends",
         "summonerFieldName": "Summoner level",

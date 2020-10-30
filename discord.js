@@ -4,6 +4,7 @@ module.exports = function(options) {
     var dtoken = options.dicord_token;
     var xboxkey = options.xbox_key;
     var riotapi = options.riotapi;
+    var hypixelapi = options.hypixelapi;
     
     const fs = require("fs");
     const path = require("path");
@@ -17,8 +18,9 @@ module.exports = function(options) {
     const LoLController = require("./controller/lol.js");
     const LangController = require("./controller/lang.js");
     const HelpController = require("./controller/help.js");
+    const HypixelController = require("./controller/hypixel.js")
     
-    var langController, lolController, coinflipController, hivemcController, wynncraftController, helpController;
+    var langController, lolController, coinflipController, hivemcController, wynncraftController, hypixelController, helpController;
 
     if (!fs.existsSync(path.join(__dirname, "/db"))){
         fs.mkdirSync(path.join(__dirname, "/db"));
@@ -39,6 +41,7 @@ module.exports = function(options) {
         
         lolController = new LoLController(client, riotapi);
         langController = new LangController(client, db);
+        hypixelController = new HypixelController(client, hypixelapi);
         coinflipController = new CoinflipController(client);
         hivemcController = new HivemcController(client);
         wynncraftController = new WynncraftController(client);
@@ -76,6 +79,11 @@ module.exports = function(options) {
                         break;
                     case "$hivemc":
                         hivemcController.command(args, lang, (embed) => {
+                            userMessage.channel.send(embed);
+                        });
+                        break;
+                    case "$hypixel":
+                        hypixelController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         });
                         break;
