@@ -26,6 +26,7 @@ jobs:
     - run: echo "XBOX_API_KEY=${{ secrets.XBOX_API_KEY }}" >> $GITHUB_WORKSPACE/.env
     - run: echo "RIOT_API=${{ secrets.RIOT_API }}" >> $GITHUB_WORKSPACE/.env
     - run: echo "HYPIXEL_API=${{ secrets.HYPIXEL_API }}" >> $GITHUB_WORKSPACE/.env
+    - run: echo "COC_API=${{ secrets.COC_API }}" >> $GITHUB_WORKSPACE/.env
     - run: ls -A
     - run: npm ci
     - run: npm run build --if-present

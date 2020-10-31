@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: LoLController</title>
+    <title>JSDoc: Class: CoCView</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: LoLController</h1>
+    <h1 class="page-title">Class: CoCView</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>LoLController<span class="signature">(client, apikey)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CoCView<span class="signature">(bot)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Controller of League of Legends commands</div>
+            <div class="class-description">View of Clash of Clans command</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="LoLController"><span class="type-signature"></span>new LoLController<span class="signature">(client, apikey)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CoCView"><span class="type-signature"></span>new CoCView<span class="signature">(bot)</span><span class="type-signature"></span></h4>
     
 
     
@@ -85,13 +85,13 @@
 
         <tr>
             
-                <td class="name"><code>client</code></td>
+                <td class="name"><code>bot</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#DiscordClient">DiscordClient</a></span>
+<span class="param-type"><a href="global.html#DiscordUser">DiscordUser</a></span>
 
 
             
@@ -101,30 +101,7 @@
 
             
 
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>apikey</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Riot api keys see <a href="https://developer.riotgames.com/docs/portal#product-registration_application-process">riot appication process</a></td>
+            <td class="description last">User property of bot instance</td>
         </tr>
 
     
@@ -165,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_lol.js.html">controller/lol.js</a>, <a href="controller_lol.js.html#line5">line 5</a>
+        <a href="views_coc.js.html">views/coc.js</a>, <a href="views_coc.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -199,6 +176,17 @@
     </div>
 
     
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="View.html">View</a></li>
+    </ul>
+
+
+    
 
     
 
@@ -221,7 +209,7 @@
     
 
     
-    <h4 class="name" id="championRotation"><span class="type-signature"></span>championRotation<span class="signature">(lang, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getEmbed"><span class="type-signature"></span>getEmbed<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#DiscordMessage">DiscordMessage</a>}</span></h4>
     
 
     
@@ -229,7 +217,229 @@
 
 
 <div class="description">
-    Get, then show user the current champion rotation
+    Template function for getting basic Embed
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="View.html#getEmbed">View#getEmbed</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_view.js.html">views/view.js</a>, <a href="views_view.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#DiscordMessage">DiscordMessage</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getEmbedError"><span class="type-signature"></span>getEmbedError<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#DiscordMessage">DiscordMessage</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Template function for getting errors Embed
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="View.html#getEmbedError">View#getEmbedError</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_view.js.html">views/view.js</a>, <a href="views_view.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#DiscordMessage">DiscordMessage</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="printError"><span class="type-signature"></span>printError<span class="signature">(err, lang, callback)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Callback an <a href="global.html#Embed">Embed</a> message with user not found error
 </div>
 
 
@@ -261,6 +471,29 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>err</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Error information</td>
+        </tr>
+
     
 
         <tr>
@@ -345,7 +578,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_lol.js.html">controller/lol.js</a>, <a href="controller_lol.js.html#line119">line 119</a>
+        <a href="views_coc.js.html">views/coc.js</a>, <a href="views_coc.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -353,6 +586,13 @@
 
     
 
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Handle rate exceeded error</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -381,7 +621,7 @@
     
 
     
-    <h4 class="name" id="command"><span class="type-signature"></span>command<span class="signature">(args, lang, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="showUserStats"><span class="type-signature"></span>showUserStats<span class="signature">(stats, lang, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -389,7 +629,7 @@
 
 
 <div class="description">
-    Process $lol command with command arguments ($lol profile, $lol vs, $lol cs, $lol rotation)
+    Callback an <a href="global.html#Embed">Embed</a> message with user statistics
 </div>
 
 
@@ -425,13 +665,13 @@
 
         <tr>
             
-                <td class="name"><code>args</code></td>
+                <td class="name"><code>stats</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type">Object</span>
 
 
             
@@ -441,7 +681,220 @@
 
             
 
-            <td class="description last">Commands arguments</td>
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">sring</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Username of player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Level of the player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>townHallLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">nuumber</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Level of player's Town Hall</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>trophies</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Trophies of the player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>clan</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">if the player is online or not
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Name of the clan</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tag</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Tag of the clan</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -528,579 +981,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_lol.js.html">controller/lol.js</a>, <a href="controller_lol.js.html#line24">line 24</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="comparePlayers"><span class="type-signature"></span>comparePlayers<span class="signature">(user1, user2, lang, callback)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Compare two players by statistics of 5 last games, list of stats : <a href="global.html#ScoreArray">ScoreArray</a>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>user1</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">First summoner's username</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>user2</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Second summoner's username</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lang</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Current language of the bot</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#messageCallback">messageCallback</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_lol.js.html">controller/lol.js</a>, <a href="controller_lol.js.html#line50">line 50</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="userCS"><span class="type-signature"></span>userCS<span class="signature">(username, lang, callback)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Get, then show user creep score per minutes during last 5 games
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Summoner's username</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lang</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Current language of the bot</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#messageCallback">messageCallback</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_lol.js.html">controller/lol.js</a>, <a href="controller_lol.js.html#line97">line 97</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="userStats"><span class="type-signature"></span>userStats<span class="signature">(username, lang, callback)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Get, then show user statistics, list of stats : <a href="LoLView.html#showUserStats">LoLView#showUserStats</a>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Summoner's username</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lang</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Current language of the bot</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#messageCallback">messageCallback</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_lol.js.html">controller/lol.js</a>, <a href="controller_lol.js.html#line73">line 73</a>
+        <a href="views_coc.js.html">views/coc.js</a>, <a href="views_coc.js.html#line28">line 28</a>
     </li></ul></dd>
     
 

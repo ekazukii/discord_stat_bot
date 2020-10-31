@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: views/coinflip.js</title>
+    <title>JSDoc: Source: models/coc.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: views/coinflip.js</h1>
+    <h1 class="page-title">Source: models/coc.js</h1>
 
     
 
@@ -26,57 +26,59 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const View = require("./view.js");
+            <pre class="prettyprint source linenums"><code>const request = require('request');
 
-/**
- * View of Lang command
- * @extends View
- */
-class CoinflipView extends View {
-    constructor(bot) {
-        super(bot);
-    }
+/** Model for Clash of Clans command */
+class CoCModel {
 
     /**
-     * Callback an {@link Embed} message with either Heads or Tails
-     * @param {number} winner - Either 0 or 1 (0 --> Heads, 1 --> Tails)
-     * @param {string} lang - New language of the discord bot 
-     * @param {messageCallback} callback  
+     * save api_key
+     * @param {string} api_key - Clash of Clans API key
      */
-    showCoinflip(winner, lang, callback) {
-        var language = require(`./lang/${lang}.json`).coinflip;
-        var options = [language.heads, language.tails];
-        var message = this.getEmbed();
-        message.embed.title = language.coinflipTitle;
-        message.embed.fields.push({
-            name: "************",
-            value: language.coinflipValue.replace("{arg1}", options[winner])
-        });
-
-        callback(message);
+    constructor(api_key) {
+        this.api_key = api_key;
     }
 
-    /**
-     * Callback an {@link Embed} message with the option chosen among the list
-     * @param {Array&lt;string>} options - List of options
-     * @param {index} winner - Index of the picked option.
-     * @param {string} lang - New language of the discord bot 
-     * @param {messageCallback} callback  
-     */
-    showPickOption(options, winner, lang, callback) {
-        var language = require(`./lang/${lang}.json`).coinflip;
-        var message = this.getEmbed();
-        message.embed.title = language.pickTitle;
-        message.embed.fields.push({
-            name: language.pickFieldName.replace("{arg1}", options.join(" , ")),
-            value: language.pickFieldValue.replace("{arg1}", options[winner])
-        });
 
-        callback(message);
+    /**
+     * Fetch information about the user
+     * @param {Object} options
+     * @param {string} options.tag - Clash of Clans player's tag
+     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link CoCView#showUserStats}
+     */
+    getUserStats(options, callback) {
+        var response = {}
+        var self = this;
+        var tag = options.tag;
+        var uriTag = tag.replace("#", "%23");
+        var auth = {
+            'bearer': this.api_key
+        }
+
+        request(`https://api.clashofclans.com/v1/players/${uriTag}`, {json: true, auth: auth}, (err, res, body) => {
+            if(err) throw err;
+            if(body.reason !== "notFound") {
+                response.name = body.name
+                response.townHallLevel = body.townHallLevel;
+                response.trophies = body.trophies;
+                response.clan = {
+                    name: body.clan.name,
+                    tag: body.clan.tag,
+                    stars: body.warStars
+                }
+                response.level = body.expLevel;
+                response.heroes = body.heroes;
+                callback(response);
+            } else {
+                response.error = true;
+                response.error_desc = "user not found";
+                callback(response);
+            }
+        });
     }
 }
 
-module.exports = CoinflipView;
+module.exports = CoCModel;
 </code></pre>
         </article>
     </section>

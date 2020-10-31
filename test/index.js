@@ -4,6 +4,7 @@ var dtoken = process.env.DISCORD_TOKEN;
 var xboxkey = process.env.XBOX_API_KEY;
 var riotapi = process.env.RIOT_API;
 var hypixelapi = process.env.HYPIXEL_API;
+var cocapi = process.env.COC_API
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -19,14 +20,15 @@ const HivemcController = require("../controller/hivemc.js");
 const CoinflipController = require("../controller/coinflip.js");
 const HelpController = require("../controller/help.js");
 const LangController = require("../controller/lang.js");
-const HypixelController = require("../controller/hypixel.js")
+const HypixelController = require("../controller/hypixel.js");
+const CoCController = require("../controller/coc.js");
 
 const WynncraftModel = require("../models/wynncraft.js");
 const LoLModel = require("../models/lol.js");
 const HivemcModel = require("../models/hivemc.js");
 const MojangModel = require("../models/mojang.js");
 
-var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, helpController, langController;
+var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, cocController, helpController, langController;
 
 describe("Discord tests", function() {
     
@@ -49,7 +51,8 @@ describe("Discord tests", function() {
             wynncraftController = new WynncraftController(client);
             hivemcController = new HivemcController(client);
             coinflipController = new CoinflipController(client);
-            hypixelController = new HypixelController(client, hypixelapi)
+            hypixelController = new HypixelController(client, hypixelapi);
+            cocController = new CoCController(client, cocapi);
             helpController = new HelpController(client);
             langController = new LangController(client, db);
             done();
@@ -158,7 +161,7 @@ describe("Discord tests", function() {
         describe("League of Legends UT", function() {
             it("Should get user statistics", function(done) {
                 lolController.command(["profile", "ekazukii"], "fr_FR", (message) => {
-                    if(message.embed.title === "Statistiques de ekazukii Sur League of Legends") {
+                    if(message.embed.title === "Statistiques de ekazukii sur League of Legends") {
                         done();
                     }
                 });
@@ -193,7 +196,7 @@ describe("Discord tests", function() {
         describe("Wynncraft UT", function() {
             it("Should get user statistics", function(done) {
                 wynncraftController.command(["zefut"], "fr_FR", (message) => {
-                    if(message.embed.title === "Statistiques de zefut Sur Wynncraft") {
+                    if(message.embed.title === "Statistiques de zefut sur Wynncraft") {
                         done();
                     }
                 });
@@ -211,7 +214,7 @@ describe("Discord tests", function() {
         describe("HiveMC UT", function() {
             it("Should get user statistics", function(done) {
                 hivemcController.command(["Logorrheique"], "fr_FR", (message) => {
-                    if(message.embed.title === "Statistiques de Logorrheique Sur HiveMC") {
+                    if(message.embed.title === "Statistiques de Logorrheique sur HiveMC") {
                         done();
                     }
                 });
@@ -229,7 +232,7 @@ describe("Discord tests", function() {
         describe("Hypixel UT", function() {
             it("Should get user statistics", function(done) {
                 hypixelController.command(["ekazuki"], "fr_FR", (message) => {
-                    if(message.embed.title === "Statistiques de ekazuki Sur Hypixel") {
+                    if(message.embed.title === "Statistiques de ekazuki sur Hypixel") {
                         done();
                     }
                 });
@@ -237,6 +240,24 @@ describe("Discord tests", function() {
 
             it("Should not found the user", function(done) {
                 hypixelController.command(["IDONTEXISTONHIVEMC778455"], "fr_FR", (message) => {
+                    if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                });
+            });
+        });
+
+        describe("Clash of Clans UT", function() {
+            it("Should get user statistics", function(done) {
+                cocController.command(["#YJ8PQQCJ"], "fr_FR", (message) => {
+                    if(message.embed.title === "Statistiques de AlmostBatman sur Clash of Clans") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not found the user", function(done) {
+                cocController.command(["IDONTEXISTONHIVEMC778455"], "fr_FR", (message) => {
                     if(message.embed.title === "Erreur") {
                         done();
                     }

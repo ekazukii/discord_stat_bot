@@ -62,6 +62,20 @@
         "statsFieldMobsName": "Mobs killed"
     },
 
+    
+    "coc": {
+        "statsTitle": "Statistics of {arg1} on Clash of Clans",
+        "statsFieldUsername": "Username",
+        "statsFieldLevel": "Level",
+        "statsFieldTownHallLevel": "TownHall Level",
+        "statsFieldHeroName": "Heroes name",
+        "statsFieldHeroLevel": "Heroes level",
+        "statsFieldHeroMaxLevel": "Heroes Max Level",
+        "statsFieldTrophies": "Trophies",
+        "statsFieldClanName": "Clan's name",
+        "statsFieldClanTag": "Clan's tag"
+    },
+
     "lang": {
         "langTitle": "Language changed",
         "langFieldName": "***************************************",
