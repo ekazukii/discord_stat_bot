@@ -29,6 +29,7 @@ class CoCModel {
 
         request(`https://api.clashofclans.com/v1/players/${uriTag}`, {json: true, auth: auth}, (err, res, body) => {
             if(err) throw err;
+            console.log(body);
             if(body.reason !== "notFound") {
                 response.name = body.name
                 response.townHallLevel = body.townHallLevel;
