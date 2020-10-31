@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: views/hivemc.js</title>
+    <title>JSDoc: Source: views/coc.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: views/hivemc.js</h1>
+    <h1 class="page-title">Source: views/coc.js</h1>
 
     
 
@@ -28,10 +28,10 @@
         <article>
             <pre class="prettyprint source linenums"><code>const View = require("./view.js");
 /**
- * View of Hivemc command
+ * View of Clash of Clans command
  * @extends View
  */
-class HivemcView extends View {
+class CoCView extends View {
 
     /**
      * @param {DiscordUser} bot - User property of bot instance
@@ -43,29 +43,66 @@ class HivemcView extends View {
     /**
      * Callback an {@link Embed} message with user statistics
      * @param {Object} stats 
-     * @param {number} stats.hide - Number of hide and seek win
-     * @param {number} stats.grav - Number of gravity win
-     * @param {number} stats.blockparty - Number of blockparty win
-     * @param {number} stats.deathrun - Number of deathrun win
+     * @param {sring} stats.name - Username of player
+     * @param {number} stats.level - Level of the player
+     * @param {nuumber} stats.townHallLevel - Level of player's Town Hall
+     * @param {number} stats.trophies - Trophies of the player
+     * @param {Object} stats.clan - if the player is online or not
+     * @param {number} stats.clan.name - Name of the clan
+     * @param {number} stats.clan.tag - Tag of the clan
      * @param {string} lang - Current language of the bot
      * @param {messageCallback} callback 
      */
-    showUserStats(stats, lang, callback) {
-        var language = require(`./lang/${lang}.json`).hivemc;
-        var message = this.getEmbed()
-        message.embed.title = language.statsTitle.replace("{arg1}", stats.username);
+    showUserStats(stats, lang, callback) { 
+        var language = require(`./lang/${lang}.json`).coc;
+        var message = this.getEmbed();
+        message.embed.title = language.statsTitle.replace("{arg1}", stats.name);
+        
+        var heroString = "", levelString = "", levelMaxString = "";
+
+        for (let i = 0; i &lt; stats.heroes.length; i++) {
+            const hero = stats.heroes[i];
+            heroString += hero.name + "\r";
+            levelString += hero.level + "\r";
+            levelMaxString += hero.maxLevel + "\r";
+        }
+        
         message.embed.fields.push({
-            name: language.statsHideAndSeek,
-            value: stats.hide
+            name: language.statsFieldUsername,
+            value: stats.name,
+            inline: true
         }, {
-            name: language.statsGravity,
-            value: stats.grav
+            name: language.statsFieldLevel,
+            value: stats.level,
+            inline: true
         }, {
-            name: language.statsBlockparty,
-            value: stats.blockparty
+            name: language.statsFieldTownHallLevel,
+            value: stats.townHallLevel,
+            inline: true
         }, {
-            name: language.statsDeathrun,
-            value: stats.deathrun
+            name: language.statsFieldHeroName,
+            value: heroString,
+            inline: true
+        }, {
+            name: language.statsFieldHeroLevel,
+            value: levelString,
+            inline: true
+        }, {
+            name: language.statsFieldHeroMaxLevel,
+            value: levelMaxString,
+            inline: true
+        }, {
+            name: language.statsFieldTrophies,
+            value: stats.trophies,
+            inline: true
+        }, {
+            name: language.statsFieldClanName,
+            value: stats.clan.name,
+            inline: true
+        }, {
+            name: language.statsFieldClanTag,
+            value: stats.clan.tag,
+            inline: true
         });
         callback(message);
     }
@@ -89,7 +126,7 @@ class HivemcView extends View {
     }
 }
 
-module.exports = HivemcView;</code></pre>
+module.exports = CoCView;</code></pre>
         </article>
     </section>
 
