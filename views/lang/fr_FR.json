@@ -91,6 +91,7 @@
     "error": {
         "errorTitle": "Erreur",
         "errorFieldName": "Erreur lors de la requete",
-        "errorFieldValue": "L'utilisaeur n'a pas été trouvé"
+        "errorFieldValue": "L'utilisaeur n'a pas été trouvé",
+        "errorFieldValueIp": "IP invalide"
     }
 }

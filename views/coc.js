@@ -88,12 +88,19 @@ class CoCView extends View {
      */
     printError(err, lang, callback) {
         var language = require(`./lang/${lang}.json`).error;
-        var message = this.getEmbedError()
-        message.embed.title = language.errorTitle
-        message.embed.fields.push({
-            name: language.errorFieldName,
-            value: language.errorFieldValue
-        });
+        var message = this.getEmbedError();
+        message.embed.title = language.errorTitle;
+        if(err.error_desc === "invalid ip") {
+            message.embed.fields.push({
+                name: language.errorFieldName,
+                value: language.errorFieldValueIp
+            });
+        } else {
+            message.embed.fields.push({
+                name: language.errorFieldName,
+                value: language.errorFieldValue
+            });
+        }
         callback(message);
     }
 }
