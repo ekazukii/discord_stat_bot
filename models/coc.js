@@ -41,10 +41,11 @@ class CoCModel {
                 response.name = body.name
                 response.townHallLevel = body.townHallLevel;
                 response.trophies = body.trophies;
-                response.clan = {
-                    name: body.clan.name,
-                    tag: body.clan.tag,
-                    stars: body.warStars
+                if(typeof body.clan !== "undefined") {
+                    response.clan = {
+                        name: body.clan.name,
+                        tag: body.clan.tag
+                    }
                 }
                 response.level = body.expLevel;
                 response.heroes = body.heroes;
