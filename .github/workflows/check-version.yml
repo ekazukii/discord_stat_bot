@@ -14,12 +14,14 @@ jobs:
     - uses: actions/checkout@v2
     - name: Get Latest Release
       uses: pozetroninc/github-action-get-latest-release@v0.5.0
+      id: oldrls
       with:
         repository: ekazukii/discord_stat_bot
     - name: Split Action
       uses: JungWinter/split@v1.1.0
+      id: split
       with:
-        msg: ${{ steps.keydb.outputs.release }}
+        msg: ${{ steps.oldrls.outputs.release }}
     - name: Read package.json
       uses: tyankatsu0105/read-package-version-actions@v1
       id: package-version
