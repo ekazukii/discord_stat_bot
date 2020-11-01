@@ -252,6 +252,8 @@ describe("Discord tests", function() {
                 cocController.command(["#YJ8PQQCJ"], "fr_FR", (message) => {
                     if(message.embed.title === "Statistiques de AlmostBatman sur Clash of Clans") {
                         done();
+                    } else if(message.embed.fields[0].value === "IP invalide") {
+                        done();
                     }
                 });
             });

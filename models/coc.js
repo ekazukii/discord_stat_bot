@@ -29,8 +29,15 @@ class CoCModel {
 
         request(`https://api.clashofclans.com/v1/players/${uriTag}`, {json: true, auth: auth}, (err, res, body) => {
             if(err) throw err;
-            console.log(body);
-            if(body.reason !== "notFound") {
+            if(body.reason === "notFound") {
+                response.error = true;
+                response.error_desc = "User not found";
+                callback(response);
+            } else if(body.reason === "accessDenied.invalidIp") {
+                response.error = true;
+                response.error_desc = "invalid ip";
+                callback(response);
+            } else {
                 response.name = body.name
                 response.townHallLevel = body.townHallLevel;
                 response.trophies = body.trophies;
@@ -41,10 +48,6 @@ class CoCModel {
                 }
                 response.level = body.expLevel;
                 response.heroes = body.heroes;
-                callback(response);
-            } else {
-                response.error = true;
-                response.error_desc = "user not found";
                 callback(response);
             }
         });
