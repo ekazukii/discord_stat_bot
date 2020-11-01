@@ -67,15 +67,19 @@ class CoCView extends View {
             name: language.statsFieldTrophies,
             value: stats.trophies,
             inline: true
-        }, {
-            name: language.statsFieldClanName,
-            value: stats.clan.name,
-            inline: true
-        }, {
-            name: language.statsFieldClanTag,
-            value: stats.clan.tag,
-            inline: true
         });
+
+        if(typeof stats.clan !== "undefined") {
+            message.embed.fields.push({
+                name: language.statsFieldClanName,
+                value: stats.clan.name,
+                inline: true
+            }, {
+                name: language.statsFieldClanTag,
+                value: stats.clan.tag,
+                inline: true
+            });
+        }
         callback(message);
     }
 
