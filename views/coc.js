@@ -93,12 +93,12 @@ class CoCView extends View {
         if(err.error_desc === "invalid ip") {
             message.embed.fields.push({
                 name: language.errorFieldName,
-                value: language.errorFieldValue
+                value: language.errorFieldValueIp
             });
         } else {
             message.embed.fields.push({
                 name: language.errorFieldName,
-                value: language.errorFieldValueIp
+                value: language.errorFieldValue
             });
         }
         callback(message);
