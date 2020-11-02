@@ -29,16 +29,7 @@ class CoCView extends View {
         var language = require(`./lang/${lang}.json`).coc;
         var message = this.getEmbed();
         message.embed.title = language.statsTitle.replace("{arg1}", stats.name);
-        
-        var heroString = "", levelString = "", levelMaxString = "";
-
-        for (let i = 0; i < stats.heroes.length; i++) {
-            const hero = stats.heroes[i];
-            heroString += hero.name + "\r";
-            levelString += hero.level + "\r";
-            levelMaxString += hero.maxLevel + "\r";
-        }
-        
+    
         message.embed.fields.push({
             name: language.statsFieldUsername,
             value: stats.name,
@@ -51,23 +42,38 @@ class CoCView extends View {
             name: language.statsFieldTownHallLevel,
             value: stats.townHallLevel,
             inline: true
-        }, {
-            name: language.statsFieldHeroName,
-            value: heroString,
-            inline: true
-        }, {
-            name: language.statsFieldHeroLevel,
-            value: levelString,
-            inline: true
-        }, {
-            name: language.statsFieldHeroMaxLevel,
-            value: levelMaxString,
-            inline: true
-        }, {
+        });
+
+        if(stats.heroes.length > 0) {
+            var heroString = "", levelString = "", levelMaxString = "";
+
+            for (let i = 0; i < stats.heroes.length; i++) {
+                const hero = stats.heroes[i];
+                heroString += hero.name + "\r";
+                levelString += hero.level + "\r";
+                levelMaxString += hero.maxLevel + "\r";
+            }
+            
+            message.embed.fields.push(            {
+                name: language.statsFieldHeroName,
+                value: heroString,
+                inline: true
+            }, {
+                name: language.statsFieldHeroLevel,
+                value: levelString,
+                inline: true
+            }, {
+                name: language.statsFieldHeroMaxLevel,
+                value: levelMaxString,
+                inline: true
+            });
+        }
+
+        message.embed.fields.push({
             name: language.statsFieldTrophies,
             value: stats.trophies,
             inline: true
-        });
+        })
 
         if(typeof stats.clan !== "undefined") {
             message.embed.fields.push({
