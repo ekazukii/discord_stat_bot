@@ -163,3 +163,4 @@ credentials.json
 db
 
 out/
+.DS_STORE

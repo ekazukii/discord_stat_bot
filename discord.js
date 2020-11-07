@@ -6,6 +6,7 @@ module.exports = function(options) {
     var riotapi = options.riotapi;
     var hypixelapi = options.hypixelapi;
     var cocapi = options.cocapi;
+    var csgoapi = options.csgoapi;
     
     const fs = require("fs");
     const path = require("path");
@@ -20,7 +21,8 @@ module.exports = function(options) {
     const LangController = require("./controller/lang.js");
     const HelpController = require("./controller/help.js");
     const HypixelController = require("./controller/hypixel.js");
-    const CoCController = require("./controller/coc.js")
+    const CoCController = require("./controller/coc.js");
+    const CSGOController = require("./controller/csgo.js");
     
     var langController, lolController, coinflipController, hivemcController, wynncraftController, hypixelController, helpController, cocController;
 
@@ -49,6 +51,7 @@ module.exports = function(options) {
         wynncraftController = new WynncraftController(client);
         helpController = new HelpController(client);
         cocController = new CoCController(client, cocapi);
+        csgoController = new CSGOController(client, csgoapi);
     });
 
     client.on('message', userMessage => {
@@ -113,6 +116,10 @@ module.exports = function(options) {
                         cocController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         });
+                    case "$csgo":
+                        csgoController.command(args, lang, (embed) => {
+                            userMessage.channel.send(embed);
+                        })
                     default:
                         break;
                 }
