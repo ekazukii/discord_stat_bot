@@ -23,6 +23,17 @@ module.exports = function(options) {
     const HypixelController = require("./controller/hypixel.js");
     const CoCController = require("./controller/coc.js");
     const CSGOController = require("./controller/csgo.js");
+
+    const { createLogger, format, transports } = require('winston');
+
+    const logger = createLogger({
+        level: 'info',
+        exitOnError: false,
+        format: format.json(),
+        transports: [
+            new transports.File({filename: `./logs/log.log`, options: {flags: "w"}}),
+        ],
+    });
     
     var langController, lolController, coinflipController, hivemcController, wynncraftController, hypixelController, helpController, cocController;
 
@@ -40,7 +51,7 @@ module.exports = function(options) {
     });
 
     client.on('ready', () => {
-        console.log(`Logged in as ${client.user.tag}!`);
+        logger.info(`Logged in as ${client.user.tag}!`);
         client.user.setStatus('visible');
         
         lolController = new LoLController(client, riotapi);
@@ -54,10 +65,15 @@ module.exports = function(options) {
         csgoController = new CSGOController(client, csgoapi);
     });
 
+    var StatsD = require('hot-shots');
+    var ddstats = new StatsD({errorHandler: (err) => {
+        logger.error(err);
+    }});
+
     client.on('message', userMessage => {
         var lang;
         if (userMessage.content.charAt(0) === '$') {
-
+            logger.info("receive command (message start by $)", {guildId: userMessage.channel.guild.id, content: userMessage.content});
             // Get language of the server where the message comes from
             db.all("SELECT lang FROM servers WHERE sid = ?", userMessage.channel.guild.id, function(err, rows) {
                 if(err) {
@@ -79,44 +95,55 @@ module.exports = function(options) {
 
                 switch (command) {
                     case "$wynncraft":
+                        ddstats.increment("bot.wynncraft.command", ["command"]);
                         wynncraftController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$hivemc":
+                        ddstats.increment("bot.hivemc.command", ["command"]);
                         hivemcController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$hypixel":
+                        ddstats.increment("bot.hypixel.command", ["command"]);
                         hypixelController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$coinflip":
+                        ddstats.increment("bot.coinflip.command", ["command"]);
                         coinflipController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$lol":
+                        ddstats.increment("bot.lol.command", ["command"]);
                         lolController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         })
                         break;
                     case "$lang":
+                        ddstats.increment("bot.lang.command", ["command"]);
                         langController.command(args, lang, userMessage.channel.guild.id, (embed) => {
                             userMessage.channel.send(embed);
                         })
                         break;
                     case "$help":
+                        ddstats.increment("bot.help.command", ["command"]);
                         helpController.command(args, lang,  (embed) => {
                             userMessage.channel.send(embed);
                         });
+                        break;
                     case "$coc":
+                        ddstats.increment("bot.coc.command", ["command"]);
                         cocController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         });
+                        break;
                     case "$csgo":
+                        ddstats.increment("bot.csgo.command", ["command"]);
                         csgoController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
                         })
