@@ -5,6 +5,7 @@ var xboxkey = process.env.XBOX_API_KEY;
 var riotapi = process.env.RIOT_API;
 var hypixelapi = process.env.HYPIXEL_API;
 var cocapi = process.env.COC_API
+var csgoapi = process.env.CSGO_API;
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -22,13 +23,14 @@ const HelpController = require("../controller/help.js");
 const LangController = require("../controller/lang.js");
 const HypixelController = require("../controller/hypixel.js");
 const CoCController = require("../controller/coc.js");
+const CSGOController = require("../controller/csgo.js");
 
 const WynncraftModel = require("../models/wynncraft.js");
 const LoLModel = require("../models/lol.js");
 const HivemcModel = require("../models/hivemc.js");
 const MojangModel = require("../models/mojang.js");
 
-var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, cocController, helpController, langController;
+var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, cocController, helpController, langController, csgoController;
 
 describe("Discord tests", function() {
     
@@ -55,6 +57,7 @@ describe("Discord tests", function() {
             cocController = new CoCController(client, cocapi);
             helpController = new HelpController(client);
             langController = new LangController(client, db);
+            csgoController = new CSGOController(client, csgoapi);
             done();
         });
     });
@@ -260,6 +263,24 @@ describe("Discord tests", function() {
 
             it("Should not found the user", function(done) {
                 cocController.command(["IDONTEXISTONHIVEMC778455"], "fr_FR", (message) => {
+                    if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                });
+            });
+        });
+
+        describe("Counter Strike : Global Offensive UT", function() {
+            it("Should get user statistics", function(done) {
+                csgoController.command(["Ekazuki"], "fr_FR", (message) => {
+                    if(message.embed.title === "Statistiques de Ekazuki sur Faceit") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should not found the user", function(done) {
+                csgoController.command(["IDONTEXISTONHIVEMC778455CSGOFACEIT"], "fr_FR", (message) => {
                     if(message.embed.title === "Erreur") {
                         done();
                     }
