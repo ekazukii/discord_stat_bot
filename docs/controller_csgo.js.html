@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: views/view.js</title>
+    <title>JSDoc: Source: controller/csgo.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: views/view.js</h1>
+    <h1 class="page-title">Source: controller/csgo.js</h1>
 
     
 
@@ -26,71 +26,56 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** 
- * Abstract class for Views of different games
- * @abstract
- */
-class View {
-  /**
-   * 
-   * @param {DiscordUser} bot 
-   */
-  constructor(bot) {
-    this.bot = bot
-  }
+            <pre class="prettyprint source linenums"><code>const CSGOView = require("../views/csgo.js");
+const CSGOModel = require("../models/csgo.js");
 
-  /**
-   * Template function for getting basic Embed
-   * @returns {DiscordMessage}
-   */
-  getEmbed() {
+/** Controller for Counter Strike : Global Offensive command */
+class CSGOController {
+
     /**
-     * @type {{embed: Embed}}
+     * @todo Instanciate model and view in constructor.
+     * @param {string} api_key - Counter Strike : Global Offensive API key
+     * @param {DiscordClient} client 
      */
-    var message = {
-      embed: {
-        color: 344703,
-        author: {
-          name: this.bot.username,
-          icon_url: this.bot.displayAvatarURL()
-        },
-        url: "http://github.com/ekazukii",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Stats Bot"
-        }
-      }
-    };
-    return message;
-  }
+    constructor(client, api_key) {
+        this.model = new CSGOModel(api_key);
+        this.view = new CSGOView(client.user);
+    }
 
-  /**
-   * Template function for getting errors Embed
-   * @returns {DiscordMessage}
-   */
-  getEmbedError() {
-    var message = {
-      embed: {
-        color: 'bf1919',
-        author: {
-          name: this.bot.username,
-          icon_url: this.bot.displayAvatarURL()
-        },
-        title: "Erreur",
-        url: "http://github.com/ekazukii",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Stats Bot"
-        }
-      }
-    };
-    return message;
-  }
+    /**
+     * Process command with command arguments (in this case always do userStats only command)
+     * @param {Array} args 
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     */
+    command(args, lang, callback) {
+        this.userStats(args[0], lang, callback);
+    }
+
+    /**
+     * Ask the model to fetch statistics and send them to the view, then callback the message created in view
+     * @param {string} username - Faceit username
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     */
+    userStats(username, lang, callback) {
+        var self = this;
+        this.model.getUserStats({username: username}, function(stats) {
+            stats.username = username;
+            if (stats.error) {
+                self.view.printError(stats, lang, function(embed) {
+                    callback(embed)
+                })
+            } else {
+                self.view.showUserStats(stats, lang, function(embed) {
+                    callback(embed)
+                })
+            }
+        });
+    }
 }
 
-module.exports = View;
+module.exports = CSGOController;
 </code></pre>
         </article>
     </section>

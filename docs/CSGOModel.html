@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: LangModel</title>
+    <title>JSDoc: Class: CSGOModel</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: LangModel</h1>
+    <h1 class="page-title">Class: CSGOModel</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>LangModel<span class="signature">(db)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CSGOModel<span class="signature">(api_key)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Model for Lang command</div>
+            <div class="class-description">Model for Counter Strike : Global Offensive command</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="LangModel"><span class="type-signature"></span>new LangModel<span class="signature">(db)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CSGOModel"><span class="type-signature"></span>new CSGOModel<span class="signature">(api_key)</span><span class="type-signature"></span></h4>
     
 
     
@@ -53,7 +53,7 @@
 
 
 <div class="description">
-    Cache the db object in class property.
+    save api_key
 </div>
 
 
@@ -89,13 +89,13 @@
 
         <tr>
             
-                <td class="name"><code>db</code></td>
+                <td class="name"><code>api_key</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
             
@@ -105,7 +105,7 @@
 
             
 
-            <td class="description last"><a href="https://www.npmjs.com/package/sqlite3">SQLITE DB Object</a></td>
+            <td class="description last">Counter Strike : Global Offensive API key</td>
         </tr>
 
     
@@ -146,7 +146,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_lang.js.html">models/lang.js</a>, <a href="models_lang.js.html#line2">line 2</a>
+        <a href="models_csgo.js.html">models/csgo.js</a>, <a href="models_csgo.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -202,7 +202,7 @@
     
 
     
-    <h4 class="name" id="changeLang"><span class="type-signature"></span>changeLang<span class="signature">(lang, sid, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getUserStats"><span class="type-signature"></span>getUserStats<span class="signature">(options, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -210,7 +210,7 @@
 
 
 <div class="description">
-    Change the language of the bot
+    Fetch information about the user
 </div>
 
 
@@ -246,7 +246,49 @@
 
         <tr>
             
-                <td class="name"><code>lang</code></td>
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>username</code></td>
             
 
             <td class="type">
@@ -262,30 +304,14 @@
 
             
 
-            <td class="description last">New language of the bot</td>
+            <td class="description last">Faceit player's username</td>
         </tr>
 
     
+    </tbody>
+</table>
 
-        <tr>
-            
-                <td class="name"><code>sid</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
             </td>
-
-            
-
-            
-
-            <td class="description last">Discord server identifier</td>
         </tr>
 
     
@@ -308,7 +334,7 @@
 
             
 
-            <td class="description last">Callback to controller if err send list of supported language</td>
+            <td class="description last">Callback statistics to controller list of stats <a href="CSGOView.html#showUserStats">CSGOView#showUserStats</a></td>
         </tr>
 
     
@@ -349,7 +375,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_lang.js.html">models/lang.js</a>, <a href="models_lang.js.html#line19">line 19</a>
+        <a href="models_csgo.js.html">models/csgo.js</a>, <a href="models_csgo.js.html#line21">line 21</a>
     </li></ul></dd>
     
 
