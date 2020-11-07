@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: views/view.js</title>
+    <title>JSDoc: Source: models/csgo.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: views/view.js</h1>
+    <h1 class="page-title">Source: models/csgo.js</h1>
 
     
 
@@ -26,71 +26,62 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** 
- * Abstract class for Views of different games
- * @abstract
- */
-class View {
-  /**
-   * 
-   * @param {DiscordUser} bot 
-   */
-  constructor(bot) {
-    this.bot = bot
-  }
+            <pre class="prettyprint source linenums"><code>const request = require('request');
 
-  /**
-   * Template function for getting basic Embed
-   * @returns {DiscordMessage}
-   */
-  getEmbed() {
+/** Model for Counter Strike : Global Offensive command */
+class CSGOModel {
+
     /**
-     * @type {{embed: Embed}}
+     * save api_key
+     * @param {string} api_key - Counter Strike : Global Offensive API key
      */
-    var message = {
-      embed: {
-        color: 344703,
-        author: {
-          name: this.bot.username,
-          icon_url: this.bot.displayAvatarURL()
-        },
-        url: "http://github.com/ekazukii",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Stats Bot"
-        }
-      }
-    };
-    return message;
-  }
+    constructor(api_key) {
+        this.api_key = api_key;
+    }
 
-  /**
-   * Template function for getting errors Embed
-   * @returns {DiscordMessage}
-   */
-  getEmbedError() {
-    var message = {
-      embed: {
-        color: 'bf1919',
-        author: {
-          name: this.bot.username,
-          icon_url: this.bot.displayAvatarURL()
-        },
-        title: "Erreur",
-        url: "http://github.com/ekazukii",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Stats Bot"
+
+    /**
+     * Fetch information about the user
+     * @param {Object} options
+     * @param {string} options.username - Faceit player's username
+     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link CSGOView#showUserStats}
+     */
+    getUserStats(options, callback) {
+        var response = {}
+        var self = this;
+        var username = options.username;
+        var auth = {
+            'bearer': this.api_key
         }
-      }
-    };
-    return message;
-  }
+
+        request(`https://open.faceit.com/data/v4/players?nickname=${username}`, {json: true, auth: auth}, (err, res, body) => {
+            if(err) throw err;
+            if(typeof body.errors === "undefined") {
+                var id = body.player_id;
+                request(`https://open.faceit.com/data/v4/players/${id}/stats/csgo`, {json: true, auth: auth}, (err, res, body2) => {
+                    if(typeof body2.errors === "undefined") {
+                        response.elo = body.games.csgo.faceit_elo;
+                        response.lvl = body.games.csgo.skill_level;
+                        response.hs = body2.lifetime["Average Headshots %"];
+                        response.win = body2.lifetime["Win Rate %"];
+                        response.kd = body2.lifetime["Average K/D Ratio"];
+                        callback(response);
+                    } else {
+                        response.error = true;
+                        response.error_desc = "User don't play csgo";
+                        callback(response);
+                    }
+                })
+            } else {
+                response.error = true;
+                response.error_desc = "User not found";
+                callback(response);
+            }
+        });
+    }
 }
 
-module.exports = View;
+module.exports = CSGOModel;
 </code></pre>
         </article>
     </section>

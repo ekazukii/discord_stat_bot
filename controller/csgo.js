@@ -1,12 +1,12 @@
 const CSGOView = require("../views/csgo.js");
 const CSGOModel = require("../models/csgo.js");
 
-/** Controller for Clash of Clans command */
+/** Controller for Counter Strike : Global Offensive command */
 class CSGOController {
 
     /**
      * @todo Instanciate model and view in constructor.
-     * @param {string} api_key - Clash of Clans API key
+     * @param {string} api_key - Counter Strike : Global Offensive API key
      * @param {DiscordClient} client 
      */
     constructor(client, api_key) {
@@ -26,7 +26,7 @@ class CSGOController {
 
     /**
      * Ask the model to fetch statistics and send them to the view, then callback the message created in view
-     * @param {string} tag - clash of Clans playerTag
+     * @param {string} username - Faceit username
      * @param {string} lang - Current language of the bot
      * @param {messageCallback} callback 
      */

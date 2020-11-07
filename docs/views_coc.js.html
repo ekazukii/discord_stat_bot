@@ -57,16 +57,7 @@ class CoCView extends View {
         var language = require(`./lang/${lang}.json`).coc;
         var message = this.getEmbed();
         message.embed.title = language.statsTitle.replace("{arg1}", stats.name);
-        
-        var heroString = "", levelString = "", levelMaxString = "";
-
-        for (let i = 0; i &lt; stats.heroes.length; i++) {
-            const hero = stats.heroes[i];
-            heroString += hero.name + "\r";
-            levelString += hero.level + "\r";
-            levelMaxString += hero.maxLevel + "\r";
-        }
-        
+    
         message.embed.fields.push({
             name: language.statsFieldUsername,
             value: stats.name,
@@ -79,31 +70,50 @@ class CoCView extends View {
             name: language.statsFieldTownHallLevel,
             value: stats.townHallLevel,
             inline: true
-        }, {
-            name: language.statsFieldHeroName,
-            value: heroString,
-            inline: true
-        }, {
-            name: language.statsFieldHeroLevel,
-            value: levelString,
-            inline: true
-        }, {
-            name: language.statsFieldHeroMaxLevel,
-            value: levelMaxString,
-            inline: true
-        }, {
+        });
+
+        if(stats.heroes.length > 0) {
+            var heroString = "", levelString = "", levelMaxString = "";
+
+            for (let i = 0; i &lt; stats.heroes.length; i++) {
+                const hero = stats.heroes[i];
+                heroString += hero.name + "\r";
+                levelString += hero.level + "\r";
+                levelMaxString += hero.maxLevel + "\r";
+            }
+            
+            message.embed.fields.push(            {
+                name: language.statsFieldHeroName,
+                value: heroString,
+                inline: true
+            }, {
+                name: language.statsFieldHeroLevel,
+                value: levelString,
+                inline: true
+            }, {
+                name: language.statsFieldHeroMaxLevel,
+                value: levelMaxString,
+                inline: true
+            });
+        }
+
+        message.embed.fields.push({
             name: language.statsFieldTrophies,
             value: stats.trophies,
             inline: true
-        }, {
-            name: language.statsFieldClanName,
-            value: stats.clan.name,
-            inline: true
-        }, {
-            name: language.statsFieldClanTag,
-            value: stats.clan.tag,
-            inline: true
-        });
+        })
+
+        if(typeof stats.clan !== "undefined") {
+            message.embed.fields.push({
+                name: language.statsFieldClanName,
+                value: stats.clan.name,
+                inline: true
+            }, {
+                name: language.statsFieldClanTag,
+                value: stats.clan.tag,
+                inline: true
+            });
+        }
         callback(message);
     }
 
@@ -116,12 +126,19 @@ class CoCView extends View {
      */
     printError(err, lang, callback) {
         var language = require(`./lang/${lang}.json`).error;
-        var message = this.getEmbedError()
-        message.embed.title = language.errorTitle
-        message.embed.fields.push({
-            name: language.errorFieldName,
-            value: language.errorFieldValue
-        });
+        var message = this.getEmbedError();
+        message.embed.title = language.errorTitle;
+        if(err.error_desc === "invalid ip") {
+            message.embed.fields.push({
+                name: language.errorFieldName,
+                value: language.errorFieldValueIp
+            });
+        } else {
+            message.embed.fields.push({
+                name: language.errorFieldName,
+                value: language.errorFieldValue
+            });
+        }
         callback(message);
     }
 }
@@ -136,13 +153,13 @@ module.exports = CoCView;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CoCController.html">CoCController</a></li><li><a href="CoCModel.html">CoCModel</a></li><li><a href="CoCView.html">CoCView</a></li><li><a href="CoinflipController.html">CoinflipController</a></li><li><a href="CoinflipView.html">CoinflipView</a></li><li><a href="HelpController.html">HelpController</a></li><li><a href="HelpView.html">HelpView</a></li><li><a href="HivemcController.html">HivemcController</a></li><li><a href="HivemcModel.html">HivemcModel</a></li><li><a href="HivemcView.html">HivemcView</a></li><li><a href="HypixelController.html">HypixelController</a></li><li><a href="HypixelModel.html">HypixelModel</a></li><li><a href="HypixelView.html">HypixelView</a></li><li><a href="LangController.html">LangController</a></li><li><a href="LangModel.html">LangModel</a></li><li><a href="LangView.html">LangView</a></li><li><a href="LoLController.html">LoLController</a></li><li><a href="LoLModel.html">LoLModel</a></li><li><a href="LoLView.html">LoLView</a></li><li><a href="MojangModel.html">MojangModel</a></li><li><a href="View.html">View</a></li><li><a href="WynncraftController.html">WynncraftController</a></li><li><a href="WynncraftModel.html">WynncraftModel</a></li><li><a href="WynncraftView.html">WynncraftView</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRandomInt">getRandomInt</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CoCController.html">CoCController</a></li><li><a href="CoCModel.html">CoCModel</a></li><li><a href="CoCView.html">CoCView</a></li><li><a href="CoinflipController.html">CoinflipController</a></li><li><a href="CoinflipView.html">CoinflipView</a></li><li><a href="CSGOController.html">CSGOController</a></li><li><a href="CSGOModel.html">CSGOModel</a></li><li><a href="CSGOView.html">CSGOView</a></li><li><a href="HelpController.html">HelpController</a></li><li><a href="HelpView.html">HelpView</a></li><li><a href="HivemcController.html">HivemcController</a></li><li><a href="HivemcModel.html">HivemcModel</a></li><li><a href="HivemcView.html">HivemcView</a></li><li><a href="HypixelController.html">HypixelController</a></li><li><a href="HypixelModel.html">HypixelModel</a></li><li><a href="HypixelView.html">HypixelView</a></li><li><a href="LangController.html">LangController</a></li><li><a href="LangModel.html">LangModel</a></li><li><a href="LangView.html">LangView</a></li><li><a href="LoLController.html">LoLController</a></li><li><a href="LoLModel.html">LoLModel</a></li><li><a href="LoLView.html">LoLView</a></li><li><a href="MojangModel.html">MojangModel</a></li><li><a href="View.html">View</a></li><li><a href="WynncraftController.html">WynncraftController</a></li><li><a href="WynncraftModel.html">WynncraftModel</a></li><li><a href="WynncraftView.html">WynncraftView</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRandomInt">getRandomInt</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Nov 01 2020 00:17:37 GMT+0100 (GMT+01:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Nov 07 2020 15:34:12 GMT+0100 (heure normale d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: LangModel</title>
+    <title>JSDoc: Class: CSGOController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: LangModel</h1>
+    <h1 class="page-title">Class: CSGOController</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>LangModel<span class="signature">(db)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CSGOController<span class="signature">(api_key, client)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Model for Lang command</div>
+            <div class="class-description">Controller for Counter Strike : Global Offensive command</div>
         
     
 </header>
@@ -45,16 +45,12 @@
     
 
     
-    <h4 class="name" id="LangModel"><span class="type-signature"></span>new LangModel<span class="signature">(db)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CSGOController"><span class="type-signature"></span>new CSGOController<span class="signature">(api_key, client)</span><span class="type-signature"></span></h4>
     
 
     
 
 
-
-<div class="description">
-    Cache the db object in class property.
-</div>
 
 
 
@@ -89,13 +85,13 @@
 
         <tr>
             
-                <td class="name"><code>db</code></td>
+                <td class="name"><code>api_key</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
             
@@ -105,7 +101,30 @@
 
             
 
-            <td class="description last"><a href="https://www.npmjs.com/package/sqlite3">SQLITE DB Object</a></td>
+            <td class="description last">Counter Strike : Global Offensive API key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#DiscordClient">DiscordClient</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -146,7 +165,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_lang.js.html">models/lang.js</a>, <a href="models_lang.js.html#line2">line 2</a>
+        <a href="controller_csgo.js.html">controller/csgo.js</a>, <a href="controller_csgo.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -154,6 +173,13 @@
 
     
 
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Instanciate model and view in constructor.</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -202,7 +228,7 @@
     
 
     
-    <h4 class="name" id="changeLang"><span class="type-signature"></span>changeLang<span class="signature">(lang, sid, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="command"><span class="type-signature"></span>command<span class="signature">(args, lang, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -210,7 +236,7 @@
 
 
 <div class="description">
-    Change the language of the bot
+    Process command with command arguments (in this case always do userStats only command)
 </div>
 
 
@@ -246,6 +272,29 @@
 
         <tr>
             
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>lang</code></td>
             
 
@@ -262,30 +311,7 @@
 
             
 
-            <td class="description last">New language of the bot</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>sid</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Discord server identifier</td>
+            <td class="description last">Current language of the bot</td>
         </tr>
 
     
@@ -298,7 +324,7 @@
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="global.html#messageCallback">messageCallback</a></span>
 
 
             
@@ -308,7 +334,7 @@
 
             
 
-            <td class="description last">Callback to controller if err send list of supported language</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -349,7 +375,190 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_lang.js.html">models/lang.js</a>, <a href="models_lang.js.html#line19">line 19</a>
+        <a href="controller_csgo.js.html">controller/csgo.js</a>, <a href="controller_csgo.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="userStats"><span class="type-signature"></span>userStats<span class="signature">(username, lang, callback)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Ask the model to fetch statistics and send them to the view, then callback the message created in view
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>username</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Faceit username</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Current language of the bot</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#messageCallback">messageCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_csgo.js.html">controller/csgo.js</a>, <a href="controller_csgo.js.html#line33">line 33</a>
     </li></ul></dd>
     
 

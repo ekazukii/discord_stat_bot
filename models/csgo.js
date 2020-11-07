@@ -1,11 +1,11 @@
 const request = require('request');
 
-/** Model for Clash of Clans command */
+/** Model for Counter Strike : Global Offensive command */
 class CSGOModel {
 
     /**
      * save api_key
-     * @param {string} api_key - Clash of Clans API key
+     * @param {string} api_key - Counter Strike : Global Offensive API key
      */
     constructor(api_key) {
         this.api_key = api_key;
@@ -15,8 +15,8 @@ class CSGOModel {
     /**
      * Fetch information about the user
      * @param {Object} options
-     * @param {string} options.tag - Clash of Clans player's tag
-     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link CoCView#showUserStats}
+     * @param {string} options.username - Faceit player's username
+     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link CSGOView#showUserStats}
      */
     getUserStats(options, callback) {
         var response = {}

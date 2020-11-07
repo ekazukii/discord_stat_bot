@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: CoCView</title>
+    <title>JSDoc: Class: CSGOView</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: CoCView</h1>
+    <h1 class="page-title">Class: CSGOView</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>CoCView<span class="signature">(bot)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CSGOView<span class="signature">(bot)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">View of Clash of Clans command</div>
+            <div class="class-description">View of Counter Strike : Global Offensive command</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="CoCView"><span class="type-signature"></span>new CoCView<span class="signature">(bot)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CSGOView"><span class="type-signature"></span>new CSGOView<span class="signature">(bot)</span><span class="type-signature"></span></h4>
     
 
     
@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_coc.js.html">views/coc.js</a>, <a href="views_coc.js.html#line6">line 6</a>
+        <a href="views_csgo.js.html">views/csgo.js</a>, <a href="views_csgo.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -578,7 +578,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_coc.js.html">views/coc.js</a>, <a href="views_coc.js.html#line99">line 99</a>
+        <a href="views_csgo.js.html">views/csgo.js</a>, <a href="views_csgo.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -707,7 +707,7 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>username</code></td>
             
 
             <td class="type">
@@ -730,7 +730,7 @@
 
         <tr>
             
-                <td class="name"><code>level</code></td>
+                <td class="name"><code>lvl</code></td>
             
 
             <td class="type">
@@ -746,37 +746,14 @@
 
             
 
-            <td class="description last">Level of the player</td>
+            <td class="description last">Faceit level of the player (1-10)</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>townHallLevel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">nuumber</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Level of player's Town Hall</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>trophies</code></td>
+                <td class="name"><code>elo</code></td>
             
 
             <td class="type">
@@ -792,56 +769,14 @@
 
             
 
-            <td class="description last">Trophies of the player</td>
+            <td class="description last">Elo of the player</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>clan</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">if the player is online or not
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>win</code></td>
             
 
             <td class="type">
@@ -857,14 +792,14 @@
 
             
 
-            <td class="description last">Name of the clan</td>
+            <td class="description last">Percentage of winned game</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>tag</code></td>
+                <td class="name"><code>hs</code></td>
             
 
             <td class="type">
@@ -880,14 +815,30 @@
 
             
 
-            <td class="description last">Tag of the clan</td>
+            <td class="description last">Percentage of headshot</td>
         </tr>
 
     
-    </tbody>
-</table>
 
+        <tr>
+            
+                <td class="name"><code>kd</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
             </td>
+
+            
+
+            
+
+            <td class="description last">Kills/Deaths ration</td>
         </tr>
 
     
@@ -981,7 +932,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_coc.js.html">views/coc.js</a>, <a href="views_coc.js.html#line28">line 28</a>
+        <a href="views_csgo.js.html">views/csgo.js</a>, <a href="views_csgo.js.html#line27">line 27</a>
     </li></ul></dd>
     
 

@@ -1,6 +1,6 @@
 const View = require("./view.js");
 /**
- * View of Clash of Clans command
+ * View of Counter Strike : Global Offensive command
  * @extends View
  */
 class CSGOView extends View {
@@ -15,13 +15,12 @@ class CSGOView extends View {
     /**
      * Callback an {@link Embed} message with user statistics
      * @param {Object} stats 
-     * @param {sring} stats.name - Username of player
-     * @param {number} stats.level - Level of the player
-     * @param {nuumber} stats.townHallLevel - Level of player's Town Hall
-     * @param {number} stats.trophies - Trophies of the player
-     * @param {Object} stats.clan - if the player is online or not
-     * @param {number} stats.clan.name - Name of the clan
-     * @param {number} stats.clan.tag - Tag of the clan
+     * @param {sring} stats.username - Username of player
+     * @param {number} stats.lvl - Faceit level of the player (1-10)
+     * @param {number} stats.elo - Elo of the player
+     * @param {number} stats.win - Percentage of winned game
+     * @param {number} stats.hs - Percentage of headshot
+     * @param {number} stats.kd - Kills/Deaths ration
      * @param {string} lang - Current language of the bot
      * @param {messageCallback} callback 
      */
