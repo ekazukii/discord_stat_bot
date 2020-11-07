@@ -26,28 +26,28 @@ class CSGOView extends View {
      * @param {messageCallback} callback 
      */
     showUserStats(stats, lang, callback) { 
-        var language = require(`./lang/${lang}.json`).coc;
+        var language = require(`./lang/${lang}.json`).csgo;
         var message = this.getEmbed();
         message.embed.title = language.statsTitle.replace("{arg1}", stats.username);
     
         message.embed.fields.push({
-            name: "Faceit lvl",
+            name: language.lvlName,
             value: stats.lvl,
             inline: true
         }, {
-            name: "Faceit elo",
+            name: language.eloName,
             value: stats.elo,
             inline: true
         }, {
-            name: "Winrate",
-            value: stats.win,
+            name: language.winName,
+            value: stats.win + " %",
             inline: true
         }, {
-            name: "Headshot %",
-            value: stats.hs,
+            name: language.hsName,
+            value: stats.hs + " %",
             inline: true
         }, {
-            name: "Kill/Death ratio",
+            name: language.kdName,
             value: stats.kd,
             inline: true
         });

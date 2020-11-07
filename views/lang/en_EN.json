@@ -76,6 +76,15 @@
         "statsFieldClanTag": "Clan's tag"
     },
 
+    "csgo": {
+        "statsTitle": "Statistics of {arg1} on Faceit",
+        "lvlName": "Faceit level",
+        "eloName": "Faceit elo",
+        "winName": "Winrate percentage",
+        "hsName": "Heashot percentage",
+        "kdName": "Kills/Deaths ratio"
+    },
+
     "lang": {
         "langTitle": "Language changed",
         "langFieldName": "***************************************",
