@@ -279,6 +279,15 @@ describe("Discord tests", function() {
                 });
             });
 
+            it("Should found that the user don't play CSGO", function(done) {
+                
+                csgoController.command(["DatGuyJesus-"], "fr_FR", (message) => {
+                    if(message.embed.fields[0].name === "L'utilisateur ne joue pas à csgo") {
+                        done();
+                    }
+                }); 
+            });
+
             it("Should not found the user", function(done) {
                 csgoController.command(["IDONTEXISTONHIVEMC778455CSGOFACEIT"], "fr_FR", (message) => {
                     if(message.embed.title === "Erreur") {

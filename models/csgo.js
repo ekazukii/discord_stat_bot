@@ -31,7 +31,7 @@ class CSGOModel {
             if(typeof body.errors === "undefined") {
                 var id = body.player_id;
                 request(`https://open.faceit.com/data/v4/players/${id}/stats/csgo`, {json: true, auth: auth}, (err, res, body2) => {
-                    if(typeof body.errors === "undefined") {
+                    if(typeof body2.errors === "undefined") {
                         response.elo = body.games.csgo.faceit_elo;
                         response.lvl = body.games.csgo.skill_level;
                         response.hs = body2.lifetime["Average Headshots %"];

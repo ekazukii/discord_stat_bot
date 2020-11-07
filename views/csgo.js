@@ -66,10 +66,10 @@ class CSGOView extends View {
         var language = require(`./lang/${lang}.json`).error;
         var message = this.getEmbedError();
         message.embed.title = language.errorTitle;
-        if(err.error_desc === "invalid ip") {
+        if(err.error_desc === "User don't play csgo") {
             message.embed.fields.push({
                 name: language.errorFieldName,
-                value: language.errorFieldValueIp
+                value: language.errorFieldValueNotPlayingCSGO
             });
         } else {
             message.embed.fields.push({

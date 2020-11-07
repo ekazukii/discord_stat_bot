@@ -101,6 +101,7 @@
         "errorTitle": "Erreur",
         "errorFieldName": "Erreur lors de la requete",
         "errorFieldValue": "L'utilisaeur n'a pas été trouvé",
-        "errorFieldValueIp": "IP invalide"
+        "errorFieldValueIp": "IP invalide",
+        "errorFieldValueNotPlayingCSGO": "L'utilisateur ne joue pas à csgo"
     }
 }
