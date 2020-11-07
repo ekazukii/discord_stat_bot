@@ -14,9 +14,11 @@
   "dependencies": {
     "discord.js": "^12.3.1",
     "express": "^4.17.1",
+    "hot-shots": "^8.2.0",
     "mc-ping-updated": "^0.1.1",
     "request": "^2.88.2",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "winston": "^3.3.3"
   },
   "repository": {
     "type": "git",
