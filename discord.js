@@ -92,17 +92,21 @@ module.exports = function(options) {
                 var args = userMessage.content.split(" ");
                 var command = args[0];
                 args.shift();
-
+                var startDate = new Date();
                 switch (command) {
                     case "$wynncraft":
                         ddstats.increment("bot.wynncraft.command", ["command"]);
                         wynncraftController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.wynncraft.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$hivemc":
                         ddstats.increment("bot.hivemc.command", ["command"]);
                         hivemcController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.hivemc.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         });
                         break;
@@ -110,41 +114,55 @@ module.exports = function(options) {
                         ddstats.increment("bot.hypixel.command", ["command"]);
                         hypixelController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
+                            var endDate = new Date();
+                            ddstats.timing("bot.wynncraft.command.timer", endDate.getTime() - startDate.getTime());
                         });
                         break;
                     case "$coinflip":
                         ddstats.increment("bot.coinflip.command", ["command"]);
                         coinflipController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
+                            var endDate = new Date();
+                            ddstats.timing("bot.coinflip.command.timer", endDate.getTime() - startDate.getTime(), ["sub:"+args[0]]);
                         });
                         break;
                     case "$lol":
                         ddstats.increment("bot.lol.command", ["command"]);
                         lolController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.lol.command.timer", endDate.getTime() - startDate.getTime(), ["sub:"+args[0]]);
                             userMessage.channel.send(embed);
                         })
                         break;
                     case "$lang":
                         ddstats.increment("bot.lang.command", ["command"]);
                         langController.command(args, lang, userMessage.channel.guild.id, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.lang.command.timer", endDate.getTime() - startDate.getTime(), ["sub:"+args[0]]);
                             userMessage.channel.send(embed);
                         })
                         break;
                     case "$help":
                         ddstats.increment("bot.help.command", ["command"]);
                         helpController.command(args, lang,  (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.help.command.timer", endDate.getTime() - startDate.getTime(),);
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$coc":
                         ddstats.increment("bot.coc.command", ["command"]);
                         cocController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.coc.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$csgo":
                         ddstats.increment("bot.csgo.command", ["command"]);
                         csgoController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.csgo.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         })
                     default:
