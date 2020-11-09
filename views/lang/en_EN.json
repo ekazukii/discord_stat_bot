@@ -95,7 +95,11 @@
         "heroHours": "Hours played",
         "skillRatingName": "Skill Rating",
         "rankName": "Rank",
-        "rankRoleName": "Role"
+        "rankRoleName": "Role",
+        "searchTitle": "Result of the research {arg1}",
+        "idName": "Id",
+        "levelName": "Level",
+        "platformName": "Platform"
     },
 
     "lang": {
@@ -116,6 +120,7 @@
         "errorFieldName": "Error during the request",
         "errorFieldValue": "User was not found",
         "errorFieldValueIp": "Invalid IP",
-        "errorFieldValueNotPlayingCSGO": "The user don't play CSGO"
+        "errorFieldValueNotPlayingCSGO": "The user don't play CSGO",
+        "errorFieldValuePrivate": "The profile is in private"
     }
 }

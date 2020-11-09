@@ -94,7 +94,11 @@
         "heroHours": "Heures de jeu",
         "skillRatingName": "Skill Rating",
         "rankName": "Rang",
-        "rankRoleName": "Role"
+        "rankRoleName": "Role",
+        "searchTitle": "Résultat de la recherche {arg1}",
+        "idName": "Id",
+        "levelName": "Niveau",
+        "platformName": "Plateforme"
     },
 
 
@@ -116,6 +120,7 @@
         "errorFieldName": "Erreur lors de la requete",
         "errorFieldValue": "L'utilisaeur n'a pas été trouvé",
         "errorFieldValueIp": "IP invalide",
-        "errorFieldValueNotPlayingCSGO": "L'utilisateur ne joue pas à csgo"
+        "errorFieldValueNotPlayingCSGO": "L'utilisateur ne joue pas à CSGO",
+        "errorFieldValuePrivate": "Le profile est en privé"
     }
 }

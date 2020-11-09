@@ -31,14 +31,14 @@ class OWModel {
                         if($(".masthead-permission-level-text").text() !== "Private Profile") {
                             response.username = $("h1").first().text();
                             
-                            response.gamesPlayed = parseInt($("#competitive [data-stat-id=0x0860000000000385] .DataTable-tableColumn").last().text());
-                            response.gamesPlayed = response.gamesPlayed + parseInt($("#quickplay [data-stat-id=0x0860000000000385] .DataTable-tableColumn").last().text());
+                            response.gamesPlayed = parseInt( ($("#competitive [data-stat-id=0x0860000000000385] .DataTable-tableColumn").last().text() || 0));
+                            response.gamesPlayed = response.gamesPlayed + parseInt(($("#quickplay [data-stat-id=0x0860000000000385] .DataTable-tableColumn").last().text() || 0));
 
-                            response.win = parseInt($("#competitive [data-stat-id=0x08600000000003F5] .DataTable-tableColumn").last().text());
-                            response.win = response.win + parseInt($("#quickplay [data-stat-id=0x08600000000003F5] .DataTable-tableColumn").last().text());
+                            response.win = parseInt(($("#competitive [data-stat-id=0x08600000000003F5] .DataTable-tableColumn").last().text() || 0));
+                            response.win = response.win + parseInt(($("#quickplay [data-stat-id=0x08600000000003F5] .DataTable-tableColumn").last().text() || 0));
                             
-                            response.hours = parseInt($("#competitive [data-stat-id=0x0860000000000026] .DataTable-tableColumn").last().text());
-                            response.hours = response.hours + parseInt($("#quickplay [data-stat-id=0x0860000000000026] .DataTable-tableColumn").last().text());
+                            response.hours = parseInt(($("#competitive [data-stat-id=0x0860000000000026] .DataTable-tableColumn").last().text() || 0));
+                            response.hours = response.hours + parseInt(($("#quickplay [data-stat-id=0x0860000000000026] .DataTable-tableColumn").last().text() || 0));
 
                             // Winrate % rounded with 2 decimals
                             response.winrate = Math.round((response.win / response.gamesPlayed) * 10000) / 100;                           
@@ -64,7 +64,6 @@ class OWModel {
                                 rank.role = $(elem).find(".competitive-rank-tier-tooltip").data("ow-tooltip-text").split(" ")[0]
                                 response.ranks.push(rank);
                             });   
-
                             callback(response);   
                         } else {
                             response.error = true;
@@ -81,9 +80,12 @@ class OWModel {
     }
 
 
-    searchPublicUsers(username, platform) {
+    searchPublicUsers(options, callback) {
+        var username = options.username;
+        var platform = options.platform;
+        var response = {users: []}
         var users = [];
-        console.log(encodeURI(`https://playoverwatch.com/en-us/search/account-by-name/${username}/`));
+        response.more = false;
         fetch(encodeURI(`https://playoverwatch.com/en-us/search/account-by-name/${username}/`))
             .then(res => res.json())
             .then(json => {
@@ -91,9 +93,9 @@ class OWModel {
                     platform = platform.replace("switch", "nintendo-switch");
                     for (let i = 0; i < json.length; i++) {
                         if(json[i].isPublic && json[i].platform === platform) {
-                            users.push(json[i])
-                            if(users.length > 10) {
-                                console.log("MORE THAN 10 RESULTS");
+                            response.users.push(json[i])
+                            if(response.users.length > 10) {
+                                response.more = true;
                                 break;
                             }
                         }
@@ -103,9 +105,9 @@ class OWModel {
 
                     for (let i = 0; i < json.length; i++) {
                         if(json[i].isPublic) {
-                            users.push(json[i])
-                            if(users.length > 10) {
-                                console.log("MORE THAN 10 RESULTS");
+                            response.users.push(json[i])
+                            if(response.users.length > 10) {
+                                response.more = true;
                                 break;
                             }
                         }
@@ -113,7 +115,7 @@ class OWModel {
 
                 }
 
-                console.log(users)
+                callback(response)
             });
     }
 

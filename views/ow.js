@@ -28,7 +28,7 @@ class OWView extends View {
     showUserStats(stats, lang, callback) { 
         var language = require(`./lang/${lang}.json`).ow;
         var message = this.getEmbed();
-        message.embed.title = language.statsTitle.replace("{arg1}", stats.name);
+        message.embed.title = language.statsTitle.replace("{arg1}", stats.username);
     
         message.embed.fields.push({
             name: language.gamesPlayedName,
@@ -44,7 +44,7 @@ class OWView extends View {
             inline: true
         });
 
-        if(stats.ranks.length > 0) {
+        if(stats.heroes.length > 0) {
             var heroNameString = "", heroHourString = "";
 
             for (let i = 0; i < stats.heroes.length; i++) {
@@ -67,7 +67,7 @@ class OWView extends View {
             });
         }
 
-        if(stats.heroes.length > 0) {
+        if(stats.ranks.length > 0) {
             var srString = "", rankNameString = "", roleString = "";
 
             for (let i = 0; i < stats.ranks.length; i++) {
@@ -94,6 +94,42 @@ class OWView extends View {
         callback(message);
     }
 
+    showSearch(stats, lang, callback) { 
+        var language = require(`./lang/${lang}.json`).ow;
+        var message = this.getEmbed();
+        message.embed.title = language.searchTitle.replace("{arg1}", stats.username);
+
+        var idString = "", levelString = "", platformString = "";
+
+        for (let i = 0; i < stats.users.length; i++) {
+            idString += stats.users[i].urlName + "\r";
+            levelString += stats.users[i].playerLevel + "\r";
+            platformString += stats.users[i].platform + "\r";
+        }
+
+        if(stats.more) {
+            idString += "......................\r";
+            levelString += ".......\r";
+            platformString += "......\r";
+        }
+        
+        message.embed.fields.push({
+            name: language.idName,
+            value: idString,
+            inline: true
+        }, {
+            name: language.levelName,
+            value: levelString,
+            inline: true
+        }, {
+            name: language.platformName,
+            value: platformString,
+            inline: true
+        });
+
+        callback(message);
+    }
+
     /**
      * Callback an {@link Embed} message with user not found error
      * @param {Object} err - Error information 
@@ -105,10 +141,10 @@ class OWView extends View {
         var language = require(`./lang/${lang}.json`).error;
         var message = this.getEmbedError();
         message.embed.title = language.errorTitle;
-        if(err.error_desc === "invalid ip") {
+        if(err.error_desc === "Private profile") {
             message.embed.fields.push({
                 name: language.errorFieldName,
-                value: language.errorFieldValueIp
+                value: language.errorFieldValuePrivate
             });
         } else {
             message.embed.fields.push({

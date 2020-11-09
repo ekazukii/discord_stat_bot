@@ -22,15 +22,30 @@ class OWController {
      */
     command(args, lang, callback) {
         if(args[0] === "search") {
-            this.searchUser(args[1], lang, callback);
+            this.searchUser(args, lang, callback);
         } else if(args[0] === "profile") {
             this.userStats(args, lang, callback);
         }
         //this.userStats(args[0], lang, callback);
     }
 
-    searchUser(username, lang, callback) {
-        this.model.searchPublicUsers("over watch");
+    searchUser(args, lang, callback) {
+        this.model.searchPublicUsers({username: args[1]}, (stats) => {
+            stats.username = args[1];
+            if(stats.users.length > 0) {
+                this.view.showSearch(stats, lang, (embed) => {
+                    callback(embed);
+                });
+            } else {
+                stats.error = true;
+                stats.error_desc = "User not found";
+
+                this.view.printError(stats, lang, (embed) => {
+                    callback(embed);
+                });
+            }
+
+        });
     }
 
     /**
