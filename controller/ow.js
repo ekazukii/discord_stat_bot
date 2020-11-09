@@ -26,7 +26,6 @@ class OWController {
         } else if(args[0] === "profile") {
             this.userStats(args, lang, callback);
         }
-        //this.userStats(args[0], lang, callback);
     }
 
     searchUser(args, lang, callback) {
@@ -56,7 +55,6 @@ class OWController {
      */
     userStats(args, lang, callback) {
         var self = this;
-        //this.model.searchPublicUsers(args[2], args[1]);
         this.model.getUserStats({username : args[1], platform: args[2]}, (stats) => {
             if(stats.error) {
                 self.view.printError(stats, lang, (embed) => {
@@ -68,35 +66,6 @@ class OWController {
                 });
             }
         });
-        /*
-        if(this.platforms.includes(args[1])) {
-            const platform = args[1].replace("switch", "nintendo-switch")
-            fetch(`https://playoverwatch.com/en-us/search/account-by-name/${args[2]}/`)
-                .then(res => res.json())
-                .then(json => {
-                    for (let i = 0; i < json.length; i++) {
-                        console.log(json[i].platform + " + " + platform);
-                        if(json[i].isPublic && json[i].platform === platform) {
-                            console.log(json[i]);
-                        }
-                    }
-                });
-        }
-
-        var self = this;
-        this.model.getUserStats({username: username, platform, platform}, function(stats) {
-            stats.tag = tag
-            if (stats.error) {
-                self.view.printError(stats, lang, function(embed) {
-                    callback(embed)
-                })
-            } else {
-                self.view.showUserStats(stats, lang, function(embed) {
-                    callback(embed)
-                })
-            }
-        });
-        */
     }
 }
 

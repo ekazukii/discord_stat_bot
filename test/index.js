@@ -24,13 +24,14 @@ const LangController = require("../controller/lang.js");
 const HypixelController = require("../controller/hypixel.js");
 const CoCController = require("../controller/coc.js");
 const CSGOController = require("../controller/csgo.js");
+const OWController = require("../controller/ow.js");
 
 const WynncraftModel = require("../models/wynncraft.js");
 const LoLModel = require("../models/lol.js");
 const HivemcModel = require("../models/hivemc.js");
 const MojangModel = require("../models/mojang.js");
 
-var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, cocController, helpController, langController, csgoController;
+var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, cocController, helpController, langController, csgoController, owController;
 
 describe("Discord tests", function() {
     
@@ -58,6 +59,7 @@ describe("Discord tests", function() {
             helpController = new HelpController(client);
             langController = new LangController(client, db);
             csgoController = new CSGOController(client, csgoapi);
+            owController = new OWController(client);
             done();
         });
     });
@@ -281,7 +283,7 @@ describe("Discord tests", function() {
 
             it("Should found that the user don't play CSGO", function(done) {        
                 csgoController.command(["DatGuyJesus-"], "fr_FR", (message) => {
-                    if(message.embed.fields[0].value === "L'utilisateur ne joue pas à csgo") {
+                    if(message.embed.fields[0].value === "L'utilisateur ne joue pas à CSGO") {
                         done();
                     }
                 }); 
@@ -293,6 +295,51 @@ describe("Discord tests", function() {
                         done();
                     }
                 });
+            });
+        });
+
+        describe("Overwatch UT", function() {
+            it("Should get user statistics", function(done) {
+                owController.command(["profile", "MANO-12507", "pc"], "fr_FR", (message) => {
+                    console.log(message.embed.title);
+                    if(message.embed.title === "Statistiques de MANO sur Overwatch") {
+                        done();
+                    }
+                });
+            });
+
+            it("Should found a private profile", function(done) {        
+                owController.command(["profile", "MANO-31366", "pc"], "fr_FR", (message) => {
+                    if(message.embed.fields[0].value === "Le profile est en privé") {
+                        done();
+                    }
+                }); 
+            });
+
+            it("Should not found the user profile", function(done) {
+                owController.command(["profile", "IDONTEXISTINOVERWATCHOIJUHYT4432", "pc"], "fr_FR", (message) => {
+                    if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                });
+            });
+
+
+            it("Should found profiles", function(done) {        
+                owController.command(["search", "mano"], "fr_FR", (message) => {
+                    if(message.embed.title === "Résultat de la recherche mano") {
+                        done();
+                    }
+                }); 
+            });
+
+
+            it("Should not found profile", function(done) {        
+                owController.command(["search", "IDONTEXISTINOVERWATCHOIJUHYT6563"], "fr_FR", (message) => {
+                    if(message.embed.title === "Erreur") {
+                        done();
+                    }
+                }); 
             });
         });
 

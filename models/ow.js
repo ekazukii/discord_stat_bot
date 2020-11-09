@@ -4,9 +4,7 @@ const cheerio = require("cheerio");
 /** Model for Clash of Clans command */
 class OWModel {
 
-    constructor() {
-        this.platforms = ["pc", "psn", "xbl", "switch"];
-    }
+    constructor() {}
 
 
     /**
@@ -82,37 +80,20 @@ class OWModel {
 
     searchPublicUsers(options, callback) {
         var username = options.username;
-        var platform = options.platform;
         var response = {users: []}
         var users = [];
         response.more = false;
         fetch(encodeURI(`https://playoverwatch.com/en-us/search/account-by-name/${username}/`))
             .then(res => res.json())
             .then(json => {
-                if(this.platforms.includes(platform)) {
-                    platform = platform.replace("switch", "nintendo-switch");
-                    for (let i = 0; i < json.length; i++) {
-                        if(json[i].isPublic && json[i].platform === platform) {
-                            response.users.push(json[i])
-                            if(response.users.length > 10) {
-                                response.more = true;
-                                break;
-                            }
+                for (let i = 0; i < json.length; i++) {
+                    if(json[i].isPublic) {
+                        response.users.push(json[i])
+                        if(response.users.length > 10) {
+                            response.more = true;
+                            break;
                         }
                     }
-
-                } else {
-
-                    for (let i = 0; i < json.length; i++) {
-                        if(json[i].isPublic) {
-                            response.users.push(json[i])
-                            if(response.users.length > 10) {
-                                response.more = true;
-                                break;
-                            }
-                        }
-                    }
-
                 }
 
                 callback(response)
