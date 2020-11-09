@@ -169,7 +169,10 @@ module.exports = function(options) {
                         });
                         break;
                     case "$ow":
+                        ddstats.increment("bot.ow.command", ["command"]);
                         owController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.ow.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         });
                         break;
