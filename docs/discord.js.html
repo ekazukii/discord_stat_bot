@@ -51,8 +51,20 @@ module.exports = function(options) {
     const HypixelController = require("./controller/hypixel.js");
     const CoCController = require("./controller/coc.js");
     const CSGOController = require("./controller/csgo.js");
+    const OWController = require("./controller/ow.js");
+
+    const { createLogger, format, transports } = require('winston');
+
+    const logger = createLogger({
+        level: 'info',
+        exitOnError: false,
+        format: format.json(),
+        transports: [
+            new transports.File({filename: `./logs/log.log`, options: {flags: "w"}}),
+        ],
+    });
     
-    var langController, lolController, coinflipController, hivemcController, wynncraftController, hypixelController, helpController, cocController;
+    var langController, lolController, coinflipController, hivemcController, wynncraftController, hypixelController, helpController, cocController, owController;
 
     if (!fs.existsSync(path.join(__dirname, "/db"))){
         fs.mkdirSync(path.join(__dirname, "/db"));
@@ -68,7 +80,7 @@ module.exports = function(options) {
     });
 
     client.on('ready', () => {
-        console.log(`Logged in as ${client.user.tag}!`);
+        logger.info(`Logged in as ${client.user.tag}!`);
         client.user.setStatus('visible');
         
         lolController = new LoLController(client, riotapi);
@@ -80,12 +92,18 @@ module.exports = function(options) {
         helpController = new HelpController(client);
         cocController = new CoCController(client, cocapi);
         csgoController = new CSGOController(client, csgoapi);
+        owController = new OWController(client);
     });
+
+    var StatsD = require('hot-shots');
+    var ddstats = new StatsD({errorHandler: (err) => {
+        logger.error(err);
+    }});
 
     client.on('message', userMessage => {
         var lang;
         if (userMessage.content.charAt(0) === '$') {
-
+            logger.info("receive command (message start by $)", {guildId: userMessage.channel.guild.id, content: userMessage.content});
             // Get language of the server where the message comes from
             db.all("SELECT lang FROM servers WHERE sid = ?", userMessage.channel.guild.id, function(err, rows) {
                 if(err) {
@@ -104,50 +122,85 @@ module.exports = function(options) {
                 var args = userMessage.content.split(" ");
                 var command = args[0];
                 args.shift();
-
+                var startDate = new Date();
                 switch (command) {
                     case "$wynncraft":
+                        ddstats.increment("bot.wynncraft.command", ["command"]);
                         wynncraftController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.wynncraft.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$hivemc":
+                        ddstats.increment("bot.hivemc.command", ["command"]);
                         hivemcController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.hivemc.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         });
                         break;
                     case "$hypixel":
+                        ddstats.increment("bot.hypixel.command", ["command"]);
                         hypixelController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
+                            var endDate = new Date();
+                            ddstats.timing("bot.wynncraft.command.timer", endDate.getTime() - startDate.getTime());
                         });
                         break;
                     case "$coinflip":
+                        ddstats.increment("bot.coinflip.command", ["command"]);
                         coinflipController.command(args, lang, (embed) => {
                             userMessage.channel.send(embed);
+                            var endDate = new Date();
+                            ddstats.timing("bot.coinflip.command.timer", endDate.getTime() - startDate.getTime(), ["sub:"+args[0]]);
                         });
                         break;
                     case "$lol":
+                        ddstats.increment("bot.lol.command", ["command"]);
                         lolController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.lol.command.timer", endDate.getTime() - startDate.getTime(), ["sub:"+args[0]]);
                             userMessage.channel.send(embed);
                         })
                         break;
                     case "$lang":
+                        ddstats.increment("bot.lang.command", ["command"]);
                         langController.command(args, lang, userMessage.channel.guild.id, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.lang.command.timer", endDate.getTime() - startDate.getTime(), ["sub:"+args[0]]);
                             userMessage.channel.send(embed);
                         })
                         break;
                     case "$help":
+                        ddstats.increment("bot.help.command", ["command"]);
                         helpController.command(args, lang,  (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.help.command.timer", endDate.getTime() - startDate.getTime(),);
                             userMessage.channel.send(embed);
                         });
+                        break;
                     case "$coc":
+                        ddstats.increment("bot.coc.command", ["command"]);
                         cocController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.coc.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
                         });
+                        break;
                     case "$csgo":
+                        ddstats.increment("bot.csgo.command", ["command"]);
                         csgoController.command(args, lang, (embed) => {
+                            var endDate = new Date();
+                            ddstats.timing("bot.csgo.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
-                        })
+                        });
+                        break;
+                    case "$ow":
+                        owController.command(args, lang, (embed) => {
+                            userMessage.channel.send(embed);
+                        });
+                        break;
                     default:
                         break;
                 }
@@ -200,13 +253,13 @@ module.exports = function(options) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CoCController.html">CoCController</a></li><li><a href="CoCModel.html">CoCModel</a></li><li><a href="CoCView.html">CoCView</a></li><li><a href="CoinflipController.html">CoinflipController</a></li><li><a href="CoinflipView.html">CoinflipView</a></li><li><a href="CSGOController.html">CSGOController</a></li><li><a href="CSGOModel.html">CSGOModel</a></li><li><a href="CSGOView.html">CSGOView</a></li><li><a href="HelpController.html">HelpController</a></li><li><a href="HelpView.html">HelpView</a></li><li><a href="HivemcController.html">HivemcController</a></li><li><a href="HivemcModel.html">HivemcModel</a></li><li><a href="HivemcView.html">HivemcView</a></li><li><a href="HypixelController.html">HypixelController</a></li><li><a href="HypixelModel.html">HypixelModel</a></li><li><a href="HypixelView.html">HypixelView</a></li><li><a href="LangController.html">LangController</a></li><li><a href="LangModel.html">LangModel</a></li><li><a href="LangView.html">LangView</a></li><li><a href="LoLController.html">LoLController</a></li><li><a href="LoLModel.html">LoLModel</a></li><li><a href="LoLView.html">LoLView</a></li><li><a href="MojangModel.html">MojangModel</a></li><li><a href="View.html">View</a></li><li><a href="WynncraftController.html">WynncraftController</a></li><li><a href="WynncraftModel.html">WynncraftModel</a></li><li><a href="WynncraftView.html">WynncraftView</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRandomInt">getRandomInt</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CoCController.html">CoCController</a></li><li><a href="CoCModel.html">CoCModel</a></li><li><a href="CoCView.html">CoCView</a></li><li><a href="CoinflipController.html">CoinflipController</a></li><li><a href="CoinflipView.html">CoinflipView</a></li><li><a href="CSGOController.html">CSGOController</a></li><li><a href="CSGOModel.html">CSGOModel</a></li><li><a href="CSGOView.html">CSGOView</a></li><li><a href="HelpController.html">HelpController</a></li><li><a href="HelpView.html">HelpView</a></li><li><a href="HivemcController.html">HivemcController</a></li><li><a href="HivemcModel.html">HivemcModel</a></li><li><a href="HivemcView.html">HivemcView</a></li><li><a href="HypixelController.html">HypixelController</a></li><li><a href="HypixelModel.html">HypixelModel</a></li><li><a href="HypixelView.html">HypixelView</a></li><li><a href="LangController.html">LangController</a></li><li><a href="LangModel.html">LangModel</a></li><li><a href="LangView.html">LangView</a></li><li><a href="LoLController.html">LoLController</a></li><li><a href="LoLModel.html">LoLModel</a></li><li><a href="LoLView.html">LoLView</a></li><li><a href="MojangModel.html">MojangModel</a></li><li><a href="OWController.html">OWController</a></li><li><a href="OWModel.html">OWModel</a></li><li><a href="OWView.html">OWView</a></li><li><a href="View.html">View</a></li><li><a href="WynncraftController.html">WynncraftController</a></li><li><a href="WynncraftModel.html">WynncraftModel</a></li><li><a href="WynncraftView.html">WynncraftView</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRandomInt">getRandomInt</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Nov 07 2020 15:34:12 GMT+0100 (heure normale d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Nov 09 2020 14:41:23 GMT+0100 (heure normale d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

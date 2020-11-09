@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: CSGOView</title>
+    <title>JSDoc: Class: OWView</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: CSGOView</h1>
+    <h1 class="page-title">Class: OWView</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>CSGOView<span class="signature">(bot)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>OWView<span class="signature">(bot)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">View of Counter Strike : Global Offensive command</div>
+            <div class="class-description">View of Overwatch command</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="CSGOView"><span class="type-signature"></span>new CSGOView<span class="signature">(bot)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="OWView"><span class="type-signature"></span>new OWView<span class="signature">(bot)</span><span class="type-signature"></span></h4>
     
 
     
@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_csgo.js.html">views/csgo.js</a>, <a href="views_csgo.js.html#line6">line 6</a>
+        <a href="views_ow.js.html">views/ow.js</a>, <a href="views_ow.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -439,7 +439,7 @@
 
 
 <div class="description">
-    Callback an <a href="global.html#Embed">Embed</a> message with user not found error
+    Callback an <a href="global.html#Embed">Embed</a> message with error
 </div>
 
 
@@ -578,7 +578,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_csgo.js.html">views/csgo.js</a>, <a href="views_csgo.js.html#line64">line 64</a>
+        <a href="views_ow.js.html">views/ow.js</a>, <a href="views_ow.js.html#line155">line 155</a>
     </li></ul></dd>
     
 
@@ -593,6 +593,356 @@
             <li>Handle rate exceeded error</li>
         </ul>
     </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="showSearch"><span class="type-signature"></span>showSearch<span class="signature">(stats, lang, callback)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Callback an <a href="global.html#Embed">Embed</a> message with users founded
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>stats</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>username</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Username researched</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>users</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>urlName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Id of the player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>playerLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Level of the player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>platform</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Platform of the player (pc, psn, xbl, nintendo-switch)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Current language of the bot</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#messageCallback">messageCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_ow.js.html">views/ow.js</a>, <a href="views_ow.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
     
 </dl>
 
@@ -730,7 +1080,7 @@
 
         <tr>
             
-                <td class="name"><code>lvl</code></td>
+                <td class="name"><code>gamesPlayed</code></td>
             
 
             <td class="type">
@@ -746,20 +1096,20 @@
 
             
 
-            <td class="description last">Faceit level of the player (1-10)</td>
+            <td class="description last">Number of games played by the player (quickgame and ranked)</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>elo</code></td>
+                <td class="name"><code>winrate</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">nuumber</span>
 
 
             
@@ -769,20 +1119,20 @@
 
             
 
-            <td class="description last">Elo of the player</td>
+            <td class="description last">Winrate percentage of the player (quickgame and ranked)</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>win</code></td>
+                <td class="name"><code>hours</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -792,20 +1142,20 @@
 
             
 
-            <td class="description last">Percentage of winned game</td>
+            <td class="description last">Hours played</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>hs</code></td>
+                <td class="name"><code>heroes</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">array</span>
 
 
             
@@ -815,14 +1165,128 @@
 
             
 
-            <td class="description last">Percentage of headshot</td>
+            <td class="description last">Most played heroes
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Name of the hero</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>kd</code></td>
+                <td class="name"><code>hours</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Hours spent with the hero</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ranks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Rank in differents roles
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sr</code></td>
             
 
             <td class="type">
@@ -838,7 +1302,60 @@
 
             
 
-            <td class="description last">Kills/Deaths ration</td>
+            <td class="description last">Skill rating (elo)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rankName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Name of the rank (gold, diamond ...)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>role</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Role of the rank</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -932,7 +1449,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="views_csgo.js.html">views/csgo.js</a>, <a href="views_csgo.js.html#line27">line 27</a>
+        <a href="views_ow.js.html">views/ow.js</a>, <a href="views_ow.js.html#line32">line 32</a>
     </li></ul></dd>
     
 

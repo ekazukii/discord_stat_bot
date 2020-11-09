@@ -1,6 +1,6 @@
 const View = require("./view.js");
 /**
- * View of Clash of Clans command
+ * View of Overwatch command
  * @extends View
  */
 class OWView extends View {
@@ -15,13 +15,17 @@ class OWView extends View {
     /**
      * Callback an {@link Embed} message with user statistics
      * @param {Object} stats 
-     * @param {sring} stats.name - Username of player
-     * @param {number} stats.level - Level of the player
-     * @param {nuumber} stats.townHallLevel - Level of player's Town Hall
-     * @param {number} stats.trophies - Trophies of the player
-     * @param {Object} stats.clan - if the player is online or not
-     * @param {number} stats.clan.name - Name of the clan
-     * @param {number} stats.clan.tag - Tag of the clan
+     * @param {sring} stats.username - Username of player
+     * @param {number} stats.gamesPlayed - Number of games played by the player (quickgame and ranked)
+     * @param {nuumber} stats.winrate - Winrate percentage of the player (quickgame and ranked)
+     * @param {string} stats.hours - Hours played
+     * @param {array} stats.heroes - Most played heroes
+     * @param {string} stats.heroes[].name - Name of the hero
+     * @param {string} stats.heroes[].hours - Hours spent with the hero
+     * @param {array} stats.ranks - Rank in differents roles
+     * @param {number} stats.ranks[].sr - Skill rating (elo)
+     * @param {string} stats.ranks[].rankName - Name of the rank (gold, diamond ...)
+     * @param {number} stats.ranks[].role - Role of the rank
      * @param {string} lang - Current language of the bot
      * @param {messageCallback} callback 
      */
@@ -94,6 +98,17 @@ class OWView extends View {
         callback(message);
     }
 
+    /**
+     * Callback an {@link Embed} message with users founded
+     * @param {Object} stats
+     * @param {string} stats.username - Username researched
+     * @param {array} stats.users
+     * @param {string} stats.users[].urlName - Id of the player
+     * @param {string} stats.users[].playerLevel - Level of the player
+     * @param {string} stats.users[].platform - Platform of the player (pc, psn, xbl, nintendo-switch)
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     */
     showSearch(stats, lang, callback) { 
         var language = require(`./lang/${lang}.json`).ow;
         var message = this.getEmbed();
@@ -131,7 +146,7 @@ class OWView extends View {
     }
 
     /**
-     * Callback an {@link Embed} message with user not found error
+     * Callback an {@link Embed} message with error
      * @param {Object} err - Error information 
      * @param {string} lang - Current language of the bot
      * @param {messageCallback} callback 

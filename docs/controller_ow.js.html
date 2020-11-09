@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/coc.js</title>
+    <title>JSDoc: Source: controller/ow.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/coc.js</h1>
+    <h1 class="page-title">Source: controller/ow.js</h1>
 
     
 
@@ -26,64 +26,83 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const request = require('request');
+            <pre class="prettyprint source linenums"><code>const OWView = require("../views/ow.js");
+const OWModel = require("../models/ow.js");
 
-/** Model for Clash of Clans command */
-class CoCModel {
+/** Controller for Overwatch command */
+class OWController {
 
     /**
-     * save api_key
-     * @param {string} api_key - Clash of Clans API key
+     * @todo Instanciate model and view in constructor.
+     * @param {DiscordClient} client 
      */
-    constructor(api_key) {
-        this.api_key = api_key;
+    constructor(client) {
+        this.model = new OWModel();
+        this.view = new OWView(client.user);
     }
 
+    /**
+     * Process command with command arguments
+     * @param {Array} args 
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     */
+    command(args, lang, callback) {
+        if(args[0] === "search") {
+            this.searchUser(args, lang, callback);
+        } else if(args[0] === "profile") {
+            this.userStats(args, lang, callback);
+        }
+    }
 
     /**
-     * Fetch information about the user
-     * @param {Object} options
-     * @param {string} options.tag - Clash of Clans player's tag
-     * @param {function(Object)} callback  - Callback statistics to controller list of stats {@link CoCView#showUserStats}
+     * Ask the model to search user with specific username and send them to the view, then callback the message created in view
+     * @param {array} args - Commands arguments
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
      */
-    getUserStats(options, callback) {
-        var response = {}
-        var self = this;
-        var tag = options.tag;
-        var uriTag = tag.replace("#", "%23");
-        var auth = {
-            'bearer': this.api_key
-        }
-
-        request(`https://api.clashofclans.com/v1/players/${uriTag}`, {json: true, auth: auth}, (err, res, body) => {
-            if(err) throw err;
-            if(body.reason === "notFound") {
-                response.error = true;
-                response.error_desc = "User not found";
-                callback(response);
-            } else if(body.reason === "accessDenied.invalidIp") {
-                response.error = true;
-                response.error_desc = "invalid ip";
-                callback(response);
+    searchUser(args, lang, callback) {
+        this.model.searchPublicUsers({username: args[1]}, (stats) => {
+            stats.username = args[1];
+            if(stats.users.length > 0) {
+                this.view.showSearch(stats, lang, (embed) => {
+                    callback(embed);
+                });
             } else {
-                response.name = body.name
-                response.townHallLevel = body.townHallLevel;
-                response.trophies = body.trophies;
-                if(typeof body.clan !== "undefined") {
-                    response.clan = {
-                        name: body.clan.name,
-                        tag: body.clan.tag
-                    }
-                }
-                response.level = body.expLevel;
-                response.heroes = body.heroes;
-                callback(response);
+                stats.error = true;
+                stats.error_desc = "User not found";
+
+                this.view.printError(stats, lang, (embed) => {
+                    callback(embed);
+                });
+            }
+
+        });
+    }
+
+    /**
+     * Ask the model to fetch statistics and send them to the view, then callback the message created in view
+     * @param {string} args - Commands arguments
+     * @param {string} lang - Current language of the bot
+     * @param {messageCallback} callback 
+     */
+    userStats(args, lang, callback) {
+        var self = this;
+        this.model.getUserStats({username : args[1], platform: args[2]}, (stats) => {
+            if(stats.error) {
+                self.view.printError(stats, lang, (embed) => {
+                    callback(embed);
+                });
+            } else {
+                self.view.showUserStats(stats, lang, (embed) => {
+                    callback(embed);
+                });
             }
         });
     }
 }
 
-module.exports = CoCModel;
+module.exports = OWController;
 </code></pre>
         </article>
     </section>
