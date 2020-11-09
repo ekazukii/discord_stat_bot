@@ -4,7 +4,9 @@ const cheerio = require("cheerio");
 /** Model for Overwatch command */
 class OWModel {
 
-    constructor() {}
+    constructor() {
+        this.platforms = ["pc", "psn", "xbl", "nintendo-switch"];
+    }
 
     /**
      * Fetch information about the user
