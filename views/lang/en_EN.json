@@ -85,6 +85,19 @@
         "kdName": "Kills/Deaths ratio"
     },
 
+    "ow": {
+        "statsTitle": "Statistics of {arg1} on Overwatch",
+        "gamesPlayedName": "Games played",
+        "winrateName": "Winrate percentage",
+        "hoursName": "Hours played",
+        "topName": "Top",
+        "heroName": "Hero name",
+        "heroHours": "Hours played",
+        "skillRatingName": "Skill Rating",
+        "rankName": "Rank",
+        "rankRoleName": "Role"
+    },
+
     "lang": {
         "langTitle": "Language changed",
         "langFieldName": "***************************************",

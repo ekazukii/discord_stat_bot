@@ -23,6 +23,7 @@ module.exports = function(options) {
     const HypixelController = require("./controller/hypixel.js");
     const CoCController = require("./controller/coc.js");
     const CSGOController = require("./controller/csgo.js");
+    const OWController = require("./controller/ow.js");
 
     const { createLogger, format, transports } = require('winston');
 
@@ -35,7 +36,7 @@ module.exports = function(options) {
         ],
     });
     
-    var langController, lolController, coinflipController, hivemcController, wynncraftController, hypixelController, helpController, cocController;
+    var langController, lolController, coinflipController, hivemcController, wynncraftController, hypixelController, helpController, cocController, owController;
 
     if (!fs.existsSync(path.join(__dirname, "/db"))){
         fs.mkdirSync(path.join(__dirname, "/db"));
@@ -63,6 +64,7 @@ module.exports = function(options) {
         helpController = new HelpController(client);
         cocController = new CoCController(client, cocapi);
         csgoController = new CSGOController(client, csgoapi);
+        owController = new OWController(client);
     });
 
     var StatsD = require('hot-shots');
@@ -164,7 +166,13 @@ module.exports = function(options) {
                             var endDate = new Date();
                             ddstats.timing("bot.csgo.command.timer", endDate.getTime() - startDate.getTime());
                             userMessage.channel.send(embed);
-                        })
+                        });
+                        break;
+                    case "$ow":
+                        owController.command(args, lang, (embed) => {
+                            userMessage.channel.send(embed);
+                        });
+                        break;
                     default:
                         break;
                 }
