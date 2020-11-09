@@ -84,6 +84,24 @@
         "kdName": "Ratio Kills/Deaths"
     },
 
+    "ow": {
+        "statsTitle": "Statistiques de {arg1} sur Overwatch",
+        "gamesPlayedName": "Parties jouées",
+        "winrateName": "Pourcentage de victoire",
+        "hoursName": "Heures de jeu",
+        "topName": "Top",
+        "heroName": "Nom du héro",
+        "heroHours": "Heures de jeu",
+        "skillRatingName": "Skill Rating",
+        "rankName": "Rang",
+        "rankRoleName": "Role",
+        "searchTitle": "Résultat de la recherche {arg1}",
+        "idName": "Id",
+        "levelName": "Niveau",
+        "platformName": "Plateforme"
+    },
+
+
     "lang": {
         "langTitle": "Changement de langue",
         "langFieldName": "***************************************",
@@ -102,6 +120,7 @@
         "errorFieldName": "Erreur lors de la requete",
         "errorFieldValue": "L'utilisaeur n'a pas été trouvé",
         "errorFieldValueIp": "IP invalide",
-        "errorFieldValueNotPlayingCSGO": "L'utilisateur ne joue pas à csgo"
+        "errorFieldValueNotPlayingCSGO": "L'utilisateur ne joue pas à CSGO",
+        "errorFieldValuePrivate": "Le profile est en privé"
     }
 }

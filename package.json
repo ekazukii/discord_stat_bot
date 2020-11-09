@@ -1,6 +1,6 @@
 {
   "name": "@ekazukii/discord_bot",
-  "version": "1.8.2",
+  "version": "1.9.0",
   "description": "discord",
   "main": "discord.js",
   "scripts": {
@@ -12,10 +12,12 @@
   "author": "ekazuki",
   "license": "CC-BY-NC-SA-4.0",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "discord.js": "^12.3.1",
     "express": "^4.17.1",
     "hot-shots": "^8.2.0",
     "mc-ping-updated": "^0.1.1",
+    "node-fetch": "^2.6.1",
     "request": "^2.88.2",
     "sqlite3": "^5.0.0",
     "winston": "^3.3.3"

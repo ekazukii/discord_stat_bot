@@ -85,6 +85,23 @@
         "kdName": "Kills/Deaths ratio"
     },
 
+    "ow": {
+        "statsTitle": "Statistics of {arg1} on Overwatch",
+        "gamesPlayedName": "Games played",
+        "winrateName": "Winrate percentage",
+        "hoursName": "Hours played",
+        "topName": "Top",
+        "heroName": "Hero name",
+        "heroHours": "Hours played",
+        "skillRatingName": "Skill Rating",
+        "rankName": "Rank",
+        "rankRoleName": "Role",
+        "searchTitle": "Result of the research {arg1}",
+        "idName": "Id",
+        "levelName": "Level",
+        "platformName": "Platform"
+    },
+
     "lang": {
         "langTitle": "Language changed",
         "langFieldName": "***************************************",
@@ -103,6 +120,7 @@
         "errorFieldName": "Error during the request",
         "errorFieldValue": "User was not found",
         "errorFieldValueIp": "Invalid IP",
-        "errorFieldValueNotPlayingCSGO": "The user don't play CSGO"
+        "errorFieldValueNotPlayingCSGO": "The user don't play CSGO",
+        "errorFieldValuePrivate": "The profile is in private"
     }
 }
