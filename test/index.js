@@ -15,21 +15,21 @@ const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
 const path = require("path");
 
-const LoLController = require("../controller/lol.js");
-const WynncraftController = require("../controller/wynncraft.js");
-const HivemcController = require("../controller/hivemc.js");
-const CoinflipController = require("../controller/coinflip.js");
-const HelpController = require("../controller/help.js");
-const LangController = require("../controller/lang.js");
-const HypixelController = require("../controller/hypixel.js");
-const CoCController = require("../controller/coc.js");
-const CSGOController = require("../controller/csgo.js");
-const OWController = require("../controller/ow.js");
+const LoLController = require("../build/controller/lol.js");
+const WynncraftController = require("../build/controller/wynncraft.js");
+const HivemcController = require("../build/controller/hivemc.js");
+const CoinflipController = require("../build/controller/coinflip.js");
+const HelpController = require("../build/controller/help.js");
+const LangController = require("../build/controller/lang.js");
+const HypixelController = require("../build/controller/hypixel.js");
+const CoCController = require("../build/controller/coc.js");
+const CSGOController = require("../build/controller/csgo.js");
+const OWController = require("../build/controller/ow.js");
 
-const WynncraftModel = require("../models/wynncraft.js");
-const LoLModel = require("../models/lol.js");
-const HivemcModel = require("../models/hivemc.js");
-const MojangModel = require("../models/mojang.js");
+const WynncraftModel = require("../build/models/wynncraft.js");
+const LoLModel = require("../build/models/lol.js");
+const HivemcModel = require("../build/models/hivemc.js");
+const MojangModel = require("../build/models/mojang.js");
 
 var lolController, wynncraftController, hivemcController, hypixelController, coinflipController, cocController, helpController, langController, csgoController, owController;
 
@@ -50,23 +50,23 @@ describe("Discord tests", function() {
             });
 
             client.user.setStatus('visible');
-            lolController = new LoLController(client, riotapi);
-            wynncraftController = new WynncraftController(client);
-            hivemcController = new HivemcController(client);
-            coinflipController = new CoinflipController(client);
-            hypixelController = new HypixelController(client, hypixelapi);
-            cocController = new CoCController(client, cocapi);
-            helpController = new HelpController(client);
-            langController = new LangController(client, db);
-            csgoController = new CSGOController(client, csgoapi);
-            owController = new OWController(client);
+            lolController = new LoLController.LoLController(client, riotapi);
+            wynncraftController = new WynncraftController.WynncraftController(client);
+            hivemcController = new HivemcController.HivemcController(client);
+            coinflipController = new CoinflipController.CoinflipController(client);
+            hypixelController = new HypixelController.HypixelController(client, hypixelapi);
+            cocController = new CoCController.CoCController(client, cocapi);
+            helpController = new HelpController.HelpController(client);
+            langController = new LangController.LangController(client, db);
+            csgoController = new CSGOController.CSGOController(client, csgoapi);
+            owController = new OWController.OWController(client);
             done();
         });
     });
     
     describe("Models UT", function() {
         describe("League of Legends UT", function() {
-            var model = new LoLModel(riotapi);
+            var model = new LoLModel.LoLModel(riotapi);
 
             it("Should get user statistics", function(done) {
                 model.getUserStats({username: "ekazukii"}, (stats) => {
@@ -103,7 +103,7 @@ describe("Discord tests", function() {
         });
 
         describe("Wynncraft UT", function() {
-            var model = new WynncraftModel();
+            var model = new WynncraftModel.WynncraftModel();
             it("Should get user statistics", function(done) {
                 model.getUserStats({username: "zefut"}, (stats) => {
                     if(stats.mobsKilled > 1) {
@@ -122,7 +122,7 @@ describe("Discord tests", function() {
         });
         
         describe("HiveMC UT", function() {
-            var model = new HivemcModel();
+            var model = new HivemcModel.HivemcModel();
             it("Should get user statistics", function(done) {
                 model.getUserStats({username: "zefut"}, (stats) => {
                     if(stats.hide >= 10) {
@@ -141,7 +141,7 @@ describe("Discord tests", function() {
         });
 
         describe("Mojang UT", function() {
-            var model = new MojangModel();
+            var model = new MojangModel.MojangModel();
             it("Should get user UUID", function(done) {
                 model.getUUIDByUsername({username: "ekazuki"}, (uuid) => {
                     if(uuid === "091c969e-ba6d-4ada-9620-f55038f36e41") {

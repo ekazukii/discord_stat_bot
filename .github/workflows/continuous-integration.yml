@@ -16,6 +16,7 @@ jobs:
         registry-url: 'https://npm.pkg.github.com'
         scope: '@ekazukii'
     - run: npm ci
+    - run: npm run build --if-present
     - run: npm publish
       name: Publish package
       env:
