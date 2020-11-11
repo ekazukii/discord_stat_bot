@@ -1,9 +1,9 @@
 {
-    "plugins": [],
+    "plugins": ["node_modules/jsdoc-babel"],
     "recurseDepth": 10,
     "source": {
-        "include": ["discord.js", "controller", "views", "models"],
-        "includePattern": ".+\\.js(doc|x)?$",
+        "include": ["./src/", "./src/controller/", "./src/models", "./src/views/"],
+        "includePattern": ".+\\.ts(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "sourceType": "module",
@@ -17,5 +17,11 @@
     },
     "opts": {
         "destination": "./docs/"
-    }
+    },
+    "babel": {
+        "extensions": ["ts", "tsx"],
+        "ignore": ["**/*.(test|spec).ts"],
+        "babelrc": false,
+        "presets": ["@babel/preset-typescript"]
+      }
 }
