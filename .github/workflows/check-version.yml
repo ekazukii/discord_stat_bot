@@ -25,6 +25,8 @@ jobs:
     - name: Read package.json
       uses: tyankatsu0105/read-package-version-actions@v1
       id: package-version
+    - name: Show versions
+      run: echo "${{ steps.split.outputs._0 }} == ${{ steps.package-version.outputs.version }}"
     - name: Fail if version didn't changed
       run: exit 1
       if: steps.split.outputs._0 == steps.package-version.outputs.version
