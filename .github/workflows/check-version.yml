@@ -27,4 +27,4 @@ jobs:
       run: echo "${{ steps.oldrls.outputs.release }} == ${{ steps.package-version-with-v.outputs.version }}"
     - name: Fail if version didn't changed
       run: exit 1
-      if: steps.oldrls.outputs.release == "steps.package-version.outputs.version
+      if: steps.oldrls.outputs.release == steps.package-version.outputs.version
