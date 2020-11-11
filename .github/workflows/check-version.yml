@@ -17,16 +17,14 @@ jobs:
       id: oldrls
       with:
         repository: ekazukii/discord_stat_bot
-    - name: Split Action
-      uses: JungWinter/split@v1.1.0
-      id: split
-      with:
-        msg: ${{ steps.oldrls.outputs.release }}
     - name: Read package.json
       uses: tyankatsu0105/read-package-version-actions@v1
       id: package-version
+    - name: Add v in from of package.json version
+      id: package-version-with-v
+      run: echo ::set-output name=version::v${{ steps.package-version.outputs.version }}
     - name: Show versions
-      run: echo "${{ steps.split.outputs._0 }} == ${{ steps.package-version.outputs.version }}"
+      run: echo "${{ steps.oldrls.outputs.release }} == ${{ steps.package-version-with-v.outputs.version }}"
     - name: Fail if version didn't changed
       run: exit 1
-      if: steps.split.outputs._0 == steps.package-version.outputs.version
+      if: steps.oldrls.outputs.release == "steps.package-version.outputs.version
