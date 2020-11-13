@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as request from "request";
+import * as fetch from 'node-fetch';
 import {ErrorResponse, CSGOStats} from "../types";
 
 /** Model for Counter Strike : Global Offensive command */
@@ -25,36 +25,39 @@ export class CSGOModel {
     getUserStats(options: {username: string}, callback: Function) {
         var self = this;
         var username = options.username;
-        var auth = {
-            'bearer': this.api_key
+        var headers = {
+            Authorization: "Bearer " + this.api_key
         }
 
-        request(`https://open.faceit.com/data/v4/players?nickname=${username}`, {json: true, auth: auth}, (err: Error, res: any, body: any) => {
-            if(err) throw err;
-            if(typeof body.errors === "undefined") {
-                var id = body.player_id;
-                request(`https://open.faceit.com/data/v4/players/${id}/stats/csgo`, {json: true, auth: auth}, (err: Error, res: any, body2: any) => {
-                    if(typeof body2.errors === "undefined") {
-                        var response = new CSGOStats;
-                        response.elo = body.games.csgo.faceit_elo;
-                        response.lvl = body.games.csgo.skill_level;
-                        response.hs = body2.lifetime["Average Headshots %"];
-                        response.win = body2.lifetime["Win Rate %"];
-                        response.kd = body2.lifetime["Average K/D Ratio"];
-                        callback(response);
-                    } else {
-                        var errRes = new ErrorResponse;
-                        errRes.error = true;
-                        errRes.error_desc = "User don't play csgo";
-                        callback(errRes);
-                    }
-                })
-            } else {
-                var errRes = new ErrorResponse;
-                errRes.error = true;
-                errRes.error_desc = "User not found";
-                callback(errRes);
-            }
+        fetch(`https://open.faceit.com/data/v4/players?nickname=${username}`, {headers: headers})
+            .then((res: any) => res.json())
+            .then((body: any) => {
+                if(typeof body.errors === "undefined") {
+                    var id = body.player_id;
+                    fetch(`https://open.faceit.com/data/v4/players/${id}/stats/csgo`, {headers: headers})
+                        .then((res: any) => res.json())
+                        .then((body2: any) => {
+                            if(typeof body2.errors === "undefined") {
+                                var response = new CSGOStats;
+                                response.elo = body.games.csgo.faceit_elo;
+                                response.lvl = body.games.csgo.skill_level;
+                                response.hs = body2.lifetime["Average Headshots %"];
+                                response.win = body2.lifetime["Win Rate %"];
+                                response.kd = body2.lifetime["Average K/D Ratio"];
+                                callback(response);
+                            } else {
+                                var errRes = new ErrorResponse;
+                                errRes.error = true;
+                                errRes.error_desc = "User don't play csgo";
+                                callback(errRes);
+                            }
+                        })
+                } else {
+                    var errRes = new ErrorResponse;
+                    errRes.error = true;
+                    errRes.error_desc = "User not found";
+                    callback(errRes);
+                }
         });
     }
 }

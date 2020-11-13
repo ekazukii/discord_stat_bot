@@ -186,7 +186,7 @@ function main(options: any) {
     });
 };
 
-exports = main;
+export = main;
 
 // TYPEDEF FOR JSDOCS
 
