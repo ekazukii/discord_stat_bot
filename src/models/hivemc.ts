@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as request from "request";
+import * as fetch from 'node-fetch';
 import {ErrorResponse, HivemcStats} from "../types";
 
 /** Model for Hivemc command */
@@ -16,24 +16,28 @@ export class HivemcModel {
      */
     getUserStats(options: {username: string}, callback: Function) {
         var username = options.username;
-        request('http://api.hivemc.com/v1/player/'+username+'/HIDE', { json: true }, (err1: Error, res1: any, body1: any) => {
-            if (err1) { return console.log(err1); }
+        fetch('http://api.hivemc.com/v1/player/'+username+'/HIDE', {})
+            .then((res: any) => res.json())
+            .then((body1: any) => {
             if (typeof body1.code === 'undefined') {
                 var response = new HivemcStats
-                response.hide = res1.body.victories
-                request('http://api.hivemc.com/v1/player/'+username+'/GRAV', { json: true }, (err2: Error, _res2: any, body2: any) => {
-                    if (err2) { return console.log(err2); }
-                    response.grav = body2.victories
-                    request('http://api.hivemc.com/v1/player/'+username+'/BP', { json: true }, (err3: Error, _res3: any, body3: any) => {
-                        if (err3) { return console.log(err3); }
-                        response.blockparty = body3.victories
-                        request('http://api.hivemc.com/v1/player/'+username+'/DR', { json: true }, (err4: Error, _res4: any, body4: any) => {
-                            if (err4) { return console.log(err4); }
-                            response.deathrun = body4.victories
-                            callback(response);
-                        });
+                response.hide = body1.victories
+                fetch('http://api.hivemc.com/v1/player/'+username+'/GRAV', {})
+                    .then((res: any) => res.json())
+                    .then((body2: any) => {
+                        response.grav = body2.victories
+                        fetch('http://api.hivemc.com/v1/player/'+username+'/BP', {})
+                            .then((res: any) => res.json())
+                            .then((body3: any) => {
+                                response.blockparty = body3.victories
+                                fetch('http://api.hivemc.com/v1/player/'+username+'/DR', {})
+                                    .then((res: any) => res.json())
+                                    .then((body4: any) => {
+                                        response.deathrun = body4.victories
+                                        callback(response);
+                                    });
+                            });
                     });
-                });
             } else {
                 var errRes = new ErrorResponse;
                 errRes.error = true;

@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as request from "request";
+import * as fetch from 'node-fetch';
 import * as types from "../types";
 
 /** Model of League of Legends commands */
@@ -15,10 +15,14 @@ export class LoLModel {
         this.apikey = apikey;
 
         var self = this;
-        request("http://ddragon.leagueoflegends.com/cdn/10.21.1/data/en_US/champion.json", { json: true }, (err: Error, res: any, body: any) => {
-            if (err) { return console.log(err); }
-            self.champJSON = body;
-        });
+        fetch("http://ddragon.leagueoflegends.com/cdn/10.21.1/data/en_US/champion.json", {})
+            .then((res: any) => res.json())
+            .then((body: any) => {
+                self.champJSON = body;
+            })
+            .catch((e: Error) => {
+                console.error(e)
+            });
     }
 
     /**
@@ -37,44 +41,47 @@ export class LoLModel {
                 var aid = summoner.accountId;
                 response.level = summoner.summonerLevel;
                 response.masteries = [];
-                request(`https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${pid}/?api_key=${self.apikey}`, { json: true }, (err: Error, res: any, body: any) => {
+                fetch(`https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${pid}/?api_key=${self.apikey}`, {})
+                    .then((res: any) => res.json())
+                    .then((body: any) => {
                     
-                    for (let i = 0; i < 3; i++) {
-                        var mastery = new types.LoLMasteries;
-                        mastery.level = body[i].championLevel;
-                        mastery.points = body[i].championPoints;
-                        mastery.name = self.getChampName(body[i].championId);
-                        response.masteries.push(mastery);
-                    }
-
-                    request(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${pid}?api_key=${self.apikey}`, { json: true }, (err: Error, res: any, body: any) => {
-                        if (err) { return console.log(err); }
-                        if(typeof body[0] !== "undefined") {
-                            response.rank = body[0].tier + " " + body[0].rank;
-                        } else {
-                            response.rank = "UNRANKED";
+                        for (let i = 0; i < 3; i++) {
+                            var mastery = new types.LoLMasteries;
+                            mastery.level = body[i].championLevel;
+                            mastery.points = body[i].championPoints;
+                            mastery.name = self.getChampName(body[i].championId);
+                            response.masteries.push(mastery);
                         }
 
-                        self.getMatchlist(aid, 1, (body: any) => {
-                            var gameId = body.matches[0].gameId;
+                        fetch(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${pid}?api_key=${self.apikey}`, {})
+                            .then((res: any) => res.json())
+                            .then((body: any) => {
+                                if(typeof body[0] !== "undefined") {
+                                    response.rank = body[0].tier + " " + body[0].rank;
+                                } else {
+                                    response.rank = "UNRANKED";
+                                }
 
-                            self.getMatchInfo(gameId, (body: any) => {
-                                var participantId = self.getParticipantId(body, aid);
-                                var participant = self.getParticipant(body, participantId);
+                                self.getMatchlist(aid, 1, (body: any) => {
+                                    var gameId = body.matches[0].gameId;
 
-                                response.match.champ = self.getChampName(participant.championId);
-                                response.match.win = participant.stats.win;
-                                response.match.kills = participant.stats.kills;
-                                response.match.deaths = participant.stats.deaths;
-                                response.match.assists = participant.stats.assists;
-                                response.match.cs = self.getCSPerMinutes(participant.stats, body.gameDuration);
+                                    self.getMatchInfo(gameId, (body: any) => {
+                                        var participantId = self.getParticipantId(body, aid);
+                                        var participant = self.getParticipant(body, participantId);
 
-                                callback(response);
-                
-                            })
-                        })
+                                        response.match.champ = self.getChampName(participant.championId);
+                                        response.match.win = participant.stats.win;
+                                        response.match.kills = participant.stats.kills;
+                                        response.match.deaths = participant.stats.deaths;
+                                        response.match.assists = participant.stats.assists;
+                                        response.match.cs = self.getCSPerMinutes(participant.stats, body.gameDuration);
+
+                                        callback(response);
+                        
+                                    })
+                                })
+                            });
                     });
-                });
                 
             } else {
                 var errRes = new types.ErrorResponse;
@@ -197,14 +204,15 @@ export class LoLModel {
     getChampionRotation(callback: Function) {
         var champList: Array<string> = [];
         var self = this;
-        request(`https://euw1.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=${this.apikey}`, {json: true}, (err: Error, res: any, body: any) => {
-            if (err) { return console.log(err); }
-            for (let i = 0; i < body.freeChampionIds.length; i++) {
-                const champId = body.freeChampionIds[i];
-                champList.push(self.getChampName(champId));
-            }
-            callback(champList);
-        });
+        fetch(`https://euw1.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=${this.apikey}`, {})
+            .then((res: any) => res.json())
+            .then((body: any) => {
+                for (let i = 0; i < body.freeChampionIds.length; i++) {
+                    const champId = body.freeChampionIds[i];
+                    champList.push(self.getChampName(champId));
+                }
+                callback(champList);
+            });
     }
 
     /**
@@ -229,10 +237,11 @@ export class LoLModel {
      * @private
      */
     getSummonerByName(username: string, callback: Function) {
-        request(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}/?api_key=${this.apikey}`, {json: true}, (err: Error, res: any, body: any) => {
-            if (err) { return console.log(err); }
-            callback(body);
-        });
+        fetch(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}/?api_key=${this.apikey}`, {})
+            .then((res: any) => res.json())
+            .then((body: any) => { 
+                callback(body);
+            });
     }
     
     /**
@@ -243,10 +252,11 @@ export class LoLModel {
      * @private
      */
     getMatchlist(accountId: string, number: number, callback: Function) {
-        request(`https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${this.apikey}&endIndex=${number}`, { json: true }, (err: Error, res: any, body: any) => {
-            if (err) { return console.log(err); }
-            callback(body);
-        });
+        fetch(`https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${this.apikey}&endIndex=${number}`, {})
+            .then((res: any) => res.json())
+            .then((body: any) => {
+                callback(body);
+            });
     }
 
     /**
@@ -315,10 +325,11 @@ export class LoLModel {
      * @private
      */
     getMatchInfo(gameId: number, callback: Function) {
-        request(`https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${this.apikey}`, { json: true }, (err: Error, res: any, body: any) => {
-            if (err) { return console.log(err); }
-            callback(body);
-        });
+        fetch(`https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${this.apikey}`, {})
+            .then((res: any) => res.json())
+            .then((body: any) => {
+                callback(body);
+            });
     }
 
     /**

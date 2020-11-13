@@ -143,7 +143,7 @@ describe("Discord tests", function() {
         describe("Mojang UT", function() {
             var model = new MojangModel.MojangModel();
             it("Should get user UUID", function(done) {
-                model.getUUIDByUsername({username: "ekazuki"}, (uuid) => {
+                model.getUUIDByUsername("ekazuki", (uuid) => {
                     if(uuid === "091c969e-ba6d-4ada-9620-f55038f36e41") {
                         done();
                     }
@@ -151,7 +151,7 @@ describe("Discord tests", function() {
             });
 
             it("Should not found the user  UUID", function(done) {
-                model.getUUIDByUsername({username: "MOJANGCIDONTEXIST444552DJJDHDGZ"}, (stats) => {
+                model.getUUIDByUsername("MOJANGCIDONTEXIST444552DJJDHDGZ", (stats) => {
                     if(stats.error) {
                         done();
                     }
