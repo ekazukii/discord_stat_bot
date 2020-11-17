@@ -41,53 +41,66 @@ class HypixelModel {
                         var response = new HypyxelStats;
                         var games = ["SkyWars", "BuildBattle", "UHC", "SpeedUHC"];
                         response.wins = []
+                        
+                        // Check number of wins in SkyWars BuildBattler, UHC and SpeedUHC
                         for (let i = 0; i < games.length; i++) {
                             if(typeof body.player.stats[games[i]] !== "undefined") {
-                                if(typeof body.player.stats[games[i]].wins !== "undefined") {
-                                    response.wins.push(body.player.stats[games[i]].wins);
-                                } else {
-                                    response.wins.push(0)
-                                }
+                                response.wins.push(body.player.stats[games[i]].wins || 0);
                             } else {
                                 response.wins.push(0)
                             }
                         }
 
+                        // Check amount of victories in Bedwars
                         if(typeof body.player.stats["Bedwars"] !== "undefined") {
-                            if(typeof body.player.stats["Bedwars"].wins_bedwars !== "undefined") {
-                                response.wins.push(body.player.stats["Bedwars"].wins_bedwars);
-                            } else {
-                                response.wins.push(0)
-                            }
+                            response.wins.push(body.player.stats["Bedwars"].wins_bedwars || 0);
                         } else {
                             response.wins.push(0)
                         }
 
+                        // Check if player bought a rank
                         if(typeof body.player.newPackageRank !== "undefined") {
                             response.rank = body.player.newPackageRank;
                         }
 
+                        // Calculate Hypixel level with amount of xp
                         response.plevel = Math.round((Math.sqrt((2 * body.player.networkExp) + 30625) / 50) - 2.5);
-                        fetch(`https://api.hypixel.net/status?uuid=${uuid}&key=${self.api_key}`, {})
-                            .then((res: any) => res.json())
-                            .then((body1: any) => {
-                            response.online = body1.session.online;
-                                fetch(`https://api.hypixel.net/findGuild?byUuid=${uuid}&key=${self.api_key}`, {})
+
+                        var promises = []
+
+                        // Get current status of the player
+                        promises.push(new Promise((resolve, reject) => {
+                            fetch(`https://api.hypixel.net/status?uuid=${uuid}&key=${self.api_key}`, {})
+                                .then((res: any) => res.json())
+                                .then((body: any) => {
+                                    resolve(body.session.online);
+                                })
+                        }));
+
+                        
+                        // Get guild name of player
+                        promises.push(new Promise((resolve, reject) => {
+                            fetch(`https://api.hypixel.net/findGuild?byUuid=${uuid}&key=${self.api_key}`, {})
                                     .then((res: any) => res.json())
-                                    .then((body2: any) => {
-                                        if(typeof body2.guild !== "undefined" && body2.guild !== null) {
-                                            console.log(body2.guild)
-                                            fetch(`https://api.hypixel.net/guild?id=${body2.guild}&key=${self.api_key}`, {})
+                                    .then((body: any) => {
+                                        if(typeof body.guild !== "undefined" && body.guild !== null) {
+                                            fetch(`https://api.hypixel.net/guild?id=${body.guild}&key=${self.api_key}`, {})
                                                 .then((res: any) => res.json())
-                                                .then((body3: any) => {
-                                                    response.guild = body3.guild.name;
-                                                    callback(response);
+                                                .then((body1: any) => {
+                                                    resolve(body1.guild.name);
                                             });
                                         } else {
-                                            callback(response)
+                                            resolve();
                                         }
                                     });
-                            })
+                        }));
+
+                        Promise.all(promises).then((values: any) => {
+                            response.online = values[0];
+                            response.guild = values[1];
+
+                            callback(response);
+                        });
                     } else {
                         var errRes = new ErrorResponse;
                         errRes.error = true;
