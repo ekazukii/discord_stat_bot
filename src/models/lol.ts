@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as fetch from 'node-fetch';
+import fetch from 'node-fetch';
 import * as types from "../types";
 
 /** Model of League of Legends commands */

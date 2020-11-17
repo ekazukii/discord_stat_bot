@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as fetch from 'node-fetch';
+import fetch from 'node-fetch';
 import {ErrorResponse, CSGOStats} from "../types";
 
 /** Model for Counter Strike : Global Offensive command */

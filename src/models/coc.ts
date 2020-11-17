@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as fetch from 'node-fetch';
+import fetch from 'node-fetch';
 import {ErrorResponse, CoCStats} from "../types";
 
 /** Model for Clash of Clans command */

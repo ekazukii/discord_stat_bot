@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as fetch from 'node-fetch';
+import fetch from 'node-fetch';
 import {ErrorResponse} from "../types";
 
 /** Model of Mojang request */
