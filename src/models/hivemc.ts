@@ -15,34 +15,39 @@ export class HivemcModel {
      */
     getUserStats(options: {username: string}, callback: Function) {
         var username = options.username;
-        fetch('http://api.hivemc.com/v1/player/'+username+'/HIDE', {})
-            .then((res: any) => res.json())
-            .then((body1: any) => {
-            if (typeof body1.code === 'undefined') {
-                var response = new HivemcStats
-                response.hide = body1.victories
-                fetch('http://api.hivemc.com/v1/player/'+username+'/GRAV', {})
-                    .then((res: any) => res.json())
-                    .then((body2: any) => {
-                        response.grav = body2.victories
-                        fetch('http://api.hivemc.com/v1/player/'+username+'/BP', {})
-                            .then((res: any) => res.json())
-                            .then((body3: any) => {
-                                response.blockparty = body3.victories
-                                fetch('http://api.hivemc.com/v1/player/'+username+'/DR', {})
-                                    .then((res: any) => res.json())
-                                    .then((body4: any) => {
-                                        response.deathrun = body4.victories
-                                        callback(response);
-                                    });
-                            });
-                    });
+        var hide = fetch('http://api.hivemc.com/v1/player/'+username+'/HIDE', {});
+        var grav = fetch('http://api.hivemc.com/v1/player/'+username+'/GRAV', {});
+        var blockparty = fetch('http://api.hivemc.com/v1/player/'+username+'/BP', {});
+        var deathrun = fetch('http://api.hivemc.com/v1/player/'+username+'/DR', {});
+
+        Promise.all([hide, grav, blockparty, deathrun]).then(responses => {
+            return Promise.all(responses.map(async res => {
+                var game = res.url.split("/")[6];
+                var json = await res.json();
+                json.game = game;
+                return json;
+            }))
+            
+        }).then(json => {
+            if(typeof json[0].victories === "undefined") {
+                return Promise.reject(new Error("User not found"));
             } else {
-                var errRes = new ErrorResponse;
-                errRes.error = true;
-                errRes.error_desc = "user not found";
-                callback(errRes);
+                return Promise.all(json);
             }
-        });
+
+        }).then(json => {
+            var response = new HivemcStats;
+            response.hide = json[0].victories
+            response.grav = json[1].victories
+            response.blockparty = json[2].victories
+            response.deathrun = json[3].victories
+            callback(response);
+
+        }).catch((error: Error) => {
+            var errRes = new ErrorResponse;
+            errRes.error = true;
+            errRes.error_desc = "user not found";
+            callback(errRes);
+        })
     }
 }

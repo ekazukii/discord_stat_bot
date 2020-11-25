@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { Console } from "winston/lib/winston/transports";
 import * as types from "../types";
 
 /** Model of League of Legends commands */
@@ -33,55 +34,70 @@ export class LoLModel {
     getUserStats(options: {username: string}, callback: Function) {
         var self = this;
         var username = options.username;
-        self.getSummonerByName(username, (summoner: any) => {
+        self.getSummonerByName(username).then((summoner: any) => {
             if (typeof summoner.id !== 'undefined') {
                 var response = new types.LoLStats;
                 var pid = summoner.id;
                 var aid = summoner.accountId;
                 response.level = summoner.summonerLevel;
-                response.masteries = [];
-                fetch(`https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${pid}/?api_key=${self.apikey}`, {})
-                    .then((res: any) => res.json())
-                    .then((body: any) => {
-                    
-                        for (let i = 0; i < 3; i++) {
-                            var mastery = new types.LoLMasteries;
-                            mastery.level = body[i].championLevel;
-                            mastery.points = body[i].championPoints;
-                            mastery.name = self.getChampName(body[i].championId);
-                            response.masteries.push(mastery);
-                        }
 
-                        fetch(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${pid}?api_key=${self.apikey}`, {})
-                            .then((res: any) => res.json())
-                            .then((body: any) => {
-                                if(typeof body[0] !== "undefined") {
-                                    response.rank = body[0].tier + " " + body[0].rank;
-                                } else {
-                                    response.rank = "UNRANKED";
-                                }
-
-                                self.getMatchlist(aid, 1, (body: any) => {
-                                    var gameId = body.matches[0].gameId;
-
-                                    self.getMatchInfo(gameId, (body: any) => {
-                                        var participantId = self.getParticipantId(body, aid);
-                                        var participant = self.getParticipant(body, participantId);
-
-                                        response.match.champ = self.getChampName(participant.championId);
-                                        response.match.win = participant.stats.win;
-                                        response.match.kills = participant.stats.kills;
-                                        response.match.deaths = participant.stats.deaths;
-                                        response.match.assists = participant.stats.assists;
-                                        response.match.cs = self.getCSPerMinutes(participant.stats, body.gameDuration);
-
-                                        callback(response);
-                        
-                                    })
-                                })
-                            });
-                    });
+                var promises = [];
+                promises.push(new Promise((resolve, reject) => {
+                    fetch(`https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${pid}/?api_key=${self.apikey}`, {})
+                        .then((res: any) => res.json())
+                        .then((body: any) => {
+                            var masteries = []
+                            for (let i = 0; i < 3; i++) {
+                                var mastery = new types.LoLMasteries;
+                                mastery.level = body[i].championLevel;
+                                mastery.points = body[i].championPoints;
+                                mastery.name = self.getChampName(body[i].championId);
+                                masteries.push(mastery)
+                            }
+                            resolve(masteries)
+                        })
+                }));
                 
+                promises.push(new Promise((resolve, reject) => {
+                    fetch(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${pid}?api_key=${self.apikey}`, {})
+                        .then((res: any) => res.json())
+                        .then((body: any) => {
+                            if(typeof body[0] !== "undefined") {
+                                resolve(body[0].tier + " " + body[0].rank);
+                            } else {
+                                resolve("UNRANKED");
+                            }
+                        })
+                }));
+
+                promises.push(new Promise((resolve, reject) => {
+                    self.getMatchlist(aid, 1).then((body: any) => {
+                        var gameId = body.matches[0].gameId;
+                        self.getMatchInfo(gameId).then((body: any) => {
+                            var participantId = self.getParticipantId(body, aid);
+                            var participant = self.getParticipant(body, participantId);
+                            var match = new types.LoLLastMatch();
+
+                            match.champ = self.getChampName(participant.championId);
+                            match.win = participant.stats.win;
+                            match.kills = participant.stats.kills;
+                            match.deaths = participant.stats.deaths;
+                            match.assists = participant.stats.assists;
+                            match.cs = self.getCSPerMinutes(participant.stats, body.gameDuration);
+
+                            resolve(match);
+                        });
+                    });
+                }));
+
+                Promise.all(promises).then((res: any) => {
+                    response.masteries = res[0];
+                    response.rank = res[1];
+                    response.match = res[2];
+
+                    callback(response);
+                    
+                });
             } else {
                 var errRes = new types.ErrorResponse;
                 errRes.error = true;
@@ -102,51 +118,53 @@ export class LoLModel {
         var user1 = options.user1;
         var user2 = options.user2;
         var self = this;
-        this.getSummonerByName(user1, (summ1: any) => {
-            self.getSummonerByName(user2, (summ2: any) => {
-                if(typeof summ1.id !== 'undefined' && typeof summ2.id !== 'undefined') {
-                    var aid1 = summ1.accountId;
-                    var aid2 = summ2.accountId;
-
-                    self.getClassicMatchlist(aid1, 5, (matchlist1: Array<any>) => {
-                        self.getClassicMatchlist(aid2, 5, (matchlist2: Array<any>) => {
-
-
-                            // PUT IN METHOD INSTEAD OF IN FUNCTION IN FUNCTION
-                            function getMatchlistScore(index: number, matchlist: Array<any>, score: Array<number>, aid: string, callback: Function) {
-                                if(index <= matchlist1.length - 1) {
-                                    self.getMatchInfo(matchlist[index].gameId, (game: any) => {
-                                        var newScore = self.getMatchScore(game, aid);
-                                        for (let i = 0; i < score.length; i++) {
-                                            score[i] += newScore[i];
-                                        }
-                                        index++;
-                                        getMatchlistScore(index, matchlist, score, aid, callback);
-                                    });
-                                } else {
-                                    for (let i = 0; i < score.length; i++) {
-                                        score[i] = Math.round(score[i]);
+        Promise.all([this.getSummonerByName(user1), this.getSummonerByName(user2)]).then((summs: any) => {
+            if(typeof summs[0].id !== 'undefined' && typeof summs[1].id !== 'undefined') {
+                Promise.all([self.getClassicMatchlist(summs[0].accountId, 5), self.getClassicMatchlist(summs[1].accountId, 5)]).then((matchlists: any) => {
+                    function getPlayerScore(matchlist: Array<any>, aid: any) {
+                        return new Promise((resolve, reject) => {
+                            var promises: Array<Promise<Array<number>>> = [];
+                            var score = [0,0,0,0,0,0,0,0]
+                            for (let i = 0; i < matchlist.length; i++) {
+                                promises.push(
+                                    new Promise((resolve1, reject1) => {
+                                        self.getMatchInfo(matchlist[i].gameId).then((game: any) => {
+                                            resolve1(self.getMatchScore(game, aid));
+                                        })
                                     }
-                                    callback(score)
-                                }
+                                )); 
                             }
 
-                            const reducer = (accumulator: number, currentValue: number) => accumulator + currentValue;
-                            getMatchlistScore(0, matchlist1, [0,0,0,0,0,0,0,0], aid1, (score1: Array<number>) => {
-                                getMatchlistScore(0, matchlist2, [0,0,0,0,0,0,0,0], aid2, (score2: Array<number>) => {
-                                    callback({score1: score1, score2: score2});
-                                });
-                            });
+                            Promise.all(promises).then((scoresArray) => {
+                                for (let i = 0; i < scoresArray.length; i++) {
+                                    for (let j = 0; j < scoresArray[i].length; j++) {
+                                        score[j] += scoresArray[i][j];
+                                    }
+                                }
+                                
+                                for (let i = 0; i < score.length; i++) {
+                                    score[i] = Math.round(score[i]);
+                                }
+
+                                resolve(score)
+                            })
                         })
-                    })
-                } else {
-                    var response = new types.ErrorResponse;
-                    response.error = true;
-                    response.error_desc = "user not found";
-                    callback(response);
-                }
-            })
-        })
+                    }
+
+                    var promise1 = getPlayerScore(matchlists[0], summs[0].accountId);
+                    var promise2 = getPlayerScore(matchlists[1], summs[1].accountId);
+
+                    Promise.all([promise1, promise2]).then((players: any) => {
+                        callback({score1: players[0], score2: players[1]})
+                    });
+                });
+            } else {
+                var response = new types.ErrorResponse;
+                response.error = true;
+                response.error_desc = "user not found";
+                callback(response);
+            }
+        });
         // Get matchlist
         // Choose only normal or ranked game
         // Calculate score
@@ -163,33 +181,26 @@ export class LoLModel {
         var username = options.username;
         var ngame = options.ngame;
 
-        self.getSummonerByName(username, (summoner: any) => {
+        self.getSummonerByName(username).then((summoner: any) => {
             if (typeof summoner.id !== 'undefined') {
-                var aid1 = summoner.accountId;
-                self.getClassicMatchlist(aid1, ngame, (matchlist1: Array<any>) => {
+                var aid = summoner.accountId;
+                self.getClassicMatchlist(aid, ngame).then((matchlist: Array<any>) => {
 
-                    // SAME PUT IN METHOD
-                    function getMathlistCS(index: number, matchlist: Array<any>, cs: Array<number>, aid: string, callback: Function) {
-                        if(index <= matchlist1.length - 1) {
-                            self.getMatchInfo(matchlist[index].gameId, (game: any) => {
-
+                    var promises = [];
+                    var cs: Array<number> = [];
+                    for (let i = 0; i < matchlist.length; i++) {
+                        promises.push(self.getMatchInfo(matchlist[i].gameId).then((game: any) => {
+                            return new Promise((resolve1, reject1) => {
                                 var pid = self.getParticipantId(game, aid);
                                 var participant = self.getParticipant(game, pid);
-
-                                cs.push(self.getCSPerMinutes(participant.stats,  game.gameDuration));
-
-                                index++;
-                                getMathlistCS(index, matchlist, cs, aid, callback);
-                            });
-                        } else {
-                            callback(cs);
-                        }
+                                resolve1(self.getCSPerMinutes(participant.stats,  game.gameDuration));
+                            })
+                        }));
                     }
 
-                    getMathlistCS(0, matchlist1, [], aid1, (cs1: Array<number>) => {
-                        callback({cs: cs1});
+                    Promise.all(promises).then((values: any) => {
+                        callback({cs: values});
                     });
-
                 });
             }
         });
@@ -235,12 +246,8 @@ export class LoLModel {
      * @param {function(Object)} callback - Callback summoners account information
      * @private
      */
-    getSummonerByName(username: string, callback: Function) {
-        fetch(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}/?api_key=${this.apikey}`, {})
-            .then((res: any) => res.json())
-            .then((body: any) => { 
-                callback(body);
-            });
+    getSummonerByName(username: string) {
+        return fetch(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}/?api_key=${this.apikey}`, {}).then((res: any) => res.json())
     }
     
     /**
@@ -250,12 +257,8 @@ export class LoLModel {
      * @param {function(Object)} callback - Callback the matchlist object.
      * @private
      */
-    getMatchlist(accountId: string, number: number, callback: Function) {
-        fetch(`https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${this.apikey}&endIndex=${number}`, {})
-            .then((res: any) => res.json())
-            .then((body: any) => {
-                callback(body);
-            });
+    getMatchlist(accountId: string, number: number) {
+        return fetch(`https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${this.apikey}&endIndex=${number}`, {}).then((res: any) => res.json())
     }
 
     /**
@@ -265,20 +268,22 @@ export class LoLModel {
      * @param {function(Object)} callback - Callback the matchlist object.
      * @private
      */
-    getClassicMatchlist(accountId: string, number: number, callback: Function) {
-        var matchlist: Array<any> = [];
-        this.getMatchlist(accountId, number*5, (body: any) => {
-            var i = 0;
-            while(matchlist.length !== number && i !== body.matches.length-1) {
-                const match = body.matches[i];
-                if(match.queue === 400 || match.queue === 420 || match.queue === 430 || match.queue === 440) {
-                    matchlist.push(match);
+    getClassicMatchlist(accountId: string, number: number) {
+        return new Promise((resolve, reject) => {
+            var matchlist: Array<any> = [];
+            this.getMatchlist(accountId, number*5).then((body: any) => {
+                var i = 0;
+                while(matchlist.length !== number && i !== body.matches.length-1) {
+                    const match = body.matches[i];
+                    if(match.queue === 400 || match.queue === 420 || match.queue === 430 || match.queue === 440) {
+                        matchlist.push(match);
+                    }
+                    i++;
                 }
-                i++;
-            }
-
-            callback(matchlist);
-        })
+    
+                resolve(matchlist);
+            })
+        });
     }
 
     /**
@@ -301,19 +306,12 @@ export class LoLModel {
         }
 
         score.push(participant.stats.kills * 3);
-        //console.log("kills: " + participant.stats.kills * 3 + " : "  + score)
         score.push(participant.stats.deaths * -3);
-        //console.log("death: " + participant.stats.deaths * -3 + " : "  + score)
         score.push(participant.stats.assists);
-        //console.log("assists: " + participant.stats.assists + " : "  + score)
         score.push(this.getCSPerMinutes(participant.stats, match.gameDuration));
-        //console.log("cs: " + this.getCSPerMinutes(participant.stats, match.gameDuration) + " : "  + score);
         score.push((participant.stats.timeCCingOthers * 4) / (match.gameDuration / 60));
-        //console.log("cc: " + (participant.stats.timeCCingOthers * 4) / (match.gameDuration / 60) + " : "  + score)
         score.push(participant.stats.totalDamageDealtToChampions / ( (match.gameDuration * 125) / 60));
-        //console.log("damage: " + participant.stats.totalDamageDealtToChampions / ( (match.gameDuration * 125) / 60) + " : "  + score)
         score.push(participant.stats.totalDamageTaken / ( (match.gameDuration * 150) / 60));
-        //console.log("tank: " + participant.stats.totalDamageTaken / ( (match.gameDuration * 150) / 60) + " : "  + score)
         return score;
     }
 
@@ -323,12 +321,8 @@ export class LoLModel {
      * @param {function(Object)} callback - Callback {@link https://developer.riotgames.com/apis#match-v4/GET_getMatch|Match object}
      * @private
      */
-    getMatchInfo(gameId: number, callback: Function) {
-        fetch(`https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${this.apikey}`, {})
-            .then((res: any) => res.json())
-            .then((body: any) => {
-                callback(body);
-            });
+    getMatchInfo(gameId: number) {
+        return fetch(`https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${this.apikey}`, {}).then((res: any) => res.json())
     }
 
     /**
