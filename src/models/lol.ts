@@ -39,6 +39,7 @@ export class LoLModel {
                 var response = new types.LoLStats;
                 var pid = summoner.id;
                 var aid = summoner.accountId;
+                var puuid = summoner.puuid;
                 response.level = summoner.summonerLevel;
 
                 var promises = [];
@@ -71,19 +72,20 @@ export class LoLModel {
                 }));
 
                 promises.push(new Promise((resolve, reject) => {
-                    self.getMatchlist(aid, 1).then((body: any) => {
-                        var gameId = body.matches[0].gameId;
+                    self.getMatchlist(puuid, 1).then((body: any) => {
+                        var gameId = body[0];
                         self.getMatchInfo(gameId).then((body: any) => {
-                            var participantId = self.getParticipantId(body, aid);
+                            var participantId = self.getParticipantId(body, puuid);
                             var participant = self.getParticipant(body, participantId);
+                            console.log(participant)
                             var match = new types.LoLLastMatch();
 
-                            match.champ = self.getChampName(participant.championId);
-                            match.win = participant.stats.win;
-                            match.kills = participant.stats.kills;
-                            match.deaths = participant.stats.deaths;
-                            match.assists = participant.stats.assists;
-                            match.cs = self.getCSPerMinutes(participant.stats, body.gameDuration);
+                            match.champ = participant.championName;
+                            match.win = participant.win;
+                            match.kills = participant.kills;
+                            match.deaths = participant.deaths;
+                            match.assists = participant.assists;
+                            match.cs = self.getCSPerMinutes(participant, body.info.gameDuration);
 
                             resolve(match);
                         });
@@ -120,7 +122,8 @@ export class LoLModel {
         var self = this;
         Promise.all([this.getSummonerByName(user1), this.getSummonerByName(user2)]).then((summs: any) => {
             if(typeof summs[0].id !== 'undefined' && typeof summs[1].id !== 'undefined') {
-                Promise.all([self.getClassicMatchlist(summs[0].accountId, 5), self.getClassicMatchlist(summs[1].accountId, 5)]).then((matchlists: any) => {
+                Promise.all([self.getMatchlist(summs[0].puuid, 5, "normal"), self.getMatchlist(summs[1].puuid, 5, "normal")]).then((matchlists: any) => {                    
+                    
                     function getPlayerScore(matchlist: Array<any>, aid: any) {
                         return new Promise((resolve, reject) => {
                             var promises: Array<Promise<Array<number>>> = [];
@@ -128,7 +131,7 @@ export class LoLModel {
                             for (let i = 0; i < matchlist.length; i++) {
                                 promises.push(
                                     new Promise((resolve1, reject1) => {
-                                        self.getMatchInfo(matchlist[i].gameId).then((game: any) => {
+                                        self.getMatchInfo(matchlist[i]).then((game: any) => {
                                             resolve1(self.getMatchScore(game, aid));
                                         })
                                     }
@@ -151,8 +154,8 @@ export class LoLModel {
                         })
                     }
 
-                    var promise1 = getPlayerScore(matchlists[0], summs[0].accountId);
-                    var promise2 = getPlayerScore(matchlists[1], summs[1].accountId);
+                    var promise1 = getPlayerScore(matchlists[0], summs[0].puuid);
+                    var promise2 = getPlayerScore(matchlists[1], summs[1].puuid);
 
                     Promise.all([promise1, promise2]).then((players: any) => {
                         callback({score1: players[0], score2: players[1]})
@@ -184,7 +187,31 @@ export class LoLModel {
         self.getSummonerByName(username).then((summoner: any) => {
             if (typeof summoner.id !== 'undefined') {
                 var aid = summoner.accountId;
-                self.getClassicMatchlist(aid, ngame).then((matchlist: Array<any>) => {
+                let puuid = summoner.puuid;
+                self.getMatchlist(puuid, ngame).then((matchlist: Array<any>) => {
+                    //console.log(matchlist)
+                    var promises = [];
+                    var cs: Array<number> = [];
+                    for (let i = 0; i < matchlist.length; i++) {
+                        promises.push(self.getMatchInfo(matchlist[i]).then((game: any) => {
+                            //console.log(game)
+                            //console.log(game.info.participants)
+                            return new Promise((resolve1, reject1) => {
+                                var pid = self.getParticipantId(game, puuid);
+                                var participant = self.getParticipant(game, pid);
+                                resolve1(self.getCSPerMinutes(participant, game.info.gameDuration));
+                            })
+                        }));
+                    }
+
+                    Promise.all(promises).then((values: any) => {
+                        callback({cs: values});
+                    });
+                });
+
+                //callback({cs: [12, 34, 43, 32]});
+
+                /**self.getClassicMatchlist(puuid, ngame).then((matchlist: Array<any>) => {
 
                     var promises = [];
                     var cs: Array<number> = [];
@@ -201,7 +228,7 @@ export class LoLModel {
                     Promise.all(promises).then((values: any) => {
                         callback({cs: values});
                     });
-                });
+                });*/
             }
         });
     }
@@ -252,13 +279,17 @@ export class LoLModel {
     
     /**
      * Fatch the last n match of the player
-     * @param {string} accountId - account id of the player
+     * @param {string} puuid - puuid of the player
      * @param {number} number - Number of match to fetch
      * @param {function(Object)} callback - Callback the matchlist object.
      * @private
      */
-    getMatchlist(accountId: string, number: number) {
-        return fetch(`https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${this.apikey}&endIndex=${number}`, {}).then((res: any) => res.json())
+    getMatchlist(puuid: string, number: number, filter?: string) {
+        if(filter == "normal" || filter == "ranked") {
+            return fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?api_key=${this.apikey}&count=${number}&type=${filter}`, {}).then((res: any) => res.json())
+        } else {
+            return fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?api_key=${this.apikey}&count=${number}`, {}).then((res: any) => res.json())
+        }
     }
 
     /**
@@ -266,6 +297,7 @@ export class LoLModel {
      * @param {string} accountId - account id of the player
      * @param {number} number - Number of match to fetch
      * @param {function(Object)} callback - Callback the matchlist object.
+     * @deprecated Use getMatchlist with filter instead
      * @private
      */
     getClassicMatchlist(accountId: string, number: number) {
@@ -296,22 +328,22 @@ export class LoLModel {
     getMatchScore(match: any, accountId: string) {
         var pid = this.getParticipantId(match, accountId);
         var participant = this.getParticipant(match, pid);
-        var team = this.getTeam(match, participant);
+        //var team = this.getTeam(match, participant);
         var score = new Array();
 
-        if(team.win === "Win") {
+        if(participant.win) {
             score.push(20);
         } else {
             score.push(0);
         }
 
-        score.push(participant.stats.kills * 3);
-        score.push(participant.stats.deaths * -3);
-        score.push(participant.stats.assists);
-        score.push(this.getCSPerMinutes(participant.stats, match.gameDuration));
-        score.push((participant.stats.timeCCingOthers * 4) / (match.gameDuration / 60));
-        score.push(participant.stats.totalDamageDealtToChampions / ( (match.gameDuration * 125) / 60));
-        score.push(participant.stats.totalDamageTaken / ( (match.gameDuration * 150) / 60));
+        score.push(participant.kills * 3);
+        score.push(participant.deaths * -3);
+        score.push(participant.assists);
+        score.push(this.getCSPerMinutes(participant, match.info.gameDuration));
+        score.push((participant.timeCCingOthers * 4) / (match.info.gameDuration / 60));
+        score.push(participant.totalDamageDealtToChampions / ( (match.info.gameDuration * 125) / 60));
+        score.push(participant.totalDamageTaken / ( (match.info.gameDuration * 150) / 60));
         return score;
     }
 
@@ -322,7 +354,7 @@ export class LoLModel {
      * @private
      */
     getMatchInfo(gameId: number) {
-        return fetch(`https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${this.apikey}`, {}).then((res: any) => res.json())
+        return fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/${gameId}?api_key=${this.apikey}`, {}).then((res: any) => res.json())
     }
 
     /**
@@ -333,10 +365,12 @@ export class LoLModel {
      * @private
      */
     getParticipantId(game: any, accountId: string) {
-        for (let i = 0; i < game.participantIdentities.length; i++) {
-            const element = game.participantIdentities[i];
-            if(element.player.accountId === accountId) {
-                return element.participantId;
+        for (let i = 0; i < game.metadata.participants.length; i++) {
+            const puuid = game.metadata.participants[i];
+            //console.log(puuid, accountId);
+            if(puuid === accountId) {
+                return i;
+                //return element.participantId;
             }
         }
     }
@@ -349,12 +383,17 @@ export class LoLModel {
      * @private
      */
     getParticipant(game: any, participantId: number) {
+        //console.log(game.info.participants[participantId]);
+        return game.info.participants[participantId];
+
+        /** api v4 version
         for (let i = 0; i < game.participants.length; i++) {
             const player = game.participants[i];
             if(player.participantId === participantId) {
                 return player;
             }
         }
+         */
     }
 
     /**
@@ -380,6 +419,6 @@ export class LoLModel {
      * @private
      */
     getCSPerMinutes(stats: any, gameDuration: number) {
-        return Math.round( (stats.totalMinionsKilled + stats.neutralMinionsKilledTeamJungle + stats.neutralMinionsKilledEnemyJungle) / (gameDuration / 60) * 10) / 10;
+        return Math.round( (stats.totalMinionsKilled + stats.neutralMinionsKilled) / (gameDuration / 60) * 10) / 10;
     }
 }
