@@ -5,8 +5,8 @@
  * @property {string} error_desc
  */
 export class ErrorResponse {
-    error: boolean;
-    error_desc: string;
+  error: boolean;
+  error_desc: string;
 }
 
 //   OVERWATCH TYPES
@@ -19,8 +19,8 @@ export class ErrorResponse {
  * @property {number} hours
  */
 export class OWHero {
-    name: string = "";
-    hours: number = 0;
+  name: string = '';
+  hours: number = 0;
 }
 
 /**
@@ -32,9 +32,9 @@ export class OWHero {
  * @property {string} role
  */
 export class OWRank {
-    sr: number = 0;
-    rankName: string = "";
-    role: string = "";
+  sr: number = 0;
+  rankName: string = '';
+  role: string = '';
 }
 
 /**
@@ -50,13 +50,13 @@ export class OWRank {
  * @property {Arrat<OWRank>} ranks
  */
 export class OWStats {
-    username: string = "";
-    gamesPlayed: number = 0;
-    win: number = 0;
-    winrate: number = 0;
-    hours: number = 0;
-    heroes: Array<OWHero> = [];
-    ranks: Array<OWRank> = undefined;
+  username: string = '';
+  gamesPlayed: number = 0;
+  win: number = 0;
+  winrate: number = 0;
+  hours: number = 0;
+  heroes: Array<OWHero> = [];
+  ranks: Array<OWRank> = undefined;
 }
 
 /**
@@ -68,9 +68,9 @@ export class OWStats {
  * @property {string} username
  */
 export class OWSearch {
-    users: Array<any> = [];
-    more: boolean = false;
-    username: string = "";
+  users: Array<any> = [];
+  more: boolean = false;
+  username: string = '';
 }
 
 //   CLASH OF CLANS TYPES
@@ -84,9 +84,9 @@ export class OWSearch {
  * @property {number} maxLevel
  */
 export class CoCHero {
-    name: string = "";
-    level: number = 0;
-    maxLevel: number = 0;
+  name: string = '';
+  level: number = 0;
+  maxLevel: number = 0;
 }
 
 /**
@@ -97,8 +97,8 @@ export class CoCHero {
  * @property {string} tag
  */
 export class CoCClan {
-    name: string = "";
-    tag: string = "";
+  name: string = '';
+  tag: string = '';
 }
 
 /**
@@ -113,12 +113,12 @@ export class CoCClan {
  * @property {string} name
  */
 export class CoCStats {
-    heroes: Array<CoCHero> = undefined;
-    level: number = 0;
-    clan: CoCClan = undefined;
-    trophies: number = 0;
-    townHallLevel: number = 0;
-    name: string = "";
+  heroes: Array<CoCHero> = undefined;
+  level: number = 0;
+  clan: CoCClan = undefined;
+  trophies: number = 0;
+  townHallLevel: number = 0;
+  name: string = '';
 }
 
 //   COUNTER STRIKE GLOBAL OFFENSIVE TYPES
@@ -135,12 +135,12 @@ export class CoCStats {
  * @property {string} username
  */
 export class CSGOStats {
-    win: number = 0;
-    lvl: number = 0;
-    kd: number = 0;
-    hs: number = 0;
-    elo: number = 0;
-    username: string = "";
+  win: number = 0;
+  lvl: number = 0;
+  kd: number = 0;
+  hs: number = 0;
+  elo: number = 0;
+  username: string = '';
 }
 
 //   HYPIXEL TYPES
@@ -165,16 +165,16 @@ export class CSGOStats {
  * @property {string} guild
  * @property {boolean} online
  * @property {WinsArray} wins
- * @property {string} username 
+ * @property {string} username
  */
 export class HypyxelStats {
-    plevel: number = 0;
-    rank: string = undefined;
-    guild: string = undefined;
-    online: boolean = false;
-    wins: any[] = [];
-    username: string = "";
-    status: boolean = undefined;
+  plevel: number = 0;
+  rank: string = undefined;
+  guild: string = undefined;
+  online: boolean = false;
+  wins: any[] = [];
+  username: string = '';
+  status: boolean = undefined;
 }
 
 //   LEAGUE OF LEGENDS TYPES
@@ -191,12 +191,12 @@ export class HypyxelStats {
  * @property {string} champ
  */
 export class LoLLastMatch {
-    win: boolean = false;
-    kills: number  = 0;
-    deaths: number = 0;
-    cs: number = 0;
-    assists: number = 0;
-    champ: string = "";
+  win: boolean = false;
+  kills: number = 0;
+  deaths: number = 0;
+  cs: number = 0;
+  assists: number = 0;
+  champ: string = '';
 }
 
 /**
@@ -208,9 +208,9 @@ export class LoLLastMatch {
  * @property {string} name
  */
 export class LoLMasteries {
-    level: number = 0;
-    points: number = 0;
-    name: string = "";
+  level: number = 0;
+  points: number = 0;
+  name: string = '';
 }
 
 /**
@@ -222,12 +222,12 @@ export class LoLMasteries {
  * @property {Array<LoLMasteries>} masteries
  * @property {string} username
  */
-export class LoLStats  {
-    rank: string = undefined;
-    match: LoLLastMatch = new LoLLastMatch;
-    masteries: Array<LoLMasteries> = [];
-    level: number = 0;
-    username: string = "";
+export class LoLStats {
+  rank: string = undefined;
+  match: LoLLastMatch = new LoLLastMatch();
+  masteries: Array<LoLMasteries> = [];
+  level: number = 0;
+  username: string = '';
 }
 
 // WYNNCRAFT STATS
@@ -236,7 +236,7 @@ export class LoLStats  {
  *
  * @export
  * @class WynncraftStats
- * 
+ *
  * @property {string} username
  * @property {number} mobsKilled
  * @property {number} completedQuests
@@ -245,13 +245,12 @@ export class LoLStats  {
  * @property {number} classLevel
  */
 export class WynncraftStats {
-    username: string = "";
-    mobsKilled: number = 0;
-    completedQuests: number = 0;
-    completedDungeons: number = 0;
-    className: string = "";
-    classLevel: number = 0;
-
+  username: string = '';
+  mobsKilled: number = 0;
+  completedQuests: number = 0;
+  completedDungeons: number = 0;
+  className: string = '';
+  classLevel: number = 0;
 }
 
 //   HIVEMC STATS
@@ -264,14 +263,14 @@ export class WynncraftStats {
  * @property {number} deathrun
  * @property {number} blockparty
  * @property {number} grav
- * @property {string} username 
+ * @property {string} username
  */
 export class HivemcStats {
-    hide: number = 0;
-    deathrun: number = 0;
-    blockparty: number = 0;
-    grav: number = 0;
-    username: string = "";
+  hide: number = 0;
+  deathrun: number = 0;
+  blockparty: number = 0;
+  grav: number = 0;
+  username: string = '';
 }
 
 //   VIEW TYPES
@@ -282,5 +281,5 @@ export class HivemcStats {
  * @property {Object} embed
  */
 export class MessageEmbed {
-    embed: any;
+  embed: any;
 }
