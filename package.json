@@ -21,7 +21,8 @@
     "mc-ping-updated": "^0.1.1",
     "node-fetch": "^2.6.1",
     "sqlite3": "^5.0.0",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "dotenv": "^8.2.0"
   },
   "repository": {
     "type": "git",
@@ -34,7 +35,6 @@
     "@babel/preset-typescript": "^7.12.1",
     "@types/node-fetch": "^2.5.7",
     "@types/ws": "^7.4.0",
-    "dotenv": "^8.2.0",
     "jsdoc": "^3.6.6",
     "jsdoc-babel": "^0.5.0",
     "mocha": "^8.1.3",
